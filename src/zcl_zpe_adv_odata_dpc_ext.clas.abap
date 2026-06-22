@@ -885,7 +885,42 @@ ENDMETHOD.
 
 METHOD ztpe_materialset_get_entity.
 
+  DATA: ls_key_tab  LIKE LINE OF it_key_tab,
+        lv_codigocm TYPE ztpe_material-codigocm.
 
+  " 1. Ler a chave do Material vinda da URL (tratando variações)
+  READ TABLE it_key_tab INTO ls_key_tab WITH KEY name = 'Codigocm'.
+  IF sy-subrc <> 0.
+    READ TABLE it_key_tab INTO ls_key_tab WITH KEY name = 'CODIGOCM'.
+  ENDIF.
+  IF sy-subrc <> 0.
+    " Caso na SEGW a propriedade tenha sido nomeada apenas como Codigom
+    READ TABLE it_key_tab INTO ls_key_tab WITH KEY name = 'Codigom'.
+  ENDIF.
+  IF sy-subrc <> 0.
+    READ TABLE it_key_tab INTO ls_key_tab WITH KEY name = 'CODIGOM'.
+  ENDIF.
+
+  IF sy-subrc = 0.
+    lv_codigocm = ls_key_tab-value.
+  ENDIF.
+
+  " 2. Busca simples e performática na tabela física de materiais
+  SELECT SINGLE codigocm,
+                descricaocm,
+                tipocm,
+                unidade_medidacm
+    FROM ztpe_material
+    INTO CORRESPONDING FIELDS OF @er_entity
+    WHERE codigocm = @lv_codigocm.
+
+  " 3. Retorna 404 se o material não existir no cadastro
+  IF sy-subrc <> 0.
+    RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+      EXPORTING
+        textid           = /iwbep/cx_mgw_busi_exception=>resource_not_found
+        http_status_code = '404'.
+  ENDIF.
 
 ENDMETHOD.
 
