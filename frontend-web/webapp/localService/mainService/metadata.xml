@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema Namespace="ZPE_ADV_ODATA_SRV" xml:lang="es" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+            <EntityType Name="ZTPE_MATERIAL" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Codigocm"/>
+                </Key>
+                <Property Name="Mandt" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Mandante" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Codigocm" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Descricaocm" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Tipocm" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="UnidadeMedidacm" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="ZTPE_BOM" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Mandt"/>
+                    <PropertyRef Name="Codigopa"/>
+                    <PropertyRef Name="Codigomp"/>
+                </Key>
+                <Property Name="Mandt" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Mandante" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Codigopa" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Codigomp" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Quantidademp" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="ZTPE_ESTOQUE" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Codigom"/>
+                </Key>
+                <Property Name="Mandt" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Mandante" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Codigom" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Quantidadem" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <NavigationProperty Name="ZTPE_MATERIAL" Relationship="ZPE_ADV_ODATA_SRV.EstoqueToMaterial" FromRole="FromRole_EstoqueToMaterial" ToRole="ToRole_EstoqueToMaterial"/>
+            </EntityType>
+            <EntityType Name="ZTPE_LOG_MOV" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Mandt"/>
+                    <PropertyRef Name="Datal"/>
+                    <PropertyRef Name="Codigom"/>
+                </Key>
+                <Property Name="Mandt" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Mandante" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Datal" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Cronomarcador" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Codigom" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Quantidadel" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Tipol" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="ZTPE_PED_CAB" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Numeropedido"/>
+                </Key>
+                <Property Name="Mandt" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Mandante" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Numeropedido" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Datap" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Fecha" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <NavigationProperty Name="ZTPE_PED_ITEMSet" Relationship="ZPE_ADV_ODATA_SRV.Asso_PedidoToItems" FromRole="FromRole_Asso_PedidoToItems" ToRole="ToRole_Asso_PedidoToItems"/>
+            </EntityType>
+            <EntityType Name="ZTPE_PED_ITEM" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Numeropedido"/>
+                    <PropertyRef Name="Codigomp"/>
+                </Key>
+                <Property Name="Mandt" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Mandante" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Numeropedido" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Codigomp" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Quantidademp" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="ZTPE_UNMEDIDA" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Mandt"/>
+                    <PropertyRef Name="Codigounm"/>
+                </Key>
+                <Property Name="Mandt" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Mandante" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Codigounm" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Descricaounm" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="ZSTR_ESTOQUE_ODATA" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Codigom"/>
+                </Key>
+                <Property Name="Tipol" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Codigom" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Quantidadem" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Descricaocm" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Tipocm" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="UnidadeMedidacm" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <Association Name="Asso_PedidoToItems" sap:content-version="1">
+                <End Type="ZPE_ADV_ODATA_SRV.ZTPE_PED_CAB" Multiplicity="1" Role="FromRole_Asso_PedidoToItems"/>
+                <End Type="ZPE_ADV_ODATA_SRV.ZTPE_PED_ITEM" Multiplicity="*" Role="ToRole_Asso_PedidoToItems"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_Asso_PedidoToItems">
+                        <PropertyRef Name="Numeropedido"/>
+                    </Principal>
+                    <Dependent Role="ToRole_Asso_PedidoToItems">
+                        <PropertyRef Name="Numeropedido"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="EstoqueToMaterial" sap:content-version="1">
+                <End Type="ZPE_ADV_ODATA_SRV.ZTPE_ESTOQUE" Multiplicity="1" Role="FromRole_EstoqueToMaterial"/>
+                <End Type="ZPE_ADV_ODATA_SRV.ZTPE_MATERIAL" Multiplicity="1" Role="ToRole_EstoqueToMaterial"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_EstoqueToMaterial">
+                        <PropertyRef Name="Codigom"/>
+                    </Principal>
+                    <Dependent Role="ToRole_EstoqueToMaterial">
+                        <PropertyRef Name="Codigocm"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <EntityContainer Name="ZPE_ADV_ODATA_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="ZTPE_MATERIALSet" EntityType="ZPE_ADV_ODATA_SRV.ZTPE_MATERIAL" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="ZTPE_BOMSet" EntityType="ZPE_ADV_ODATA_SRV.ZTPE_BOM" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="ZTPE_ESTOQUESet" EntityType="ZPE_ADV_ODATA_SRV.ZTPE_ESTOQUE" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="ZTPE_LOG_MOVSet" EntityType="ZPE_ADV_ODATA_SRV.ZTPE_LOG_MOV" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="ZTPE_PED_CABSet" EntityType="ZPE_ADV_ODATA_SRV.ZTPE_PED_CAB" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="ZTPE_PED_ITEMSet" EntityType="ZPE_ADV_ODATA_SRV.ZTPE_PED_ITEM" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="ZTPE_UNMEDIDASet" EntityType="ZPE_ADV_ODATA_SRV.ZTPE_UNMEDIDA" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="ZSTR_ESTOQUE_ODATASet" EntityType="ZPE_ADV_ODATA_SRV.ZSTR_ESTOQUE_ODATA" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <AssociationSet Name="EstoqueToMaterialSet" Association="ZPE_ADV_ODATA_SRV.EstoqueToMaterial" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="ZTPE_ESTOQUESet" Role="FromRole_EstoqueToMaterial"/>
+                    <End EntitySet="ZTPE_MATERIALSet" Role="ToRole_EstoqueToMaterial"/>
+                </AssociationSet>
+                <AssociationSet Name="Asso_PedidoToItemsSet" Association="ZPE_ADV_ODATA_SRV.Asso_PedidoToItems" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="ZTPE_PED_CABSet" Role="FromRole_Asso_PedidoToItems"/>
+                    <End EntitySet="ZTPE_PED_ITEMSet" Role="ToRole_Asso_PedidoToItems"/>
+                </AssociationSet>
+                <FunctionImport Name="ExecuteProductionProcess" ReturnType="ZPE_ADV_ODATA_SRV.ZTPE_MATERIAL" EntitySet="ZTPE_MATERIALSet" m:HttpMethod="POST">
+                    <Parameter Name="Material" Type="Edm.String" Mode="In" MaxLength="4"/>
+                    <Parameter Name="Quantidade" Type="Edm.Int64" Mode="In"/>
+                </FunctionImport>
+            </EntityContainer>
+            <atom:link rel="self" href="http://soalv3hsap01.stefanini.dom:8000/sap/opu/odata/sap/ZPE_ADV_ODATA_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+            <atom:link rel="latest-version" href="http://soalv3hsap01.stefanini.dom:8000/sap/opu/odata/sap/ZPE_ADV_ODATA_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
