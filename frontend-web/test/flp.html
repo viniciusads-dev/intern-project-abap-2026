@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Fiori Launchpad - Test</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <script
+        id="sap-ui-bootstrap"
+        src="/resources/sap-ui-core.js"
+        data-sap-ui-theme="sap_horizon"
+        data-sap-ui-resourceroots='{
+            "sap.ushell": "/resources/sap/ushell",
+            "sap.ushell.shells.demo": "/resources/sap/ushell/shells/demo",
+            "zpeweb": "/",
+            "zpeweb.localService": "/localService/"
+        }'
+        data-sap-ui-on-init="module:sap/ushell/bootstrap"
+        data-sap-ui-compat-version="edge"
+        data-sap-ui-async="true"
+        data-sap-ui-preload="async"
+    ></script>
+    <script>
+        window['sap-ushell-config'] = {
+            defaultRenderer: 'fiori2',
+            renderers: {
+                fiori2: {
+                    componentData: {
+                        config: {
+                            enableSearch: false,
+                            enableNotifications: false,
+                            enableUserPreferences: false
+                        }
+                    }
+                }
+            },
+            services: {
+                LaunchPage: {
+                    adapter: {
+                        config: {
+                            groups: [
+                                {
+                                    id: 'group1',
+                                    title: 'Gestão de Estoque',
+                                    tiles: [
+                                        {
+                                            id: 'zpeweb-tile',
+                                            title: 'ZPE Webapp',
+                                            size: '1x1',
+                                            tileType: 'sap.ushell.ui.tile.StaticTile',
+                                            properties: {
+                                                title: 'ZPE Webapp',
+                                                subtitle: 'Gerenciamento de Estoque',
+                                                icon: 'sap-icon://product'
+                                            },
+                                            target: {
+                                                semanticObject: 'zpeweb',
+                                                action: 'preview'
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                },
+                ClientSideTargetResolution: {
+                    adapter: {
+                        config: {
+                            'inbounds': {
+                                'zpeweb-preview': {
+                                    'semanticObject': 'zpeweb',
+                                    'action': 'preview',
+                                    'resolutionResult': {
+                                        'applicationType': 'SAPUI5',
+                                        'additionalInformation': 'SAPUI5.Component=zpeweb',
+                                        'url': '/index.html'
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+</head>
+<body class="sapUiBody">
+    <div id="canvas"></div>
+</body>
+</html>

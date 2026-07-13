@@ -1,1 +1,39 @@
 /* Enter your custom styles here */
+
+/* ===== Cockpit Styles ===== */
+
+/* Card container style */
+.cockpitCard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+/* Adjust generic tile appearance */
+.cockpitCard .sapMGT {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cockpitCard .sapMGT:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+/* Numeric content inside tile */
+.cockpitCard .sapMNC {
+    padding: 1rem;
+    text-align: center;
+}
+
+/* Footer text for tiles */
+.cockpitCard .sapMGTFooter {
+    padding: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-align: center;
+}

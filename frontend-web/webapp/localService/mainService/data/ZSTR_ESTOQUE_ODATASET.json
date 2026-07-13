@@ -1,0 +1,84 @@
+{
+  "ZSTR_ESTOQUE_ODATASET": [
+    {
+      "Codigom": "MAT001",
+      "Descricaocm": "Parafuso M8 x 20mm",
+      "Quantidadem": "1500",
+      "UnidadeMedidacm": "UN",
+      "Tipocm": "MATERIA_PRIMA",
+      "Tipol": "L001"
+    },
+    {
+      "Codigom": "MAT002",
+      "Descricaocm": "Porca M8",
+      "Quantidadem": "2000",
+      "UnidadeMedidacm": "UN",
+      "Tipocm": "MATERIA_PRIMA",
+      "Tipol": "L002"
+    },
+    {
+      "Codigom": "MAT003",
+      "Descricaocm": "Arame Galvanizado 2mm",
+      "Quantidadem": "500",
+      "UnidadeMedidacm": "KG",
+      "Tipocm": "MATERIA_PRIMA",
+      "Tipol": "L001"
+    },
+    {
+      "Codigom": "MAT004",
+      "Descricaocm": "Chapa Aço Inox 1mm",
+      "Quantidadem": "300",
+      "UnidadeMedidacm": "M2",
+      "Tipocm": "MATERIA_PRIMA",
+      "Tipol": "L003"
+    },
+    {
+      "Codigom": "MAT005",
+      "Descricaocm": "Tinta Epóxi Branca",
+      "Quantidadem": "120",
+      "UnidadeMedidacm": "L",
+      "Tipocm": "MATERIAL_AUXILIAR",
+      "Tipol": "L002"
+    },
+    {
+      "Codigom": "MAT006",
+      "Descricaocm": "Corte de Ferro 50x50mm",
+      "Quantidadem": "800",
+      "UnidadeMedidacm": "UN",
+      "Tipocm": "SEMIACABADO",
+      "Tipol": "L001"
+    },
+    {
+      "Codigom": "MAT007",
+      "Descricaocm": "Plástico ABS Preto",
+      "Quantidadem": "250",
+      "UnidadeMedidacm": "KG",
+      "Tipocm": "MATERIA_PRIMA",
+      "Tipol": "L004"
+    },
+    {
+      "Codigom": "MAT008",
+      "Descricaocm": "Borracha Nitrílica",
+      "Quantidadem": "100",
+      "UnidadeMedidacm": "M",
+      "Tipocm": "MATERIA_PRIMA",
+      "Tipol": "L002"
+    },
+    {
+      "Codigom": "MAT009",
+      "Descricaocm": "Óleo Hidráulico ISO 46",
+      "Quantidadem": "200",
+      "UnidadeMedidacm": "L",
+      "Tipocm": "MATERIAL_AUXILIAR",
+      "Tipol": "L005"
+    },
+    {
+      "Codigom": "MAT010",
+      "Descricaocm": "Rolamento 6205",
+      "Quantidadem": "50",
+      "UnidadeMedidacm": "UN",
+      "Tipocm": "COMPONENTE",
+      "Tipol": "L001"
+    }
+  ]
+}

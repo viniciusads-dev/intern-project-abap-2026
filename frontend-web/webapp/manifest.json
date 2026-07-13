@@ -25,7 +25,9 @@
           "odataVersion": "2.0"
         }
       }
-    }
+    },
+    "i18nLocales": ["en", "pt"],
+    "defaultLanguage": "pt"
   },
   "sap.ui": {
     "technology": "UI5",
@@ -90,14 +92,36 @@
       },
       "routes": [
         {
+          "name": "RouteCockpit",
+          "pattern": "",
+          "target": [
+            "TargetCockpit"
+          ]
+        },
+        {
+          "name": "RouteInventory",
+          "pattern": "inventory",
+          "target": [
+            "TargetInventory"
+          ]
+        },
+        {
           "name": "RouteNone",
-          "pattern": ":?query:",
+          "pattern": "none",
           "target": [
             "TargetNone"
           ]
         }
       ],
       "targets": {
+        "TargetCockpit": {
+          "id": "Cockpit",
+          "name": "Cockpit"
+        },
+        "TargetInventory": {
+          "id": "Inventory",
+          "name": "Inventory"
+        },
         "TargetNone": {
           "id": "None",
           "name": "None"

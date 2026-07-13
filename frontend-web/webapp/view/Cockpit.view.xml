@@ -1,0 +1,114 @@
+<mvc:View
+    controllerName="zpeweb.controller.Cockpit"
+    displayBlock="true"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m">
+    <Page id="cockpitPage" title="{i18n>cockpitTitle}" showNavButton="false" enableScrolling="true">
+        <content>
+            <!-- Header Section -->
+            <VBox id="headerBox" class="sapUiMediumMargin">
+                <Text id="welcomeText" text="{i18n>welcomeMessage}" class="sapUiLargeMarginBottom"/>
+                <Text id="descriptionText" text="{i18n>cockpitDescription}" class="sapUiMediumMarginBottom"/>
+            </VBox>
+
+            <!-- Funcionalidades Grid -->
+            <VBox id="functionsBox" class="sapUiMediumMargin">
+                <Text id="functionsLabel" text="{i18n>availableFunctions}" class="sapUiBold sapUiMediumMarginBottom"/>
+                
+                <!-- Grid com cards -->
+                <FlexBox 
+                    id="cardsFlexBox"
+                    renderType="Bare" 
+                    direction="Row" 
+                    wrap="Wrap"
+                    justifyContent="SpaceAround"
+                    class="sapUiSmallGap">
+                    
+                    <!-- Card: Gestão de Estoque -->
+                    <VBox id="inventoryCardBox" class="cockpitCard sapUiSmallMargin" width="280px">
+                        <GenericTile 
+                            id="inventoryTile"
+                            press=".onCardPress"
+                            class="sapUiTinyMargin">
+                            <customData>
+                                <core:CustomData key="route" value="inventory"/>
+                            </customData>
+                            <TileContent id="inventoryContent">
+                                <NumericContent 
+                                    id="inventoryNumeric"
+                                    icon="sap-icon://product"
+                                    value="Estoque"
+                                    valueColor="Good"
+                                    withMargin="false"/>
+                                <Text id="inventoryFooterText" text="{i18n>inventoryDescription}"/>
+                            </TileContent>
+                        </GenericTile>
+                    </VBox>
+
+                    <!-- Card: Relatórios -->
+                    <VBox id="reportsCardBox" class="cockpitCard sapUiSmallMargin" width="280px">
+                        <GenericTile 
+                            id="reportsTile"
+                            press=".onCardPress"
+                            class="sapUiTinyMargin">
+                            <customData>
+                                <core:CustomData key="route" value="reports"/>
+                            </customData>
+                            <TileContent id="reportsContent">
+                                <NumericContent 
+                                    id="reportsNumeric"
+                                    icon="sap-icon://bar-chart"
+                                    value="Relatórios"
+                                    valueColor="Neutral"
+                                    withMargin="false"/>
+                                <Text id="reportsFooterText" text="{i18n>reportsDescription}"/>
+                            </TileContent>
+                        </GenericTile>
+                    </VBox>
+
+                    <!-- Card: Configurações -->
+                    <VBox id="settingsCardBox" class="cockpitCard sapUiSmallMargin" width="280px">
+                        <GenericTile 
+                            id="settingsTile"
+                            press=".onCardPress"
+                            class="sapUiTinyMargin">
+                            <customData>
+                                <core:CustomData key="route" value="settings"/>
+                            </customData>
+                            <TileContent id="settingsContent">
+                                <NumericContent 
+                                    id="settingsNumeric"
+                                    icon="sap-icon://settings"
+                                    value="Configurações"
+                                    valueColor="Critical"
+                                    withMargin="false"/>
+                                <Text id="settingsFooterText" text="{i18n>settingsDescription}"/>
+                            </TileContent>
+                        </GenericTile>
+                    </VBox>
+
+                </FlexBox>
+            </VBox>
+
+            <!-- Info Section -->
+            <VBox id="infoBox" class="sapUiMediumMargin">
+                <MessageStrip 
+                    id="infoStrip"
+                    text="{i18n>infoMessage}"
+                    type="Information"
+                    showIcon="true"
+                    class="sapUiSmallMarginTop"/>
+            </VBox>
+        </content>
+
+        <!-- Footer -->
+        <footer>
+            <Bar id="footerBar" class="sapUiSmallPadding">
+                <contentRight>
+                    <Text id="versionText" text="{i18n>version}" class="sapUiTinyMargin"/>
+                </contentRight>
+            </Bar>
+        </footer>
+    </Page>
+</mvc:View>
