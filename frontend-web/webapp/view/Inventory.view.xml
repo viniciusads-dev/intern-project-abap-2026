@@ -12,47 +12,42 @@
         enableScrolling="true">
         
         <content>
-            <!-- Table de Estoque -->
             <Table 
                 id="inventoryTable"
-                items="{path: '/ZSTR_ESTOQUE_ODATASET', parameters: {countMode: 'Inline'}}"
+                autoPopinMode="true"
+                items="{
+                    path: '/ZSTR_ESTOQUE_ODATASet', 
+                    parameters: {countMode: 'Inline'}
+                }"
                 growing="true"
                 growingScrollToLoad="true"
                 growingThreshold="20"
                 mode="SingleSelectMaster"
                 class="sapUiResponsiveMargin">
                 
-                <!-- Header da Tabela com Toolbar -->
                 <headerToolbar>
-                    <OverflowToolbar id="tableToolbar" class="sapUiMediumMargin">
-                        <!-- Título com contagem dinâmica -->
+                    <OverflowToolbar id="tableToolbar">
                         <Title 
                             id="tableTitle"
                             text="{i18n>inventoryTableTitle}"
                             level="H2"/>
-                        
-                        <!-- Contagem de registros -->
+                            
                         <Text 
                             id="recordCountText"
                             text="{
                                 path: 'inventoryModel>/count',
                                 formatter: '.formatBadgeCount'
-                            }"
-                            class="sapUiSmallMarginStart"/>
+                            }"/>
                         
-                        <!-- Espaçador flexível -->
                         <ToolbarSpacer id="spacer"/>
                         
-                        <!-- Botão: Registrar Movimentação -->
                         <Button 
                             id="btnRegisterMovement"
                             text="{i18n>btnRegisterMovement}"
                             type="Emphasized"
                             icon="sap-icon://add"
-                            press=".onRegisterMovement"
-                            class="sapUiSmallMarginEnd"/>
+                            press=".onRegisterMovement"/>
                         
-                        <!-- Botão: Gerar Relatório -->
                         <Button 
                             id="btnGenerateReport"
                             text="{i18n>btnGenerateReport}"
@@ -61,117 +56,77 @@
                     </OverflowToolbar>
                 </headerToolbar>
                 
-                <!-- Colunas da Tabela -->
                 <columns>
-                    <Column 
-                        id="colCode"
-                        width="120px"
-                        demandPopin="true"
-                        minScreenWidth="Tablet">
+                    <Column id="colMaterial" width="16rem" importance="High" demandPopin="true" minScreenWidth="Phone">
                         <header>
-                            <Text id="colCodeHeader" text="{i18n>colCode}"/>
+                            <Text id="colMaterialHeader" text="{i18n>colCode}"/>
                         </header>
                     </Column>
                     
                     <Column 
-                        id="colDescription"
-                        width="200px"
-                        demandPopin="true"
-                        minScreenWidth="Tablet">
-                        <header>
-                            <Text id="colDescriptionHeader" text="{i18n>colDescription}"/>
-                        </header>
-                    </Column>
-                    
-                    <Column 
-                        id="colQuantity"
-                        width="120px"
-                        hAlign="Right"
-                        demandPopin="true"
-                        minScreenWidth="Tablet">
+                        id="colQuantity" 
+                        width="10rem"
+                        hAlign="End" 
+                        importance="High"
+                        demandPopin="true" 
+                        minScreenWidth="Phone">
                         <header>
                             <Text id="colQuantityHeader" text="{i18n>colQuantity}"/>
                         </header>
                     </Column>
-                    
+
                     <Column 
-                        id="colTypeCm"
-                        width="120px"
-                        demandPopin="true"
+                        id="UnidadeMedidacm" 
+                        width="12rem"
+                        importance="Medium"
+                        demandPopin="true" 
+                        minScreenWidth="Tablet">
+                        <header>
+                            <Text id="colUnitMeasureHeader" text="{i18n>colUnitMeasure}"/>
+                        </header>
+                    </Column>
+
+                    <Column 
+                        id="colTypeCm" 
+                        width="12rem"
+                        importance="Medium"
+                        demandPopin="true" 
                         minScreenWidth="Tablet">
                         <header>
                             <Text id="colTypeCmHeader" text="{i18n>colTypeCm}"/>
                         </header>
                     </Column>
                     
-                    <Column 
-                        id="colTypeL"
-                        width="100px"
-                        demandPopin="true"
-                        minScreenWidth="Tablet">
-                        <header>
-                            <Text id="colTypeLHeader" text="{i18n>colTypeL}"/>
-                        </header>
-                    </Column>
-                    
-                    <Column 
-                        id="colUnitMeasure"
-                        width="80px"
-                        hAlign="Center"
-                        demandPopin="true"
-                        minScreenWidth="Tablet">
-                        <header>
-                            <Text id="colUnitMeasureHeader" text="{i18n>colUnitMeasure}"/>
-                        </header>
-                    </Column>
                 </columns>
                 
-                <!-- Template da Linha -->
                 <items>
                     <ColumnListItem 
                         id="inventoryItem"
                         vAlign="Middle"
                         type="Navigation"
                         press=".onItemPress">
-                        
-                        <!-- Código do Material (ObjectIdentifier) -->
-                        <ObjectIdentifier
-                            id="objIdentifier"
-                            title="{Codigom}"
-                            text="{Descricaocm}"/>
-                        
-                        <!-- Descrição (Text) -->
-                        <Text 
-                            id="itemDescriptionText"
-                            text="{Descricaocm}"
-                            wrapping="false"/>
-                        
-                        <!-- Quantidade (ObjectNumber) -->
-                        <ObjectNumber
-                            id="objNumber"
-                            number="{Quantidadem}"
-                            unit="{UnidadeMedidacm}"
-                            state="None"/>
-                        
-                        <!-- Tipo CM (Text) -->
-                        <Text 
-                            id="typeCmText"
-                            text="{Tipocm}"/>
-                        
-                        <!-- Tipo L (Text) -->
-                        <Text 
-                            id="typeLText"
-                            text="{Tipol}"/>
-                        
-                        <!-- Unidade de Medida (Text) -->
-                        <Text 
-                            id="unitMeasureText"
-                            text="{UnidadeMedidacm}"
-                            textAlign="Center"/>
+                        <cells>
+                            <ObjectIdentifier
+                                id="objIdentifier"
+                                title="{Codigom}"
+                                text="{Descricaocm}"/>
+                            
+                            <ObjectNumber
+                                id="objNumber"
+                                number="{Quantidadem}"
+                                state="None"/>
+                            
+                            <Text 
+                                id="objTypeMedida"
+                                text="{= ${UnidadeMedidacm} + ' - ' + ${Descricaounm} }" />
+                                
+                            <Text 
+                                id="typeCmText"
+                                text="{path: 'Tipocm', formatter: '.formatMaterialType'}"/>
+                        </cells>
                     </ColumnListItem>
                 </items>
                 
-                <!-- Estado vazio -->
                 <noData>
                     <IllustratedMessage
                         id="emptyMessage"
@@ -183,14 +138,13 @@
             </Table>
         </content>
         
-        <!-- Footer com informações adicionais -->
         <footer>
-            <Bar id="inventoryFooterBar" class="sapUiSmallPadding">
+            <Bar id="inventoryFooterBar">
                 <contentRight>
                     <Text 
                         id="lastUpdateText"
                         text="{path: 'inventoryModel>/lastUpdate', formatter: '.formatLastUpdate'}"
-                        class="sapUiTinyMargin"/>
+                        class="sapUiTinyMarginEnd"/>
                 </contentRight>
             </Bar>
         </footer>

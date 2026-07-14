@@ -2,6 +2,60 @@
 
 /* ===== Cockpit Styles ===== */
 
+/* ===== Inventory Styles ===== */
+
+.inventoryPageContent {
+    width: 100%;
+}
+
+.inventoryHeaderBar {
+    width: 100%;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.inventoryHeaderTitleBlock {
+    min-width: 0;
+}
+
+.inventoryCountText {
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.inventoryActions {
+    gap: 0.5rem;
+}
+
+.inventoryTable {
+    width: 100%;
+    min-width: 0;
+}
+
+.inventoryTable .sapMListTblCell,
+.inventoryTable .sapMListTblHeaderCell {
+    vertical-align: middle;
+}
+
+@media (max-width: 767px) {
+    .inventoryHeaderBar {
+        align-items: flex-start;
+    }
+
+    .inventoryActions {
+        justify-content: flex-start;
+        width: 100%;
+    }
+
+    .inventoryActions .sapMBtn {
+        width: 100%;
+    }
+
+    .inventoryActions .sapMBtn .sapMBtnInner {
+        width: 100%;
+    }
+}
+
 /* Card container style */
 .cockpitCard {
     display: flex;
