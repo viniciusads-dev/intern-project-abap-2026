@@ -22,9 +22,13 @@ sap.ui.define([
         onCardPress(oEvent) {
             const oSource = oEvent.getSource();
             const sRoute = oSource.data("route");
+            const mRouteMap = {
+                inventory: "RouteInventory"
+            };
+            const sRouteName = mRouteMap[sRoute];
 
-            if (sRoute) {
-                this.getRouter().navTo(sRoute);
+            if (sRouteName) {
+                this.getRouter().navTo(sRouteName);
             } else {
                 MessageBox.information("Funcionalidade em desenvolvimento");
             }
