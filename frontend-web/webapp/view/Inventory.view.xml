@@ -31,7 +31,7 @@
                         <Title 
                             id="tableTitle"
                             text="{i18n>inventoryTableTitle}"
-                            level="H2"/>
+                            level="H4"/>
                             
                         <Text 
                             id="recordCountText"

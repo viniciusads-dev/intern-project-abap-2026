@@ -1,0 +1,18 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    
+    <Breadcrumbs 
+        id="globalBreadcrumbs"
+        currentLocationText="{navModel>/currentLocation}" 
+        class="sapUiMediumMarginBeginEnd sapUiSmallMarginTop"
+        links="{navModel>/history}">
+        
+        <Link 
+            id="breadcrumbLink" 
+            text="{navModel>title}" 
+            press=".onGlobalNavBack" />
+        
+    </Breadcrumbs>
+    
+</core:FragmentDefinition>

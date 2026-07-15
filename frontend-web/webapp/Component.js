@@ -1,25 +1,28 @@
 sap.ui.define([
     "sap/ui/core/UIComponent",
-    "zpeweb/model/models"
-], (UIComponent, models) => {
+    "sap/ui/Device",
+    "zpeweb/model/models",
+    "sap/ui/model/json/JSONModel"
+], function (UIComponent, Device, models, JSONModel) {
     "use strict";
 
     return UIComponent.extend("zpeweb.Component", {
+
         metadata: {
-            manifest: "json",
-            interfaces: [
-                "sap.ui.core.IAsyncContentCreation"
-            ]
+            manifest: "json"
         },
 
         init() {
-            // call the base component's init function
             UIComponent.prototype.init.apply(this, arguments);
 
-            // set the device model
             this.setModel(models.createDeviceModel(), "device");
 
-            // enable routing
+            const oNavModel = new JSONModel({
+                currentLocation: "",
+                history: []
+            });
+            this.setModel(oNavModel, "navModel");
+
             this.getRouter().initialize();
         }
     });

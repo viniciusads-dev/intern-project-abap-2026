@@ -1,5 +1,5 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
+    "zpeweb/controller/BaseController",
     "sap/ui/core/UIComponent",
     "sap/ui/core/Item",
     "sap/m/Button",
@@ -17,8 +17,8 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "zpeweb/util/reportGenerator",
     "sap/ui/core/format/DateFormat"
-], function ( 
-    Controller,
+], function (
+    BaseController, 
     UIComponent, 
     Item, 
     Button, 
@@ -34,22 +34,24 @@ sap.ui.define([
     TextArea, 
     VBox, 
     JSONModel, 
-    ReportGenerator, 
-    DateFormat) { 
+    ReportGenerator,
+    DateFormat
+) {
     "use strict";
 
-    return Controller.extend("zpeweb.controller.Inventory", {
-
-        /**
-         * Função de inicialização do controller
-         * Executada quando a view é carregada
-         */
+    return BaseController.extend("zpeweb.controller.Inventory", {
+        
         onInit() {
-            // Attach route matched para interceptar navegação
             this.getRouter().attachRouteMatched(this.onRouteMatched, this);
-
-            // Inicializa modelo local para dados não-OData
             this._initLocalModel();
+        },
+
+        onRouteMatched(oEvent) {
+            this.updateBreadcrumbs("Gestão de Estoque", [
+                { title: "Cockpit", route: "RouteCockpit" }
+            ]);
+            
+            this._loadInventoryData();
         },
 
         onExit() {
@@ -75,17 +77,6 @@ sap.ui.define([
             });
 
             this.getView().setModel(oLocalModel, "inventoryModel");
-        },
-
-        /**
-         * Handler para quando a rota é correspondida
-         * Carrega dados da tabela de estoque
-         * @param {sap.ui.base.Event} oEvent - Evento de correspondência de rota
-         */
-        onRouteMatched(oEvent) {
-            // Aqui você pode carregar dados específicos se necessário
-            // Por exemplo: buscar registros iniciais, filtros, etc.
-            this._loadInventoryData();
         },
 
         /**
@@ -135,37 +126,32 @@ sap.ui.define([
         onRegisterMovement() {
             if (!this._oMovementDialog) {
                 const oMovementModel = new JSONModel({
-                    materialCode: "",
-                    quantity: "",
-                    movementType: "Entrada",
-                    notes: ""
+                    Codigom: "",
+                    Quantidadel: "",
+                    Tipol: "E"
                 });
 
                 const oMaterialInput = new Input({
+                    width: "80%",
                     placeholder: "Ex.: MAT001",
-                    value: "{movement>/materialCode}"
+                    value: "{movement>/Codigom}"
                 });
 
                 const oQuantityInput = new Input({
+                    width: "80%",
                     placeholder: "Ex.: 25",
                     type: "Number",
-                    value: "{movement>/quantity}"
+                    value: "{movement>/Quantidadel}"
                 });
 
                 const oMovementTypeSelect = new Select({
-                    selectedKey: "{movement>/movementType}",
+                    width: "80%",
+                    selectedKey: "{movement>/Tipol}",
                     items: [
-                        new Item({ key: "Entrada", text: "Entrada" }),
-                        new Item({ key: "Saída", text: "Saída" }),
-                        new Item({ key: "Ajuste", text: "Ajuste" })
+                        new Item({ key: "E", text: "Entrada" }),
+                        new Item({ key: "S", text: "Saída" }),
+                        new Item({ key: "I", text: "Inventário" })
                     ]
-                });
-
-                const oNotesInput = new TextArea({
-                    rows: 4,
-                    width: "100%",
-                    placeholder: "Observações opcionais",
-                    value: "{movement>/notes}"
                 });
 
                 const oForm = new VBox({
@@ -176,20 +162,27 @@ sap.ui.define([
                         new Label({ text: "Quantidade", labelFor: oQuantityInput }),
                         oQuantityInput,
                         new Label({ text: "Tipo de movimentação", labelFor: oMovementTypeSelect }),
-                        oMovementTypeSelect,
-                        new Label({ text: "Observações", labelFor: oNotesInput }),
-                        oNotesInput
+                        oMovementTypeSelect
                     ]
                 }).addStyleClass("sapUiSmallMargin");
 
                 this._oMovementDialog = new Dialog({
                     title: "Registrar Movimentação",
-                    contentWidth: "32rem",
+                    contentWidth: "auto",
                     contentHeight: "auto",
+                    scrollContainer: false, 
                     draggable: true,
                     resizable: true,
                     stretchOnPhone: true,
-                    content: [oForm],
+                    content: [
+                        new sap.m.ScrollContainer({
+                            width: "100%",
+                            height: "100%",
+                            horizontal: false, 
+                            vertical: true, 
+                            content: [oForm]
+                        })
+                    ],
                     beginButton: new Button({
                         text: "Salvar",
                         type: "Emphasized",
@@ -220,13 +213,14 @@ sap.ui.define([
             if (!this._oExportDialog) {
                 const oExportModel = new JSONModel({
                     format: "PDF",
-                    materialCode: "",
-                    movementType: "",
+                    Codigom: "",
+                    Tipol: "",
                     dateFrom: null,
                     dateTo: null
                 });
 
                 const oFormatSelect = new Select({
+                    width: "80%",
                     selectedKey: "{export>/format}",
                     items: [
                         new Item({ key: "PDF", text: "PDF" }),
@@ -235,12 +229,14 @@ sap.ui.define([
                 });
 
                 const oMaterialInput = new Input({
+                    width: "80%",
                     placeholder: "Ex.: 0024",
-                    value: "{export>/materialCode}"
+                    value: "{export>/Codigom}"
                 });
 
                 const oMovementTypeSelect = new Select({
-                    selectedKey: "{export>/movementType}",
+                    width: "80%",
+                    selectedKey: "{export>/Tipol}",
                     items: [
                         new Item({ key: "", text: "Todos" }),
                         new Item({ key: "E", text: "E - Entrada" }),
@@ -250,14 +246,14 @@ sap.ui.define([
                 });
 
                 const oDateFromPicker = new DatePicker({
-                    width: "100%",
+                    width: "80%",
                     valueFormat: "yyyy-MM-dd",
                     displayFormat: "dd/MM/yyyy",
                     dateValue: "{export>/dateFrom}"
                 });
 
                 const oDateToPicker = new DatePicker({
-                    width: "100%",
+                    width: "80%",
                     valueFormat: "yyyy-MM-dd",
                     displayFormat: "dd/MM/yyyy",
                     dateValue: "{export>/dateTo}"
@@ -280,26 +276,35 @@ sap.ui.define([
                 }).addStyleClass("sapUiSmallMargin");
 
                 this._oExportDialog = new Dialog({
-                    title: "Exportar relatório",
-                    contentWidth: "34rem",
-                    stretchOnPhone: true,
-                    content: [oContent],
-                    beginButton: new Button({
-                        text: "Exportar",
-                        type: "Emphasized",
-                        press: () => this._handleExportConfirm()
-                    }),
-                    endButton: new Button({
-                        text: "Cancelar",
-                        press: () => this._oExportDialog.close()
+                title: "Exportar relatório",
+                contentWidth: "34rem",
+                stretchOnPhone: true,
+                scrollContainer: false, 
+                content: [
+                    new sap.m.ScrollContainer({
+                        width: "100%",
+                        height: "100%",
+                        horizontal: false,
+                        vertical: true,
+                        content: [oContent]
                     })
-                });
+                ],
+                beginButton: new Button({
+                    text: "Exportar",
+                    type: "Emphasized",
+                    press: () => this._handleExportConfirm()
+                }),
+                endButton: new Button({
+                    text: "Cancelar",
+                    press: () => this._oExportDialog.close()
+                })
+            });
 
                 this._oExportDialog.setModel(oExportModel, "export");
                 this.getView().addDependent(this._oExportDialog);
-            }
+                }
 
-            this._oExportDialog.open();
+                this._oExportDialog.open();
         },
 
         _handleExportConfirm() {
@@ -376,15 +381,15 @@ sap.ui.define([
 
         _buildMovementFilters(mExport) {
             const aFilters = [];
-            const sMaterialCode = String(mExport.materialCode || "").trim();
-            const sMovementType = String(mExport.movementType || "").trim();
+            const sMaterialCode = String(mExport.CODIGOM || "").trim();
+            const sMovementType = String(mExport.TIPOL || "").trim();
 
             if (sMaterialCode) {
-                aFilters.push(new Filter("Codigom", FilterOperator.EQ, sMaterialCode));
+                aFilters.push(new Filter("CODIGOM", FilterOperator.EQ, sMaterialCode));
             }
 
             if (sMovementType) {
-                aFilters.push(new Filter("Tipol", FilterOperator.EQ, sMovementType));
+                aFilters.push(new Filter("TIPOL", FilterOperator.EQ, sMovementType));
             }
 
             if (mExport.dateFrom) {
@@ -521,35 +526,91 @@ sap.ui.define([
         },
 
         _handleMovementSave() {
-            const oMovementModel = this._oMovementDialog.getModel("movement");
-            const oData = oMovementModel.getData();
-            const sMaterialCode = String(oData.materialCode || "").trim();
-            const sQuantity = String(oData.quantity || "").trim();
+    const oView = this.getView();
+    const oMovementModel = this._oMovementDialog.getModel("movement");
+    const oData = oMovementModel.getData();
+    
+    const sMaterialCode = String(oData.Codigom || "").trim();
+    const sQuantity = String(oData.Quantidadel || "").trim();
 
-            if (!sMaterialCode || !sQuantity) {
-                MessageBox.warning("Preencha o código do material e a quantidade.");
-                return;
-            }
+    if (!sMaterialCode || !sQuantity) {
+        MessageBox.warning("Preencha o código do material e a quantidade.");
+        return;
+    }
 
-            const iQuantity = Number(sQuantity);
+    const iQuantity = Number(sQuantity);
+    if (Number.isNaN(iQuantity) || iQuantity <= 0) {
+        MessageBox.warning("Informe uma quantidade válida maior que zero.");
+        return;
+    }
 
-            if (Number.isNaN(iQuantity) || iQuantity <= 0) {
-                MessageBox.warning("Informe uma quantidade válida maior que zero.");
-                return;
-            }
+    const oPayload = {
+        Codigom: sMaterialCode,
+        Quantidadem: sQuantity,
+        Tipol: oData.Tipol
+    };
 
-            const sMessage = `${oData.movementType} registrada para ${sMaterialCode} com quantidade ${iQuantity}.`;
+    const oODataModel = oView.getModel();
 
-            this.getView().getModel("inventoryModel").setProperty("/lastUpdate", new Date());
-            MessageToast.show(sMessage);
+    oView.setBusy(true);
+
+    const sPath = oODataModel.createKey("/ZSTR_ESTOQUE_ODATASet", {
+        Codigom: sMaterialCode
+    });
+
+    oODataModel.update(sPath, oPayload, {
+        
+        success: () => {
+            oView.setBusy(false);
+            
+            MessageToast.show("Movimentação salva com sucesso!");
+            
+            oView.getModel("inventoryModel").setProperty("/lastUpdate", new Date());
+            
             this._oMovementDialog.close();
             oMovementModel.setData({
-                materialCode: "",
-                quantity: "",
-                movementType: "Entrada",
-                notes: ""
+                Codigom: "",
+                Quantidadel: "",
+                Tipol: "E"
             });
+
+            const oTable = this.byId("inventoryTable");
+            if (oTable && oTable.getBinding("items")) {
+                oTable.getBinding("items").refresh();
+            }
         },
+
+        error: (oError) => {
+            oView.setBusy(false);
+            
+            let sErrorMessage = "Erro desconhecido ao salvar no SAP.";
+            try {
+                const oParsedError = JSON.parse(oError.responseText);
+                sErrorMessage = oParsedError.error.message.value;
+            } catch (e) {
+                try {
+                    const oParser = new DOMParser();
+                    const oXmlDoc = oParser.parseFromString(oError.responseText, "text/xml");
+                    const oMessageNode = oXmlDoc.getElementsByTagName("message")[0];
+                    
+                    if (oMessageNode) {
+                        sErrorMessage = oMessageNode.textContent;
+                    } else {
+                        sErrorMessage = `Erro no servidor: ${oError.statusCode} - ${oError.statusText}`;
+                    }
+                } catch (xmlError) {
+                    if (oError.statusCode) {
+                        sErrorMessage = `Erro de comunicação (${oError.statusCode}): ${oError.statusText || "Internal Server Error"}`;
+                    } else {
+                        sErrorMessage = oError.message || "Erro de conexão com o servidor SAP. Verifique sua VPN.";
+                    }
+                }
+            }
+            
+            MessageBox.error(sErrorMessage);
+        }
+    });
+},
 
         _escapeCsv(vValue) {
             const sValue = vValue === null || vValue === undefined ? "" : String(vValue);

@@ -3,32 +3,44 @@
     displayBlock="true"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:core="sap.ui.core"
+    xmlns:grid="sap.ui.layout.cssgrid"
     xmlns="sap.m">
     
-    <Page id="cockpitPage" title="{i18n>cockpitTitle}" showNavButton="false" enableScrolling="true">
+    <Page 
+        id="cockpitPage" 
+        title="{i18n>cockpitTitle}" 
+        showNavButton="false" 
+        enableScrolling="true"
+        backgroundDesign="List">
+        
         <content>
-            
-            <VBox id="headerBox" class="sapUiMediumMarginBeginEnd sapUiMediumMarginTop sapUiSmallMarginBottom sapUiTinyGap">
-                <Title id="welcomeText" text="{i18n>welcomeMessage}" level="H2" titleStyle="H2" />                
-                <Text id="descriptionText" text="{i18n>cockpitDescription}" />
-            </VBox>
+            <HBox id="headerBox" class="sapUiMediumMargin" alignItems="Center">
+                <Avatar 
+                    id="userAvatar"
+                    src="sap-icon://retail-store" 
+                    displaySize="M" 
+                    displayShape="Square"
+                    class="sapUiSmallMarginEnd"/>
+                
+                <VBox id="welcomeBox" justifyContent="Center">
+                    <Title id="welcomeText" text="{i18n>welcomeMessage}" level="H1" titleStyle="H4" />                
+                    <Text id="descriptionText" text="{i18n>cockpitDescription}" class="sapUiThemeTextMuted" />
+                </VBox>
+            </HBox>
 
             <VBox id="functionsBox" class="sapUiMediumMarginBeginEnd">
-                <Title id="functionsLabel" text="{i18n>availableFunctions}" level="H4" titleStyle="H5" class="sapUiSmallMarginBottom"/>
+                <Title id="functionsLabel" text="{i18n>availableFunctions}" level="H2" titleStyle="H4" class="sapUiSmallMarginBottom"/>
                 
-                <FlexBox 
-                    id="cardsFlexBox"
-                    renderType="Bare" 
-                    wrap="Wrap"
-                    class="sapUiSmallGap">
+                <grid:CSSGrid 
+                    id="dashboardGrid"
+                    gridTemplateColumns="repeat(auto-fit, 11rem)" 
+                    gridGap="1rem">
                     
                     <GenericTile 
                         id="inventoryTile"
                         header="Gestão de Estoque"
-                        subheader="{i18n>inventoryDescription}"
-                        wrappingType="Normal"
-                        press=".onCardPress"
-                        class="sapUiTinyMargin">
+                        subheader="Consulta e Movimentação"
+                        press=".onCardPress">
                         <customData>
                             <core:CustomData key="route" value="inventory"/>
                         </customData>
@@ -36,7 +48,7 @@
                             <NumericContent 
                                 id="inventoryNumeric"
                                 icon="sap-icon://product"
-                                value=""
+                                value="{/TotalEstoque}" 
                                 valueColor="Good"
                                 withMargin="false"/>
                         </TileContent>
@@ -45,10 +57,8 @@
                     <GenericTile 
                         id="reportsTile"
                         header="Relatórios"
-                        subheader="{i18n>reportsDescription}"
-                        wrappingType="Normal"
-                        press=".onCardPress"
-                        class="sapUiTinyMargin">
+                        subheader="Extrações e Histórico"
+                        press=".onCardPress">
                         <customData>
                             <core:CustomData key="route" value="reports"/>
                         </customData>
@@ -56,21 +66,31 @@
                             <NumericContent 
                                 id="reportsNumeric"
                                 icon="sap-icon://bar-chart"
-                                value=""
+                                value="{/TotalRelatorios}"
                                 valueColor="Neutral"
                                 withMargin="false"/>
                         </TileContent>
                     </GenericTile>
+                    
+                    <GenericTile 
+                        id="quickMovementTile"
+                        header="Nova Movimentação"
+                        subheader="Ação Rápida"
+                        frameType="OneByOne"
+                        press=".onQuickMovementPress">
+                        <TileContent id="quickMovementContent">
+                            <ImageContent id="quickMovementImage" src="sap-icon://add-product" />
+                        </TileContent>
+                    </GenericTile>
 
-                </FlexBox>
+                </grid:CSSGrid>
             </VBox>
-
         </content>
 
         <footer>
-            <Bar id="footerBar" class="sapUiSmallPadding">
+            <Bar id="footerBar" design="Auto">
                 <contentRight>
-                    <Text id="versionText" text="{i18n>version}" class="sapUiTinyMargin"/>
+                    <Text id="versionText" text="{i18n>version}" class="sapUiTinyMarginEnd sapUiThemeTextMuted"/>
                 </contentRight>
             </Bar>
         </footer>
