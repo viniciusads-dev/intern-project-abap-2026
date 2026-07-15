@@ -1,9 +1,13 @@
 sap.ui.define([
-    "webapp/lib/jspdf.umd.min"
+    "zpeweb/lib/jspdf.umd"
 ], function (jsPdfModule) {
     "use strict";
 
-    const JsPDF = window.jspdf.jsPDF;
+    const JsPDF = jsPdfModule && jsPdfModule.jsPDF ? jsPdfModule.jsPDF : window.jspdf && window.jspdf.jsPDF;
+
+    if (!JsPDF) {
+        throw new Error("jsPDF nÃ£o foi carregado corretamente.");
+    }
 
     function formatDateTime(value) {
         const date = value instanceof Date ? value : new Date(value);
@@ -55,11 +59,11 @@ sap.ui.define([
         }
 
         if (type === "S") {
-            return "S - Saída";
+            return "S - SaÃ­da";
         }
 
         if (type === "I") {
-            return "I - Inventário";
+            return "I - InventÃ¡rio";
         }
 
         return type;
@@ -110,7 +114,7 @@ sap.ui.define([
         const lineHeight = 4.8;
         const contentBottom = pageHeight - 16;
         const filterSummary = formatFilterSummary(filters);
-        const subtitle = filterSummary.length ? "RELATÓRIO DE MOVIMENTAÇÃO GERAL (FILTRADO)" : "RELATÓRIO DE MOVIMENTAÇÃO GERAL (TODOS OS PRODUTOS)";
+        const subtitle = filterSummary.length ? "RELATÓRIO DE MOVIMENTAÇÃO (FILTRADO)" : "RELATÓRIO DE MOVIMENTAÇÃO GERAL (TODOS OS PRODUTOS)";
         let currentY = filterStartY + (filterSummary.length * 4.5) + 5;
 
         function drawPageHeader() {
@@ -146,6 +150,9 @@ sap.ui.define([
             columns.forEach((column) => {
                 doc.rect(xPosition, yPosition, column.width, headerHeight, "FD");
                 doc.text(column.label, xPosition + 1.5, yPosition + 5.5);
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(9);
+                doc.setFillColor(235, 235, 235);
                 xPosition += column.width;
             });
         }
@@ -218,7 +225,7 @@ sap.ui.define([
             doc.setPage(pageIndex);
             doc.setFont("helvetica", "normal");
             doc.setFontSize(8);
-            doc.text(`Página ${pageIndex} de ${totalPages}`, pageWidth - margin, pageHeight - 6, { align: "right" });
+            doc.text(`PÃ¡gina ${pageIndex} de ${totalPages}`, pageWidth - margin, pageHeight - 6, { align: "right" });
         }
 
         doc.save(`relatorio_movimentacao_${formatFileStamp(generatedAt)}.pdf`);
