@@ -15,12 +15,31 @@ sap.ui.define([
     "sap/m/TextArea",
     "sap/m/VBox",
     "sap/ui/model/json/JSONModel",
-    "zpeweb/util/reportGenerator"
-], (Controller, UIComponent, Item, Button, Dialog, DatePicker, Input, MessageToast, MessageBox, Label, Select, Filter, FilterOperator, TextArea, VBox, JSONModel, ReportGenerator) => {
+    "zpeweb/util/reportGenerator",
+    "sap/ui/core/format/DateFormat"
+], function ( 
+    Controller,
+    UIComponent, 
+    Item, 
+    Button, 
+    Dialog, 
+    DatePicker, 
+    Input, 
+    MessageToast, 
+    MessageBox, 
+    Label, 
+    Select, 
+    Filter, 
+    FilterOperator, 
+    TextArea, 
+    VBox, 
+    JSONModel, 
+    ReportGenerator, 
+    DateFormat) { 
     "use strict";
 
     return Controller.extend("zpeweb.controller.Inventory", {
-        
+
         /**
          * Função de inicialização do controller
          * Executada quando a view é carregada
@@ -28,7 +47,7 @@ sap.ui.define([
         onInit() {
             // Attach route matched para interceptar navegação
             this.getRouter().attachRouteMatched(this.onRouteMatched, this);
-            
+
             // Inicializa modelo local para dados não-OData
             this._initLocalModel();
         },
@@ -54,7 +73,7 @@ sap.ui.define([
                 count: 0,
                 lastUpdate: new Date()
             });
-            
+
             this.getView().setModel(oLocalModel, "inventoryModel");
         },
 
@@ -81,7 +100,7 @@ sap.ui.define([
                 // Usa o binding automático da tabela
                 // O binding já está configurado na view: items="{path: '/ZSTR_ESTOQUE_ODATASet'...}"
                 // Aqui você pode adicionar lógica de filtro ou sort inicial se necessário
-                
+
                 oTable.getBinding("items").attachDataReceived(this.onDataReceived, this);
             }
         },
@@ -94,7 +113,7 @@ sap.ui.define([
         onDataReceived(oEvent) {
             const oData = oEvent.getParameter("data");
             const iCount = oData.results ? oData.results.length : 0;
-            
+
             const oLocalModel = this.getView().getModel("inventoryModel");
             if (oLocalModel) {
                 oLocalModel.setProperty("/count", iCount);
@@ -482,7 +501,7 @@ sap.ui.define([
         onItemPress(oEvent) {
             const oListItem = oEvent.getSource();
             const oContext = oListItem.getBindingContext();
-            
+
             if (oContext) {
                 const sMaterialCode = oContext.getProperty("Codigom");
                 const sDescription = oContext.getProperty("Descricaocm");
@@ -578,11 +597,11 @@ sap.ui.define([
             if (!dLastUpdate) {
                 return "";
             }
-            
-            const oDateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({
+
+            const oDateFormat = DateFormat.getDateTimeInstance({
                 pattern: "dd/MM/yyyy HH:mm:ss"
             });
-            
+
             return "Última atualização: " + oDateFormat.format(new Date(dLastUpdate));
         },
 

@@ -49,22 +49,22 @@
  */
 
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-  typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.jspdf = {}));
-})(this, (function (exports) { 'use strict';
+  typeof exports === "object" && typeof module !== "undefined" ? factory(exports) :
+  typeof define === "function" && define.amd ? define(["exports"], factory) :
+  (global = typeof globalThis !== "undefined" ? globalThis : global || self, factory(global.jspdf = {}));
+})(this, (function (exports) { "use strict";
 
   function _arrayLikeToArray(r, a) {
-    (null == a || a > r.length) && (a = r.length);
-    for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e];
+    (a == null || a > r.length) && (a = r.length);
+    for (var e = 0, n = Array(a); e < a; e++) {n[e] = r[e];}
     return n;
   }
   function _arrayWithHoles(r) {
-    if (Array.isArray(r)) return r;
+    if (Array.isArray(r)) {return r;}
   }
   function _iterableToArrayLimit(r, l) {
-    var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
-    if (null != t) {
+    var t = r == null ? null : typeof Symbol !== "undefined" && r[Symbol.iterator] || r["@@iterator"];
+    if (t != null) {
       var e,
         n,
         i,
@@ -73,17 +73,17 @@
         f = !0,
         o = !1;
       try {
-        if (i = (t = t.call(r)).next, 0 === l) {
-          if (Object(t) !== t) return;
+        if (i = (t = t.call(r)).next, l === 0) {
+          if (Object(t) !== t) {return;}
           f = !1;
-        } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0);
+        } else {for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0){}}
       } catch (r) {
         o = !0, n = r;
       } finally {
         try {
-          if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return;
+          if (!f && t.return != null && (u = t.return(), Object(u) !== u)) {return;}
         } finally {
-          if (o) throw n;
+          if (o) {throw n;}
         }
       }
       return a;
@@ -98,23 +98,23 @@
   function _typeof(o) {
     "@babel/helpers - typeof";
 
-    return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
+    return _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (o) {
       return typeof o;
     } : function (o) {
-      return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
+      return o && typeof Symbol === "function" && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
     }, _typeof(o);
   }
   function _unsupportedIterableToArray(r, a) {
     if (r) {
-      if ("string" == typeof r) return _arrayLikeToArray(r, a);
+      if (typeof r === "string") {return _arrayLikeToArray(r, a);}
       var t = {}.toString.call(r).slice(8, -1);
-      return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0;
+      return t === "Object" && r.constructor && (t = r.constructor.name), t === "Map" || t === "Set" ? Array.from(r) : t === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0;
     }
   }
 
-  var globalObject = function () {
-    return "undefined" !== typeof window ? window : "undefined" !== typeof global ? global : "undefined" !== typeof self ? self : this;
-  }();
+  var globalObject = (function () {
+    return typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : this;
+  }());
 
   function consoleLog() {
     if (globalObject.console && typeof globalObject.console.log === "function") {
@@ -146,9 +146,9 @@
   };
 
   function bom(blob, opts) {
-    if (typeof opts === "undefined") opts = {
+    if (typeof opts === "undefined") {opts = {
       autoBom: false
-    };else if (_typeof(opts) !== "object") {
+    };}else if (_typeof(opts) !== "object") {
       console.warn("Deprecated: Expected third argument to be a object");
       opts = {
         autoBom: !opts
@@ -257,7 +257,7 @@
     if (popup) {
       popup.document.title = popup.document.body.innerText = "downloading...";
     }
-    if (typeof blob === "string") return download(blob, name, opts);
+    if (typeof blob === "string") {return download(blob, name, opts);}
     var force = blob.type === "application/octet-stream";
     var isSafari = /constructor/i.test(globalObject.HTMLElement) || globalObject.safari;
     var isChromeIOS = /CriOS\/[\d]+/.test(navigator.userAgent);
@@ -267,14 +267,14 @@
       reader.onloadend = function () {
         var url = reader.result;
         url = isChromeIOS ? url : url.replace(/^data:[^;]*;/, "data:attachment/file;");
-        if (popup) popup.location.href = url;else location = url;
+        if (popup) {popup.location.href = url;}else {location = url;}
         popup = null; // reverse-tabnabbing #460
       };
       reader.readAsDataURL(blob);
     } else {
       var URL = globalObject.URL || globalObject.webkitURL;
       var url = URL.createObjectURL(blob);
-      if (popup) popup.location = url;else location.href = url;
+      if (popup) {popup.location = url;}else {location.href = url;}
       popup = null; // reverse-tabnabbing #460
       setTimeout(function () {
         URL.revokeObjectURL(url);
@@ -499,9 +499,9 @@
       var r = this.r.toString(16);
       var g = this.g.toString(16);
       var b = this.b.toString(16);
-      if (r.length == 1) r = "0" + r;
-      if (g.length == 1) g = "0" + g;
-      if (b.length == 1) b = "0" + b;
+      if (r.length == 1) {r = "0" + r;}
+      if (g.length == 1) {g = "0" + g;}
+      if (b.length == 1) {b = "0" + b;}
       return "#" + r + g + b;
     };
   }
@@ -983,9 +983,9 @@
               console.error("jsPDF PubSub Error", ex.message, ex);
             }
           }
-          if (sub[1]) tokens.push(token);
+          if (sub[1]) {tokens.push(token);}
         }
-        if (tokens.length) tokens.forEach(this.unsubscribe);
+        if (tokens.length) {tokens.forEach(this.unsubscribe);}
       }
     };
     this.getTopics = function () {
@@ -1025,16 +1025,16 @@
   GState.prototype.equals = function equals(other) {
     var ignore = "id,objectNumber,equals";
     var p;
-    if (!other || _typeof(other) !== _typeof(this)) return false;
+    if (!other || _typeof(other) !== _typeof(this)) {return false;}
     var count = 0;
     for (p in this) {
-      if (ignore.indexOf(p) >= 0) continue;
-      if (this.hasOwnProperty(p) && !other.hasOwnProperty(p)) return false;
-      if (this[p] !== other[p]) return false;
+      if (ignore.indexOf(p) >= 0) {continue;}
+      if (this.hasOwnProperty(p) && !other.hasOwnProperty(p)) {return false;}
+      if (this[p] !== other[p]) {return false;}
       count++;
     }
     for (p in other) {
-      if (other.hasOwnProperty(p) && ignore.indexOf(p) < 0) count--;
+      if (other.hasOwnProperty(p) && ignore.indexOf(p) < 0) {count--;}
     }
     return count === 0;
   };
@@ -1801,12 +1801,12 @@
       if (!(this instanceof Matrix)) {
         return new Matrix(sx, shy, shx, sy, tx, ty);
       }
-      if (isNaN(sx)) sx = 1;
-      if (isNaN(shy)) shy = 0;
-      if (isNaN(shx)) shx = 0;
-      if (isNaN(sy)) sy = 1;
-      if (isNaN(tx)) tx = 0;
-      if (isNaN(ty)) ty = 0;
+      if (isNaN(sx)) {sx = 1;}
+      if (isNaN(shy)) {shy = 0;}
+      if (isNaN(shx)) {shx = 0;}
+      if (isNaN(sy)) {sy = 1;}
+      if (isNaN(tx)) {tx = 0;}
+      if (isNaN(ty)) {ty = 0;}
       this._matrix = [sx, shy, shx, sy, tx, ty];
     };
 
@@ -2154,7 +2154,7 @@
      */
     var addPattern = function addPattern(key, pattern) {
       // only add it if it is not already present (the keys provided by the user must be unique!)
-      if (patternMap[key]) return;
+      if (patternMap[key]) {return;}
       var prefix = pattern instanceof ShadingPattern ? "Sh" : "P";
       var patternKey = prefix + (Object.keys(patterns).length + 1).toString(10);
       pattern.id = patternKey;
@@ -2404,7 +2404,7 @@
       var encryptor = function encryptor(data) {
         return data;
       };
-      if (encryptionOptions !== null && typeof objectId == "undefined") {
+      if (encryptionOptions !== null && typeof objectId === "undefined") {
         throw new Error("ObjectId must be passed to putStream for file encryption");
       }
       if (encryptionOptions !== null) {
@@ -2994,11 +2994,11 @@
           return fn.apply(this, arguments);
         } catch (e) {
           var stack = e.stack || "";
-          if (~stack.indexOf(" at ")) stack = stack.split(" at ")[1];
+          if (~stack.indexOf(" at ")) {stack = stack.split(" at ")[1];}
           var m = "Error in function " + stack.split("\n")[0].split("<")[0] + ": " + e.message;
           if (globalObject.console) {
             globalObject.console.error(m, e);
-            if (globalObject.alert) alert(m);
+            if (globalObject.alert) {alert(m);}
           } else {
             throw new Error(m);
           }
@@ -3274,9 +3274,9 @@
         }
       }
       if (!key && !options.noFallback) {
-        key = fontmap["times"][fontStyle];
+        key = fontmap.times[fontStyle];
         if (key == null) {
-          key = fontmap["times"]["normal"];
+          key = fontmap.times.normal;
         }
       }
       return key;
@@ -3308,7 +3308,7 @@
       out("/Type /Catalog");
       out("/Pages " + tmpRootDictionaryObjId + " 0 R");
       // PDF13ref Section 7.2.1
-      if (!zoomMode) zoomMode = "fullwidth";
+      if (!zoomMode) {zoomMode = "fullwidth";}
       switch (zoomMode) {
         case "fullwidth":
           out("/OpenAction [3 0 R /FitH null]");
@@ -3324,12 +3324,12 @@
           break;
         default:
           var pcn = "" + zoomMode;
-          if (pcn.substr(pcn.length - 1) === "%") zoomMode = parseInt(zoomMode) / 100;
+          if (pcn.substr(pcn.length - 1) === "%") {zoomMode = parseInt(zoomMode) / 100;}
           if (typeof zoomMode === "number") {
             out("/OpenAction [3 0 R /XYZ null null " + f2(zoomMode) + "]");
           }
       }
-      if (!layoutMode) layoutMode = "continuous";
+      if (!layoutMode) {layoutMode = "continuous";}
       switch (layoutMode) {
         case "continuous":
           out("/PageLayout /OneColumn");
@@ -3402,7 +3402,7 @@
       putPages();
       putAdditionalObjects();
       putResources();
-      if (encryptionOptions !== null) putEncryptionDict();
+      if (encryptionOptions !== null) {putEncryptionDict();}
       putInfo();
       putCatalog();
       var offsetOfXRef = contentLength;
@@ -3570,7 +3570,7 @@
               initializedDataUrlWindow.body.appendChild(dataUrlFrame);
               dataURLNewWindow.document.title = options.filename;
             }
-            if (dataURLNewWindow || typeof safari === "undefined") return dataURLNewWindow;
+            if (dataURLNewWindow || typeof safari === "undefined") {return dataURLNewWindow;}
           } else {
             throw new Error("The option dataurlnewwindow just works in a browser-environment.");
           }
@@ -4196,7 +4196,7 @@
               backToStartX = 0; // distance to reset back to the left
               for (var _i = 1; _i < words.length; _i++) {
                 var shiftAmount = (findWidth(words[_i - 1] + " " + words[_i]) - findWidth(words[_i])) * scaleFactor + spacing;
-                if (_i == words.length - 1) text.push([words[_i], shiftAmount, 0]);else text.push([words[_i] + " ", shiftAmount, 0]);
+                if (_i == words.length - 1) {text.push([words[_i], shiftAmount, 0]);}else {text.push([words[_i] + " ", shiftAmount, 0]);}
                 backToStartX -= shiftAmount;
               }
             } else {
@@ -4354,7 +4354,7 @@
     var clip = API.__private__.clip = API.clip = function (rule) {
       // Call .clip() after calling drawing ops with a style argument of null
       // W is the PDF clipping op
-      if ("evenodd" === rule) {
+      if (rule === "evenodd") {
         out("W*");
       } else {
         out("W");
@@ -5522,7 +5522,7 @@
      */
     var addGState = function addGState(key, gState) {
       // only add it if it is not already present (the keys provided by the user must be unique!)
-      if (key && gStatesMap[key]) return;
+      if (key && gStatesMap[key]) {return;}
       var duplicate = false;
       for (var s in gStates) {
         if (gStates.hasOwnProperty(s)) {
@@ -6543,7 +6543,7 @@
 
                     // In case the XForm is already used, e.g. OffState
                     // of CheckBoxes, don't add it
-                    if (!(scope.internal.acroformPlugin.xForms.indexOf(obj) >= 0)) scope.internal.acroformPlugin.xForms.push(obj);
+                    if (!(scope.internal.acroformPlugin.xForms.indexOf(obj) >= 0)) {scope.internal.acroformPlugin.xForms.push(obj);}
                   }
                 }
               } else {
@@ -6554,7 +6554,7 @@
                   obj = obj.call(scope, fieldObject);
                 }
                 appearanceStreamString += "/" + i + " " + obj;
-                if (!(scope.internal.acroformPlugin.xForms.indexOf(obj) >= 0)) scope.internal.acroformPlugin.xForms.push(obj);
+                if (!(scope.internal.acroformPlugin.xForms.indexOf(obj) >= 0)) {scope.internal.acroformPlugin.xForms.push(obj);}
               }
               appearanceStreamString += ">>";
             }
@@ -6648,7 +6648,7 @@
             if (array[i].substr(0, 1) === "/") {
               content += "/" + pdfEscapeName(array[i].substr(1));
             } else {
-              if (typeof objId !== "undefined" && scope) encryptor = scope.internal.getEncryptor(objId);
+              if (typeof objId !== "undefined" && scope) {encryptor = scope.internal.getEncryptor(objId);}
               content += "(" + pdfEscape(encryptor(array[i].toString())) + ")";
             }
             break;
@@ -6679,7 +6679,7 @@
     var encryptor = function encryptor(data) {
       return data;
     };
-    if (typeof objId !== "undefined" && scope) encryptor = scope.internal.getEncryptor(objId);
+    if (typeof objId !== "undefined" && scope) {encryptor = scope.internal.getEncryptor(objId);}
     string = string || "";
     string.toString();
     string = "(" + pdfEscape(encryptor(string)) + ")";
@@ -6861,7 +6861,7 @@
         var encryptor = function encryptor(data) {
           return data;
         };
-        if (this.scope) encryptor = this.scope.internal.getEncryptor(this.objId);
+        if (this.scope) {encryptor = this.scope.internal.getEncryptor(this.objId);}
         return "(" + pdfEscape(encryptor(_DA)) + ")";
       },
       set: function set(value) {
@@ -7071,7 +7071,7 @@
         var encryptor = function encryptor(data) {
           return data;
         };
-        if (this.scope) encryptor = this.scope.internal.getEncryptor(this.objId);
+        if (this.scope) {encryptor = this.scope.internal.getEncryptor(this.objId);}
         return "(" + pdfEscape(encryptor(_T)) + ")";
       },
       set: function set(value) {
@@ -7920,7 +7920,7 @@
         var encryptor = function encryptor(data) {
           return data;
         };
-        if (this.scope) encryptor = this.scope.internal.getEncryptor(this.objId);
+        if (this.scope) {encryptor = this.scope.internal.getEncryptor(this.objId);}
         if (Object.keys(_MK).length !== 0) {
           var result = [];
           result.push("<<");
@@ -8075,7 +8075,7 @@
         var encryptor = function encryptor(data) {
           return data;
         };
-        if (this.scope) encryptor = this.scope.internal.getEncryptor(this.objId);
+        if (this.scope) {encryptor = this.scope.internal.getEncryptor(this.objId);}
         var result = [];
         result.push("<<");
         var key;
@@ -9026,7 +9026,7 @@
       }
     };
     var checkCompressValue = function checkCompressValue(value) {
-      if (value && typeof value === "string") value = value.toUpperCase();
+      if (value && typeof value === "string") {value = value.toUpperCase();}
       return value in jsPDFAPI.image_compression ? value : image_compression.NONE;
     };
     var initialize = function initialize() {
@@ -9548,7 +9548,7 @@
   (function (jsPDFAPI) {
 
     var notEmpty = function notEmpty(obj) {
-      if (typeof obj != "undefined") {
+      if (typeof obj !== "undefined") {
         if (obj != "") {
           return true;
         }
@@ -10987,7 +10987,7 @@
 
     // If the font-stretch value is normal or more condensed, we want to
     // start with a descending search, otherwise we should do ascending.
-    var dir = pivot <= fontStretchLookup["normal"] ? -1 : 1;
+    var dir = pivot <= fontStretchLookup.normal ? -1 : 1;
     var match = searchFromPivot(matchingSet, fontStretchOrder, pivot, dir);
     if (!match) {
       // Since a font-family cannot exist without having at least one stretch value
@@ -11654,7 +11654,7 @@
           var rx, matches;
 
           //source: https://stackoverflow.com/a/10136041
-          // eslint-disable-next-line no-useless-escape
+           
           rx = /^\s*(?=(?:(?:[-a-z]+\s*){0,2}(italic|oblique))?)(?=(?:(?:[-a-z]+\s*){0,2}(small-caps))?)(?=(?:(?:[-a-z]+\s*){0,2}(bold(?:er)?|lighter|[1-9]00))?)(?:(?:normal|\1|\2|\3)\s*){0,3}((?:xx?-)?(?:small|large)|medium|smaller|larger|[.\d]+(?:\%|in|[cem]m|ex|p[ctx]))(?:\s*\/\s*(normal|[.\d]+(?:\%|in|[cem]m|ex|p[ctx])))?\s*([-_,\"\'\sa-z0-9]+?)\s*$/i;
           matches = rx.exec(value);
           if (matches !== null) {
@@ -11669,9 +11669,9 @@
           }
           var rxFontSize = /^([.\d]+)((?:%|in|[cem]m|ex|p[ctx]))$/i;
           var fontSizeUnit = rxFontSize.exec(fontSize)[2];
-          if ("px" === fontSizeUnit) {
+          if (fontSizeUnit === "px") {
             fontSize = Math.floor(parseFloat(fontSize) * this.pdf.internal.scaleFactor);
-          } else if ("em" === fontSizeUnit) {
+          } else if (fontSizeUnit === "em") {
             fontSize = Math.floor(parseFloat(fontSize) * this.pdf.getFontSize());
           } else {
             fontSize = Math.floor(parseFloat(fontSize) * this.pdf.internal.scaleFactor);
@@ -12058,7 +12058,7 @@
      * @param radius The radius of the arc
      * @description The arcTo() method creates an arc/curve between two tangents on the canvas.
      */
-    // eslint-disable-next-line no-unused-vars
+     
     Context2D.prototype.arcTo = function (x1, y1, x2, y2, radius) {
       throw new Error("arcTo not implemented.");
     };
@@ -13337,7 +13337,7 @@
     var l = new u16(mb);
     // length of cd must be 288 (total # of codes)
     for (; i < s; ++i) {
-      if (cd[i]) ++l[cd[i] - 1];
+      if (cd[i]) {++l[cd[i] - 1];}
     }
     // u16 "map": index -> minimum code for bit length = index
     var le = new u16(mb);
@@ -13378,13 +13378,13 @@
   };
   // fixed length tree
   var flt = new u8(288);
-  for (var i = 0; i < 144; ++i) flt[i] = 8;
-  for (var i = 144; i < 256; ++i) flt[i] = 9;
-  for (var i = 256; i < 280; ++i) flt[i] = 7;
-  for (var i = 280; i < 288; ++i) flt[i] = 8;
+  for (var i = 0; i < 144; ++i) {flt[i] = 8;}
+  for (var i = 144; i < 256; ++i) {flt[i] = 9;}
+  for (var i = 256; i < 280; ++i) {flt[i] = 7;}
+  for (var i = 280; i < 288; ++i) {flt[i] = 8;}
   // fixed distance tree
   var fdt = new u8(32);
-  for (var i = 0; i < 32; ++i) fdt[i] = 5;
+  for (var i = 0; i < 32; ++i) {fdt[i] = 5;}
   // fixed length map
   var flm = /*#__PURE__*/hMap(flt, 9, 0);
   // fixed distance map
@@ -13396,8 +13396,8 @@
   // typed array slice - allows garbage collector to free original reference,
   // while being more compatible than .slice
   var slc = function (v, s, e) {
-    if (s == null || s < 0) s = 0;
-    if (e == null || e > v.length) e = v.length;
+    if (s == null || s < 0) {s = 0;}
+    if (e == null || e > v.length) {e = v.length;}
     // can't use .constructor in case user-supplied
     return new u8(v.subarray(s, e));
   };
@@ -13421,17 +13421,17 @@
     // Need extra info to make a tree
     var t = [];
     for (var i = 0; i < d.length; ++i) {
-      if (d[i]) t.push({
+      if (d[i]) {t.push({
         s: i,
         f: d[i]
-      });
+      });}
     }
     var s = t.length;
     var t2 = t.slice();
-    if (!s) return {
+    if (!s) {return {
       t: et,
       l: 0
-    };
+    };}
     if (s == 1) {
       var v = new u8(t[0].s + 1);
       v[t[0].s] = 1;
@@ -13477,7 +13477,7 @@
     }
     var maxSym = t2[0].s;
     for (var i = 1; i < s; ++i) {
-      if (t2[i].s > maxSym) maxSym = t2[i].s;
+      if (t2[i].s > maxSym) {maxSym = t2[i].s;}
     }
     // code lengths
     var tr = new u16(maxSym + 1);
@@ -13500,12 +13500,12 @@
         if (tr[i2_1] > mb) {
           dt += cst - (1 << mbt - tr[i2_1]);
           tr[i2_1] = mb;
-        } else break;
+        } else {break;}
       }
       dt >>= lft;
       while (dt > 0) {
         var i2_2 = t2[i].s;
-        if (tr[i2_2] < mb) dt -= 1 << mb - tr[i2_2]++ - 1;else ++i;
+        if (tr[i2_2] < mb) {dt -= 1 << mb - tr[i2_2]++ - 1;}else {++i;}
       }
       for (; i >= 0 && dt; --i) {
         var i2_3 = t2[i].s;
@@ -13529,7 +13529,7 @@
   var lc = function (c) {
     var s = c.length;
     // Note that the semicolon was intentional
-    while (s && !c[--s]);
+    while (s && !c[--s]){}
     var cl = new u16(++s);
     //  ind      num         streak
     var cli = 0,
@@ -13539,19 +13539,19 @@
       cl[cli++] = v;
     };
     for (var i = 1; i <= s; ++i) {
-      if (c[i] == cln && i != s) ++cls;else {
+      if (c[i] == cln && i != s) {++cls;}else {
         if (!cln && cls > 2) {
-          for (; cls > 138; cls -= 138) w(32754);
+          for (; cls > 138; cls -= 138) {w(32754);}
           if (cls > 2) {
             w(cls > 10 ? cls - 11 << 5 | 28690 : cls - 3 << 5 | 12305);
             cls = 0;
           }
         } else if (cls > 3) {
           w(cln), --cls;
-          for (; cls > 6; cls -= 6) w(8304);
-          if (cls > 2) w(cls - 3 << 5 | 8208), cls = 0;
+          for (; cls > 6; cls -= 6) {w(8304);}
+          if (cls > 2) {w(cls - 3 << 5 | 8208), cls = 0;}
         }
-        while (cls--) w(cln);
+        while (cls--) {w(cln);}
         cls = 1;
         cln = c[i];
       }
@@ -13564,7 +13564,7 @@
   // calculate the length of output from tree, code lengths
   var clen = function (cf, cl) {
     var l = 0;
-    for (var i = 0; i < cl.length; ++i) l += cf[i] * cl[i];
+    for (var i = 0; i < cl.length; ++i) {l += cf[i] * cl[i];}
     return l;
   };
   // writes a fixed block
@@ -13577,7 +13577,7 @@
     out[o + 1] = s >> 8;
     out[o + 2] = out[o] ^ 255;
     out[o + 3] = out[o + 1] ^ 255;
-    for (var i = 0; i < s; ++i) out[o + i + 4] = dat[i];
+    for (var i = 0; i < s; ++i) {out[o + i + 4] = dat[i];}
     return (o + 4 + s) * 8;
   };
   // writes a block
@@ -13597,17 +13597,17 @@
       lcdt = _d.c,
       ndc = _d.n;
     var lcfreq = new u16(19);
-    for (var i = 0; i < lclt.length; ++i) ++lcfreq[lclt[i] & 31];
-    for (var i = 0; i < lcdt.length; ++i) ++lcfreq[lcdt[i] & 31];
+    for (var i = 0; i < lclt.length; ++i) {++lcfreq[lclt[i] & 31];}
+    for (var i = 0; i < lcdt.length; ++i) {++lcfreq[lcdt[i] & 31];}
     var _e = hTree(lcfreq, 7),
       lct = _e.t,
       mlcb = _e.l;
     var nlcc = 19;
-    for (; nlcc > 4 && !lct[clim[nlcc - 1]]; --nlcc);
+    for (; nlcc > 4 && !lct[clim[nlcc - 1]]; --nlcc){}
     var flen = bl + 5 << 3;
     var ftlen = clen(lf, flt) + clen(df, fdt) + eb;
     var dtlen = clen(lf, dlt) + clen(df, ddt) + eb + 14 + 3 * nlcc + clen(lcfreq, lct) + 2 * lcfreq[16] + 3 * lcfreq[17] + 7 * lcfreq[18];
-    if (bs >= 0 && flen <= ftlen && flen <= dtlen) return wfblk(out, p, dat.subarray(bs, bs + bl));
+    if (bs >= 0 && flen <= ftlen && flen <= dtlen) {return wfblk(out, p, dat.subarray(bs, bs + bl));}
     var lm, ll, dm, dl;
     wbits(out, p, 1 + (dtlen < ftlen)), p += 2;
     if (dtlen < ftlen) {
@@ -13617,7 +13617,7 @@
       wbits(out, p + 5, ndc - 1);
       wbits(out, p + 10, nlcc - 4);
       p += 14;
-      for (var i = 0; i < nlcc; ++i) wbits(out, p + 3 * i, lct[clim[i]]);
+      for (var i = 0; i < nlcc; ++i) {wbits(out, p + 3 * i, lct[clim[i]]);}
       p += 3 * nlcc;
       var lcts = [lclt, lcdt];
       for (var it = 0; it < 2; ++it) {
@@ -13625,7 +13625,7 @@
         for (var i = 0; i < clct.length; ++i) {
           var len = clct[i] & 31;
           wbits(out, p, llm[len]), p += lct[len];
-          if (len > 15) wbits(out, p, clct[i] >> 5 & 127), p += clct[i] >> 12;
+          if (len > 15) {wbits(out, p, clct[i] >> 5 & 127), p += clct[i] >> 12;}
         }
       }
     } else {
@@ -13636,10 +13636,10 @@
       if (sym > 255) {
         var len = sym >> 18 & 31;
         wbits16(out, p, lm[len + 257]), p += ll[len + 257];
-        if (len > 7) wbits(out, p, sym >> 23 & 31), p += fleb[len];
+        if (len > 7) {wbits(out, p, sym >> 23 & 31), p += fleb[len];}
         var dst = sym & 31;
         wbits16(out, p, dm[dst]), p += dl[dst];
-        if (dst > 3) wbits16(out, p, sym >> 5 & 8191), p += fdeb[dst];
+        if (dst > 3) {wbits16(out, p, sym >> 5 & 8191), p += fdeb[dst];}
       } else {
         wbits16(out, p, lm[sym]), p += ll[sym];
       }
@@ -13660,7 +13660,7 @@
     var lst = st.l;
     var pos = (st.r || 0) & 7;
     if (lvl) {
-      if (pos) w[0] = st.r >> 3;
+      if (pos) {w[0] = st.r >> 3;}
       var opt = deo[lvl - 1];
       var n = opt >> 13,
         c = opt & 8191;
@@ -13702,8 +13702,8 @@
           if ((lc_1 > 7000 || li > 24576) && (rem > 423 || !lst)) {
             pos = wblk(dat, w, 0, syms, lf, df, eb, li, bs, i - bs, pos);
             li = lc_1 = eb = 0, bs = i;
-            for (var j = 0; j < 286; ++j) lf[j] = 0;
-            for (var j = 0; j < 30; ++j) df[j] = 0;
+            for (var j = 0; j < 286; ++j) {lf[j] = 0;}
+            for (var j = 0; j < 30; ++j) {df[j] = 0;}
           }
           //  len    dist   chain
           var l = 2,
@@ -13719,11 +13719,11 @@
             while (dif <= maxd && --ch_1 && imod != pimod) {
               if (dat[i + l] == dat[i + l - dif]) {
                 var nl = 0;
-                for (; nl < ml && dat[i + nl] == dat[i + nl - dif]; ++nl);
+                for (; nl < ml && dat[i + nl] == dat[i + nl - dif]; ++nl){}
                 if (nl > l) {
                   l = nl, d = dif;
                   // break out early when we reach "nice" (we are satisfied enough)
-                  if (nl > maxn) break;
+                  if (nl > maxn) {break;}
                   // now, find the rarest 2-byte sequence within this
                   // length of literals and search for that instead.
                   // Much faster than just using the start
@@ -13733,7 +13733,7 @@
                     var ti = i - dif + j & 32767;
                     var pti = prev[ti];
                     var cd = ti - pti & 32767;
-                    if (cd > md) md = cd, pimod = ti;
+                    if (cd > md) {md = cd, pimod = ti;}
                   }
                 }
               }
@@ -13798,7 +13798,7 @@
         var l = d.length | 0;
         for (var i = 0; i != l;) {
           var e = Math.min(i + 2655, l);
-          for (; i < e; ++i) m += n += d[i];
+          for (; i < e; ++i) {m += n += d[i];}
           n = (n & 65535) + 15 * (n >> 16), m = (m & 65535) + 15 * (m >> 16);
         }
         a = n, b = m;
@@ -13828,7 +13828,7 @@
   };
   // write bytes
   var wbytes = function (d, b, v) {
-    for (; v; ++b) d[b] = v, v >>>= 8;
+    for (; v; ++b) {d[b] = v, v >>>= 8;}
   };
   // zlib header
   var zlh = function (c, o) {
@@ -13849,14 +13849,14 @@
    * @returns The zlib-compressed version of the data
    */
   function zlibSync(data, opts) {
-    if (!opts) opts = {};
+    if (!opts) {opts = {};}
     var a = adler();
     a.p(data);
     var d = dopt(data, opts, opts.dictionary ? 6 : 2, 4);
     return zlh(d, opts), wbytes(d, d.length - 4, a.d()), d;
   }
   // text decoder
-  var td = typeof TextDecoder != 'undefined' && /*#__PURE__*/new TextDecoder();
+  var td = typeof TextDecoder !== "undefined" && /*#__PURE__*/new TextDecoder();
   // text decoder stream
   var tds = 0;
   try {
@@ -13880,13 +13880,13 @@
       var b, c, d, e, f, g, h, i, j, k;
       // eslint-disable-next-line no-control-regex
       for (!/[^\x00-\xFF]/.test(a), b = "\x00\x00\x00\x00".slice(a.length % 4 || 4), a += b, c = [], d = 0, e = a.length; e > d; d += 4) {
-        f = (a.charCodeAt(d) << 24) + (a.charCodeAt(d + 1) << 16) + (a.charCodeAt(d + 2) << 8) + a.charCodeAt(d + 3), 0 !== f ? (k = f % 85, f = (f - k) / 85, j = f % 85, f = (f - j) / 85, i = f % 85, f = (f - i) / 85, h = f % 85, f = (f - h) / 85, g = f % 85, c.push(g + 33, h + 33, i + 33, j + 33, k + 33)) : c.push(122);
+        f = (a.charCodeAt(d) << 24) + (a.charCodeAt(d + 1) << 16) + (a.charCodeAt(d + 2) << 8) + a.charCodeAt(d + 3), f !== 0 ? (k = f % 85, f = (f - k) / 85, j = f % 85, f = (f - j) / 85, i = f % 85, f = (f - i) / 85, h = f % 85, f = (f - h) / 85, g = f % 85, c.push(g + 33, h + 33, i + 33, j + 33, k + 33)) : c.push(122);
       }
-      return function (a, b) {
+      return (function (a, b) {
         for (var c = b; c > 0; c--) {
           a.pop();
         }
-      }(c, b.length), String.fromCharCode.apply(String, c) + "~>";
+      }(c, b.length)), String.fromCharCode.apply(String, c) + "~>";
     };
     var ASCII85Decode = function ASCII85Decode(a) {
       var c,
@@ -13900,14 +13900,14 @@
         x = "charCodeAt",
         y = "slice",
         z = "replace";
-      for ("~>" === a[y](-2), a = a[y](0, -2)[z](/\s/g, "")[z]("z", "!!!!!"), c = "uuuuu"[y](a[l] % 5 || 5), a += c, e = [], f = 0, g = a[l]; g > f; f += 5) {
+      for (a[y](-2) === "~>", a = a[y](0, -2)[z](/\s/g, "")[z]("z", "!!!!!"), c = "uuuuu"[y](a[l] % 5 || 5), a += c, e = [], f = 0, g = a[l]; g > f; f += 5) {
         d = 52200625 * (a[x](f) - 33) + 614125 * (a[x](f + 1) - 33) + 7225 * (a[x](f + 2) - 33) + 85 * (a[x](f + 3) - 33) + (a[x](f + 4) - 33), e.push(w & d >> 24, w & d >> 16, w & d >> 8, w & d);
       }
-      return function (a, b) {
+      return (function (a, b) {
         for (var c = b; c > 0; c--) {
           a.pop();
         }
-      }(e, c[l]), h.fromCharCode.apply(h, e);
+      }(e, c[l])), h.fromCharCode.apply(h, e);
     };
     var ASCIIHexEncode = function ASCIIHexEncode(value) {
       return value.split("").map(function (value) {
@@ -14123,9 +14123,9 @@
   (function (jsPDFAPI) {
 
     function loadHtml2Canvas() {
-      return function () {
-        if (globalObject["html2canvas"]) {
-          return Promise.resolve(globalObject["html2canvas"]);
+      return (function () {
+        if (globalObject.html2canvas) {
+          return Promise.resolve(globalObject.html2canvas);
         }
         if ((typeof exports === "undefined" ? "undefined" : _typeof(exports)) === "object" && typeof module !== "undefined") {
           return new Promise(function (resolve, reject) {
@@ -14146,16 +14146,16 @@
           });
         }
         return Promise.reject(new Error("Could not load html2canvas"));
-      }().catch(function (e) {
+      }()).catch(function (e) {
         return Promise.reject(new Error("Could not load html2canvas: " + e));
       }).then(function (html2canvas) {
         return html2canvas.default ? html2canvas.default : html2canvas;
       });
     }
     function loadDomPurify() {
-      return function () {
-        if (globalObject["DOMPurify"]) {
-          return Promise.resolve(globalObject["DOMPurify"]);
+      return (function () {
+        if (globalObject.DOMPurify) {
+          return Promise.resolve(globalObject.DOMPurify);
         }
         if ((typeof exports === "undefined" ? "undefined" : _typeof(exports)) === "object" && typeof module !== "undefined") {
           return new Promise(function (resolve, reject) {
@@ -14176,7 +14176,7 @@
           });
         }
         return Promise.reject(new Error("Could not load dompurify"));
-      }().catch(function (e) {
+      }()).catch(function (e) {
         return Promise.reject(new Error("Could not load dompurify: " + e));
       }).then(function (dompurify) {
         return dompurify.default ? dompurify.default : dompurify;
@@ -14191,7 +14191,7 @@
      */
     var objType = function objType(obj) {
       var type = _typeof(obj);
-      if (type === "undefined") return "undefined";else if (type === "string" || obj instanceof String) return "string";else if (type === "number" || obj instanceof Number) return "number";else if (type === "function" || obj instanceof Function) return "function";else if (!!obj && obj.constructor === Array) return "array";else if (obj && obj.nodeType === 1) return "element";else if (type === "object") return "object";else return "unknown";
+      if (type === "undefined") {return "undefined";}else if (type === "string" || obj instanceof String) {return "string";}else if (type === "number" || obj instanceof Number) {return "number";}else if (type === "function" || obj instanceof Function) {return "function";}else if (!!obj && obj.constructor === Array) {return "array";}else if (obj && obj.nodeType === 1) {return "element";}else if (type === "object") {return "object";}else {return "unknown";}
     };
 
     /**
@@ -14202,7 +14202,7 @@
      */
     var createElement = function createElement(tagName, opt) {
       var el = document.createElement(tagName);
-      if (opt.className) el.className = opt.className;
+      if (opt.className) {el.className = opt.className;}
       if (opt.innerHTML && opt.dompurify) {
         el.innerHTML = opt.dompurify.sanitize(opt.innerHTML);
       }
@@ -14694,10 +14694,10 @@
     };
     Worker.prototype.setProgress = function setProgress(val, state, n, stack) {
       // Immediately update all progress values.
-      if (val != null) this.progress.val = val;
-      if (state != null) this.progress.state = state;
-      if (n != null) this.progress.n = n;
-      if (stack != null) this.progress.stack = stack;
+      if (val != null) {this.progress.val = val;}
+      if (state != null) {this.progress.state = state;}
+      if (n != null) {this.progress.n = n;}
+      if (stack != null) {this.progress.stack = stack;}
       this.progress.ratio = this.progress.val / this.progress.state;
 
       // Return this for command chaining.
@@ -14758,17 +14758,17 @@
       });
       return self;
     };
-    Worker.prototype["catch"] = function (onRejected) {
+    Worker.prototype.catch = function (onRejected) {
       // Bind `this` to the promise handler, call `catch`, and return a Worker.
       if (onRejected) {
         onRejected = onRejected.bind(this);
       }
-      var returnVal = Promise.prototype["catch"].call(this, onRejected);
+      var returnVal = Promise.prototype.catch.call(this, onRejected);
       return Worker.convert(returnVal, this);
     };
     Worker.prototype.catchExternal = function catchExternal(onRejected) {
       // Call `catch` and return a standard promise (exits the Worker chain).
-      return Promise.prototype["catch"].call(this, onRejected);
+      return Promise.prototype.catch.call(this, onRejected);
     };
     Worker.prototype.error = function error(msg) {
       // Throw the error in the Promise chain.
@@ -15415,7 +15415,7 @@
     };
   })(jsPDF.API);
 
-  function decode(bytes, encoding = 'utf8') {
+  function decode(bytes, encoding = "utf8") {
     const decoder = new TextDecoder(encoding);
     return decoder.decode(bytes);
   }
@@ -15480,7 +15480,7 @@
      */
     constructor(data = defaultByteLength, options = {}) {
       let dataIsGiven = false;
-      if (typeof data === 'number') {
+      if (typeof data === "number") {
         data = new ArrayBuffer(data);
       } else {
         dataIsGiven = true;
@@ -15613,7 +15613,7 @@
     popMark() {
       const offset = this._marks.pop();
       if (offset === undefined) {
-        throw new Error('Mark stack empty');
+        throw new Error("Mark stack empty");
       }
       this.seek(offset);
       return this;
@@ -15682,7 +15682,7 @@
      * @returns The read bytes.
      */
     readBytes(n = 1) {
-      return this.readArray(n, 'uint8');
+      return this.readArray(n, "uint8");
     }
     /**
      * Creates an array of corresponding to the type `type` and size `size`.
@@ -15695,7 +15695,7 @@
       const bytes = typedArrays[type].BYTES_PER_ELEMENT * size;
       const offset = this.byteOffset + this.offset;
       const slice = this.buffer.slice(offset, offset + bytes);
-      if (this.littleEndian === hostBigEndian && type !== 'uint8' && type !== 'int8') {
+      if (this.littleEndian === hostBigEndian && type !== "uint8" && type !== "int8") {
         const slice = new Uint8Array(this.buffer.slice(offset, offset + bytes));
         slice.reverse();
         const returnArray = new typedArrays[type](slice.buffer);
@@ -15793,7 +15793,7 @@
      * @returns The read characters.
      */
     readChars(n = 1) {
-      let result = '';
+      let result = "";
       for (let i = 0; i < n; i++) {
         result += this.readChar();
       }
@@ -15816,7 +15816,7 @@
      * @param encoding - The encoding to use. Default is 'utf8'.
      * @returns The decoded string.
      */
-    decodeText(n = 1, encoding = 'utf8') {
+    decodeText(n = 1, encoding = "utf8") {
       return decode(this.readBytes(n), encoding);
     }
     /**
@@ -16058,7 +16058,7 @@
   //   misrepresented as being the original software.
   // 3. This notice may not be removed or altered from any source distribution.
 
-  /* eslint-disable space-unary-ops */
+   
 
   /* Public constants ==========================================================*/
   /* ===========================================================================*/
@@ -16143,7 +16143,7 @@
   const REPZ_11_138 = 18;
   /* repeat a zero length 11-138 times  (7 bits of repeat count) */
 
-  /* eslint-disable comma-spacing,array-bracket-spacing */
+   
   const extra_lbits = /* extra bits for each length code */
   new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0]);
   const extra_dbits = /* extra bits for each distance code */
@@ -16151,7 +16151,7 @@
   const extra_blbits = /* extra bits for each bit length code */
   new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 7]);
   const bl_order = new Uint8Array([16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15]);
-  /* eslint-enable comma-spacing,array-bracket-spacing */
+   
 
   /* The lengths of the bit length codes are sent in order of decreasing
    * probability, to avoid transmitting the lengths for unused bit length codes.
@@ -16337,7 +16337,7 @@
       if (n >= base) {
         xbits = extra[n - base];
       }
-      f = tree[n * 2] /*.Freq*/;
+      f = tree[n * 2];
       s.opt_len += f * (bits + xbits);
       if (has_stree) {
         s.static_len += f * (stree[n * 2 + 1] /*.Len*/ + xbits);
@@ -16379,7 +16379,7 @@
         }
         if (tree[m * 2 + 1] /*.Len*/ !== bits) {
           // Tracev((stderr,"code %d bits %d->%d\n", m, tree[m].Len, bits));
-          s.opt_len += (bits - tree[m * 2 + 1] /*.Len*/) * tree[m * 2] /*.Freq*/;
+          s.opt_len += (bits - tree[m * 2 + 1] /*.Len*/) * tree[m * 2];
           tree[m * 2 + 1] /*.Len*/ = bits;
         }
         n--;
@@ -16420,7 +16420,7 @@
     //Tracev((stderr,"\ngen_codes: max_code %d ", max_code));
 
     for (n = 0; n <= max_code; n++) {
-      let len = tree[n * 2 + 1] /*.Len*/;
+      let len = tree[n * 2 + 1];
       if (len === 0) {
         continue;
       }
@@ -16711,7 +16711,7 @@
       s.depth[node] = 0;
       s.opt_len--;
       if (has_stree) {
-        s.static_len -= stree[node * 2 + 1] /*.Len*/;
+        s.static_len -= stree[node * 2 + 1];
       }
       /* node is 0 or 1 so it does not have extra bits */
     }
@@ -16720,7 +16720,7 @@
     /* The elements heap[heap_len/2+1 .. heap_len] are leaves of the tree,
      * establish sub-heaps of increasing lengths:
      */
-    for (n = s.heap_len >> 1 /*int /2*/; n >= 1; n--) {
+    for (n = s.heap_len >> 1; n >= 1; n--) {
       pqdownheap(s, tree, n);
     }
 
@@ -16742,7 +16742,7 @@
       s.heap[--s.heap_max] = m;
 
       /* Create a new node father of n and m */
-      tree[node * 2] /*.Freq*/ = tree[n * 2] /*.Freq*/ + tree[m * 2] /*.Freq*/;
+      tree[node * 2] /*.Freq*/ = tree[n * 2] /*.Freq*/ + tree[m * 2];
       s.depth[node] = (s.depth[n] >= s.depth[m] ? s.depth[n] : s.depth[m]) + 1;
       tree[n * 2 + 1] /*.Dad*/ = tree[m * 2 + 1] /*.Dad*/ = node;
 
@@ -16774,7 +16774,7 @@
     let prevlen = -1; /* last emitted length */
     let curlen; /* length of current code */
 
-    let nextlen = tree[0 * 2 + 1] /*.Len*/; /* length of next code */
+    let nextlen = tree[0 * 2 + 1]; /* length of next code */
 
     let count = 0; /* repeat count of the current code */
     let max_count = 7; /* max repeat count */
@@ -16788,7 +16788,7 @@
 
     for (n = 0; n <= max_code; n++) {
       curlen = nextlen;
-      nextlen = tree[(n + 1) * 2 + 1] /*.Len*/;
+      nextlen = tree[(n + 1) * 2 + 1];
       if (++count < max_count && curlen === nextlen) {
         continue;
       } else if (count < min_count) {
@@ -16831,7 +16831,7 @@
     let prevlen = -1; /* last emitted length */
     let curlen; /* length of current code */
 
-    let nextlen = tree[0 * 2 + 1] /*.Len*/; /* length of next code */
+    let nextlen = tree[0 * 2 + 1]; /* length of next code */
 
     let count = 0; /* repeat count of the current code */
     let max_count = 7; /* max repeat count */
@@ -16844,7 +16844,7 @@
     }
     for (n = 0; n <= max_code; n++) {
       curlen = nextlen;
-      nextlen = tree[(n + 1) * 2 + 1] /*.Len*/;
+      nextlen = tree[(n + 1) * 2 + 1];
       if (++count < max_count && curlen === nextlen) {
         continue;
       } else if (count < min_count) {
@@ -17275,23 +17275,23 @@
   // 3. This notice may not be removed or altered from any source distribution.
 
   var messages = {
-    2: 'need dictionary',
+    2: "need dictionary",
     /* Z_NEED_DICT       2  */
-    1: 'stream end',
+    1: "stream end",
     /* Z_STREAM_END      1  */
-    0: '',
+    0: "",
     /* Z_OK              0  */
-    '-1': 'file error',
+    "-1": "file error",
     /* Z_ERRNO         (-1) */
-    '-2': 'stream error',
+    "-2": "stream error",
     /* Z_STREAM_ERROR  (-2) */
-    '-3': 'data error',
+    "-3": "data error",
     /* Z_DATA_ERROR    (-3) */
-    '-4': 'insufficient memory',
+    "-4": "insufficient memory",
     /* Z_MEM_ERROR     (-4) */
-    '-5': 'buffer error',
+    "-5": "buffer error",
     /* Z_BUF_ERROR     (-5) */
-    '-6': 'incompatible version' /* Z_VERSION_ERROR (-6) */
+    "-6": "incompatible version" /* Z_VERSION_ERROR (-6) */
   };
 
   // (C) 1995-2013 Jean-loup Gailly and Mark Adler
@@ -17592,7 +17592,7 @@
     let len; /* length of current match */
     let best_len = s.prev_length; /* best match length so far */
     let nice_match = s.nice_match; /* stop if match long enough */
-    const limit = s.strstart > s.w_size - MIN_LOOKAHEAD ? s.strstart - (s.w_size - MIN_LOOKAHEAD) : 0 /*NIL*/;
+    const limit = s.strstart > s.w_size - MIN_LOOKAHEAD ? s.strstart - (s.w_size - MIN_LOOKAHEAD) : 0;
     const _win = s.window; // shortcut
 
     const wmask = s.w_mask;
@@ -17846,7 +17846,7 @@
        * available input data and output space. Set left to how much of that
        * would be copied from what's left in the window.
        */
-      len = 65535 /* MAX_STORED */; /* maximum deflate stored block length */
+      len = 65535; /* maximum deflate stored block length */
       have = s.bi_valid + 42 >> 3; /* number of header bytes */
       if (s.strm.avail_out < have) {
         /* need room for header */
@@ -18049,7 +18049,7 @@
       /* Insert the string window[strstart .. strstart+2] in the
        * dictionary, and set hash_head to the head of the hash chain:
        */
-      hash_head = 0 /*NIL*/;
+      hash_head = 0;
       if (s.lookahead >= MIN_MATCH) {
         /*** INSERT_STRING(s, s.strstart, hash_head); ***/
         s.ins_h = HASH(s, s.ins_h, s.window[s.strstart + MIN_MATCH - 1]);
@@ -18177,7 +18177,7 @@
       /* Insert the string window[strstart .. strstart+2] in the
        * dictionary, and set hash_head to the head of the hash chain:
        */
-      hash_head = 0 /*NIL*/;
+      hash_head = 0;
       if (s.lookahead >= MIN_MATCH) {
         /*** INSERT_STRING(s, s.strstart, hash_head); ***/
         s.ins_h = HASH(s, s.ins_h, s.window[s.strstart + MIN_MATCH - 1]);
@@ -19264,7 +19264,7 @@
   var deflate_2$1 = deflate$2;
   var deflateEnd_1 = deflateEnd;
   var deflateSetDictionary_1 = deflateSetDictionary;
-  var deflateInfo = 'pako deflate (from Nodeca project)';
+  var deflateInfo = "pako deflate (from Nodeca project)";
 
   /* Not implemented
   module.exports.deflateBound = deflateBound;
@@ -19297,8 +19297,8 @@
       if (!source) {
         continue;
       }
-      if (typeof source !== 'object') {
-        throw new TypeError(source + 'must be non-object');
+      if (typeof source !== "object") {
+        throw new TypeError(source + "must be non-object");
       }
       for (const p in source) {
         if (_has(source, p)) {
@@ -19356,7 +19356,7 @@
 
   // convert string to array (typed, when possible)
   var string2buf = str => {
-    if (typeof TextEncoder === 'function' && TextEncoder.prototype.encode) {
+    if (typeof TextEncoder === "function" && TextEncoder.prototype.encode) {
       return new TextEncoder().encode(str);
     }
     let buf,
@@ -19426,7 +19426,7 @@
         return String.fromCharCode.apply(null, buf.length === len ? buf : buf.subarray(0, len));
       }
     }
-    let result = '';
+    let result = "";
     for (let i = 0; i < len; i++) {
       result += String.fromCharCode(buf[i]);
     }
@@ -19436,7 +19436,7 @@
   // convert array to string
   var buf2string = (buf, max) => {
     const len = max || buf.length;
-    if (typeof TextDecoder === 'function' && TextDecoder.prototype.decode) {
+    if (typeof TextDecoder === "function" && TextDecoder.prototype.decode) {
       return new TextDecoder().decode(buf.subarray(0, max));
     }
     let i, out;
@@ -19556,11 +19556,11 @@
     /* total number of bytes output so far */
     this.total_out = 0;
     /* last error message, NULL if no error */
-    this.msg = '' /*Z_NULL*/;
+    this.msg = "";
     /* not visible by applications */
     this.state = null;
     /* best guess about the data type: binary or text */
-    this.data_type = 2 /*Z_UNKNOWN*/;
+    this.data_type = 2;
     /* adler32 value of the uncompressed data */
     this.adler = 0;
   }
@@ -19684,7 +19684,7 @@
       opt.windowBits += 16;
     }
     this.err = 0; // error code, if happens (0 = Z_OK)
-    this.msg = ''; // error message
+    this.msg = ""; // error message
     this.ended = false; // used to avoid multiple onEnd() calls
     this.chunks = []; // chunks of compressed data
 
@@ -19700,10 +19700,10 @@
     if (opt.dictionary) {
       let dict;
       // Convert data if needed
-      if (typeof opt.dictionary === 'string') {
+      if (typeof opt.dictionary === "string") {
         // If we need to compress text, change encoding to utf8.
         dict = strings.string2buf(opt.dictionary);
-      } else if (toString$1.call(opt.dictionary) === '[object ArrayBuffer]') {
+      } else if (toString$1.call(opt.dictionary) === "[object ArrayBuffer]") {
         dict = new Uint8Array(opt.dictionary);
       } else {
         dict = opt.dictionary;
@@ -19745,13 +19745,13 @@
     if (this.ended) {
       return false;
     }
-    if (flush_mode === ~~flush_mode) _flush_mode = flush_mode;else _flush_mode = flush_mode === true ? Z_FINISH$2 : Z_NO_FLUSH$1;
+    if (flush_mode === ~~flush_mode) {_flush_mode = flush_mode;}else {_flush_mode = flush_mode === true ? Z_FINISH$2 : Z_NO_FLUSH$1;}
 
     // Convert data if needed
-    if (typeof data === 'string') {
+    if (typeof data === "string") {
       // If we need to compress text, change encoding to utf8.
       strm.input = strings.string2buf(data);
-    } else if (toString$1.call(data) === '[object ArrayBuffer]') {
+    } else if (toString$1.call(data) === "[object ArrayBuffer]") {
       strm.input = new Uint8Array(data);
     } else {
       strm.input = data;
@@ -19796,7 +19796,7 @@
         strm.avail_out = 0;
         continue;
       }
-      if (strm.avail_in === 0) break;
+      if (strm.avail_in === 0) {break;}
     }
     return true;
   };
@@ -19955,19 +19955,19 @@
       here = lcode[hold & lmask];
       dolen: for (;;) {
         // Goto emulation
-        op = here >>> 24 /*here.bits*/;
+        op = here >>> 24;
         hold >>>= op;
         bits -= op;
-        op = here >>> 16 & 0xff /*here.op*/;
+        op = here >>> 16 & 0xff;
         if (op === 0) {
           /* literal */
           //Tracevv((stderr, here.val >= 0x20 && here.val < 0x7f ?
           //        "inflate:         literal '%c'\n" :
           //        "inflate:         literal 0x%02x\n", here.val));
-          output[_out++] = here & 0xffff /*here.val*/;
+          output[_out++] = here & 0xffff;
         } else if (op & 16) {
           /* length base */
-          len = here & 0xffff /*here.val*/;
+          len = here & 0xffff;
           op &= 15; /* number of extra bits */
           if (op) {
             if (bits < op) {
@@ -19988,13 +19988,13 @@
           here = dcode[hold & dmask];
           dodist: for (;;) {
             // goto emulation
-            op = here >>> 24 /*here.bits*/;
+            op = here >>> 24;
             hold >>>= op;
             bits -= op;
-            op = here >>> 16 & 0xff /*here.op*/;
+            op = here >>> 16 & 0xff;
             if (op & 16) {
               /* distance base */
-              dist = here & 0xffff /*here.val*/;
+              dist = here & 0xffff;
               op &= 15; /* number of extra bits */
               if (bits < op) {
                 hold += input[_in++] << bits;
@@ -20007,7 +20007,7 @@
               dist += hold & (1 << op) - 1;
               //#ifdef INFLATE_STRICT
               if (dist > dmax) {
-                strm.msg = 'invalid distance too far back';
+                strm.msg = "invalid distance too far back";
                 state.mode = BAD$1;
                 break top;
               }
@@ -20021,7 +20021,7 @@
                 op = dist - op; /* distance back in window */
                 if (op > whave) {
                   if (state.sane) {
-                    strm.msg = 'invalid distance too far back';
+                    strm.msg = "invalid distance too far back";
                     state.mode = BAD$1;
                     break top;
                   }
@@ -20130,7 +20130,7 @@
               here = dcode[(here & 0xffff /*here.val*/) + (hold & (1 << op) - 1)];
               continue dodist;
             } else {
-              strm.msg = 'invalid distance code';
+              strm.msg = "invalid distance code";
               state.mode = BAD$1;
               break top;
             }
@@ -20146,7 +20146,7 @@
           state.mode = TYPE$1;
           break top;
         } else {
-          strm.msg = 'invalid literal/length code';
+          strm.msg = "invalid literal/length code";
           state.mode = BAD$1;
           break top;
         }
@@ -20650,7 +20650,7 @@
     }
     const state = strm.state;
     strm.total_in = strm.total_out = state.total = 0;
-    strm.msg = ''; /*Z_NULL*/
+    strm.msg = ""; /*Z_NULL*/
     if (state.wrap) {
       /* to support ill-conceived Java test suite */
       strm.adler = state.wrap & 1;
@@ -20660,7 +20660,7 @@
     state.havedict = 0;
     state.flags = -1;
     state.dmax = 32768;
-    state.head = null /*Z_NULL*/;
+    state.head = null;
     state.hold = 0;
     state.bits = 0;
     //state.lencode = state.distcode = state.next = state.codes;
@@ -20726,11 +20726,11 @@
     //Tracev((stderr, "inflate: allocated\n"));
     strm.state = state;
     state.strm = strm;
-    state.window = null /*Z_NULL*/;
+    state.window = null;
     state.mode = HEAD; /* to pass state test in inflateReset2() */
     const ret = inflateReset2(strm, windowBits);
     if (ret !== Z_OK$1) {
-      strm.state = null /*Z_NULL*/;
+      strm.state = null;
     }
     return ret;
   };
@@ -20919,7 +20919,7 @@
             if (state.wbits === 0) {
               state.wbits = 15;
             }
-            state.check = 0 /*crc32(0L, Z_NULL, 0)*/;
+            state.check = 0;
             //=== CRC2(state.check, hold);
             hbuf[0] = hold & 0xff;
             hbuf[1] = hold >>> 8 & 0xff;
@@ -20938,12 +20938,12 @@
           }
           if (!(state.wrap & 1) || /* check if zlib header allowed */
           (((hold & 0xff /*BITS(8)*/) << 8) + (hold >> 8)) % 31) {
-            strm.msg = 'incorrect header check';
+            strm.msg = "incorrect header check";
             state.mode = BAD;
             break;
           }
           if ((hold & 0x0f /*BITS(4)*/) !== Z_DEFLATED) {
-            strm.msg = 'unknown compression method';
+            strm.msg = "unknown compression method";
             state.mode = BAD;
             break;
           }
@@ -20956,7 +20956,7 @@
             state.wbits = len;
           }
           if (len > 15 || len > state.wbits) {
-            strm.msg = 'invalid window size';
+            strm.msg = "invalid window size";
             state.mode = BAD;
             break;
           }
@@ -20968,7 +20968,7 @@
 
           state.flags = 0; /* indicate zlib header */
           //Tracev((stderr, "inflate:   zlib header ok\n"));
-          strm.adler = state.check = 1 /*adler32(0L, Z_NULL, 0)*/;
+          strm.adler = state.check = 1;
           state.mode = hold & 0x200 ? DICTID : TYPE;
           //=== INITBITS();
           hold = 0;
@@ -20988,12 +20988,12 @@
           //===//
           state.flags = hold;
           if ((state.flags & 0xff) !== Z_DEFLATED) {
-            strm.msg = 'unknown compression method';
+            strm.msg = "unknown compression method";
             state.mode = BAD;
             break;
           }
           if (state.flags & 0xe000) {
-            strm.msg = 'unknown header flags set';
+            strm.msg = "unknown header flags set";
             state.mode = BAD;
             break;
           }
@@ -21098,7 +21098,7 @@
             bits = 0;
             //===//
           } else if (state.head) {
-            state.head.extra = null /*Z_NULL*/;
+            state.head.extra = null;
           }
           state.mode = EXTRA;
         /* falls through */
@@ -21205,7 +21205,7 @@
             }
             //===//
             if (state.wrap & 4 && hold !== (state.check & 0xffff)) {
-              strm.msg = 'header crc mismatch';
+              strm.msg = "header crc mismatch";
               state.mode = BAD;
               break;
             }
@@ -21251,7 +21251,7 @@
             //---
             return Z_NEED_DICT$1;
           }
-          strm.adler = state.check = 1 /*adler32(0L, Z_NULL, 0)*/;
+          strm.adler = state.check = 1;
           state.mode = TYPE;
         /* falls through */
         case TYPE:
@@ -21278,7 +21278,7 @@
             bits += 8;
           }
           //===//
-          state.last = hold & 0x01 /*BITS(1)*/;
+          state.last = hold & 0x01;
           //--- DROPBITS(1) ---//
           hold >>>= 1;
           bits -= 1;
@@ -21312,7 +21312,7 @@
               state.mode = TABLE;
               break;
             case 3:
-              strm.msg = 'invalid block type';
+              strm.msg = "invalid block type";
               state.mode = BAD;
           }
           //--- DROPBITS(2) ---//
@@ -21336,7 +21336,7 @@
           }
           //===//
           if ((hold & 0xffff) !== (hold >>> 16 ^ 0xffff)) {
-            strm.msg = 'invalid stored block lengths';
+            strm.msg = "invalid stored block lengths";
             state.mode = BAD;
             break;
           }
@@ -21408,7 +21408,7 @@
           //---//
           //#ifndef PKZIP_BUG_WORKAROUND
           if (state.nlen > 286 || state.ndist > 30) {
-            strm.msg = 'too many length or distance symbols';
+            strm.msg = "too many length or distance symbols";
             state.mode = BAD;
             break;
           }
@@ -21450,7 +21450,7 @@
           ret = inftrees(CODES, state.lens, 0, 19, state.lencode, 0, state.work, opts);
           state.lenbits = opts.bits;
           if (ret) {
-            strm.msg = 'invalid code lengths set';
+            strm.msg = "invalid code lengths set";
             state.mode = BAD;
             break;
           }
@@ -21501,7 +21501,7 @@
                 bits -= here_bits;
                 //---//
                 if (state.have === 0) {
-                  strm.msg = 'invalid bit length repeat';
+                  strm.msg = "invalid bit length repeat";
                   state.mode = BAD;
                   break;
                 }
@@ -21557,7 +21557,7 @@
                 //---//
               }
               if (state.have + copy > state.nlen + state.ndist) {
-                strm.msg = 'invalid bit length repeat';
+                strm.msg = "invalid bit length repeat";
                 state.mode = BAD;
                 break;
               }
@@ -21574,7 +21574,7 @@
 
           /* check for end-of-block code (better have one) */
           if (state.lens[256] === 0) {
-            strm.msg = 'invalid code -- missing end-of-block';
+            strm.msg = "invalid code -- missing end-of-block";
             state.mode = BAD;
             break;
           }
@@ -21593,7 +21593,7 @@
           // state.lencode = state.next;
 
           if (ret) {
-            strm.msg = 'invalid literal/lengths set';
+            strm.msg = "invalid literal/lengths set";
             state.mode = BAD;
             break;
           }
@@ -21611,7 +21611,7 @@
           // state.distcode = state.next;
 
           if (ret) {
-            strm.msg = 'invalid distances set';
+            strm.msg = "invalid distances set";
             state.mode = BAD;
             break;
           }
@@ -21716,7 +21716,7 @@
             break;
           }
           if (here_op & 64) {
-            strm.msg = 'invalid literal/length code';
+            strm.msg = "invalid literal/length code";
             state.mode = BAD;
             break;
           }
@@ -21736,7 +21736,7 @@
               bits += 8;
             }
             //===//
-            state.length += hold & (1 << state.extra) - 1 /*BITS(state.extra)*/;
+            state.length += hold & (1 << state.extra) - 1;
             //--- DROPBITS(state.extra) ---//
             hold >>>= state.extra;
             bits -= state.extra;
@@ -21798,7 +21798,7 @@
           //---//
           state.back += here_bits;
           if (here_op & 64) {
-            strm.msg = 'invalid distance code';
+            strm.msg = "invalid distance code";
             state.mode = BAD;
             break;
           }
@@ -21819,7 +21819,7 @@
               bits += 8;
             }
             //===//
-            state.offset += hold & (1 << state.extra) - 1 /*BITS(state.extra)*/;
+            state.offset += hold & (1 << state.extra) - 1;
             //--- DROPBITS(state.extra) ---//
             hold >>>= state.extra;
             bits -= state.extra;
@@ -21828,7 +21828,7 @@
           }
           //#ifdef INFLATE_STRICT
           if (state.offset > state.dmax) {
-            strm.msg = 'invalid distance too far back';
+            strm.msg = "invalid distance too far back";
             state.mode = BAD;
             break;
           }
@@ -21846,7 +21846,7 @@
             copy = state.offset - copy;
             if (copy > state.whave) {
               if (state.sane) {
-                strm.msg = 'invalid distance too far back';
+                strm.msg = "invalid distance too far back";
                 state.mode = BAD;
                 break;
               }
@@ -21925,7 +21925,7 @@
             _out = left;
             // NB: crc32 stored as signed 32-bit int, zswap32 returns signed too
             if (state.wrap & 4 && (state.flags ? hold : zswap32(hold)) !== state.check) {
-              strm.msg = 'incorrect data check';
+              strm.msg = "incorrect data check";
               state.mode = BAD;
               break;
             }
@@ -21950,7 +21950,7 @@
             }
             //===//
             if (state.wrap & 4 && hold !== (state.total & 0xffffffff)) {
-              strm.msg = 'incorrect length check';
+              strm.msg = "incorrect length check";
               state.mode = BAD;
               break;
             }
@@ -21996,7 +21996,7 @@
     //---
 
     if (state.wsize || _out !== strm.avail_out && state.mode < BAD && (state.mode < CHECK || flush !== Z_FINISH$1)) {
-      if (updatewindow(strm, strm.output, strm.next_out, _out - strm.avail_out)) ;
+      if (updatewindow(strm, strm.output, strm.next_out, _out - strm.avail_out)) {}
     }
     _in -= strm.avail_in;
     _out -= strm.avail_out;
@@ -22083,7 +22083,7 @@
   var inflateEnd_1 = inflateEnd;
   var inflateGetHeader_1 = inflateGetHeader;
   var inflateSetDictionary_1 = inflateSetDictionary;
-  var inflateInfo = 'pako inflate (from Nodeca project)';
+  var inflateInfo = "pako inflate (from Nodeca project)";
 
   /* Not implemented
   module.exports.inflateCodesUsed = inflateCodesUsed;
@@ -22152,11 +22152,11 @@
     /* space at extra (only when reading header) */
     // this.extra_max  = 0;
     /* pointer to zero-terminated file name or Z_NULL */
-    this.name = '';
+    this.name = "";
     /* space at name (only when reading header) */
     // this.name_max   = 0;
     /* pointer to zero-terminated comment or Z_NULL */
-    this.comment = '';
+    this.comment = "";
     /* space at comment (only when reading header) */
     // this.comm_max   = 0;
     /* true if there was or will be a header crc */
@@ -22263,7 +22263,7 @@
     this.options = common.assign({
       chunkSize: 1024 * 64,
       windowBits: 15,
-      to: ''
+      to: ""
     }, options || {});
     const opt = this.options;
 
@@ -22291,7 +22291,7 @@
       }
     }
     this.err = 0; // error code, if happens (0 = Z_OK)
-    this.msg = ''; // error message
+    this.msg = ""; // error message
     this.ended = false; // used to avoid multiple onEnd() calls
     this.chunks = []; // chunks of compressed data
 
@@ -22307,9 +22307,9 @@
     // Setup dictionary
     if (opt.dictionary) {
       // Convert data if needed
-      if (typeof opt.dictionary === 'string') {
+      if (typeof opt.dictionary === "string") {
         opt.dictionary = strings.string2buf(opt.dictionary);
-      } else if (toString.call(opt.dictionary) === '[object ArrayBuffer]') {
+      } else if (toString.call(opt.dictionary) === "[object ArrayBuffer]") {
         opt.dictionary = new Uint8Array(opt.dictionary);
       }
       if (opt.raw) {
@@ -22352,11 +22352,11 @@
     const chunkSize = this.options.chunkSize;
     const dictionary = this.options.dictionary;
     let status, _flush_mode, last_avail_out;
-    if (this.ended) return false;
-    if (flush_mode === ~~flush_mode) _flush_mode = flush_mode;else _flush_mode = flush_mode === true ? Z_FINISH : Z_NO_FLUSH;
+    if (this.ended) {return false;}
+    if (flush_mode === ~~flush_mode) {_flush_mode = flush_mode;}else {_flush_mode = flush_mode === true ? Z_FINISH : Z_NO_FLUSH;}
 
     // Convert data if needed
-    if (toString.call(data) === '[object ArrayBuffer]') {
+    if (toString.call(data) === "[object ArrayBuffer]") {
       strm.input = new Uint8Array(data);
     } else {
       strm.input = data;
@@ -22400,7 +22400,7 @@
       last_avail_out = strm.avail_out;
       if (strm.next_out) {
         if (strm.avail_out === 0 || status === Z_STREAM_END) {
-          if (this.options.to === 'string') {
+          if (this.options.to === "string") {
             let next_out_utf8 = strings.utf8border(strm.output, strm.next_out);
             let tail = strm.next_out - next_out_utf8;
             let utf8str = strings.buf2string(strm.output, next_out_utf8);
@@ -22408,7 +22408,7 @@
             // move tail & realign counters
             strm.next_out = tail;
             strm.avail_out = chunkSize - tail;
-            if (tail) strm.output.set(strm.output.subarray(next_out_utf8, next_out_utf8 + tail), 0);
+            if (tail) {strm.output.set(strm.output.subarray(next_out_utf8, next_out_utf8 + tail), 0);}
             this.onData(utf8str);
           } else {
             this.onData(strm.output.length === strm.next_out ? strm.output : strm.output.subarray(0, strm.next_out));
@@ -22417,7 +22417,7 @@
       }
 
       // Must repeat iteration if out buffer is full
-      if (status === Z_OK && last_avail_out === 0) continue;
+      if (status === Z_OK && last_avail_out === 0) {continue;}
 
       // Finalize if end of stream reached.
       if (status === Z_STREAM_END) {
@@ -22426,7 +22426,7 @@
         this.ended = true;
         return true;
       }
-      if (strm.avail_in === 0) break;
+      if (strm.avail_in === 0) {break;}
     }
     return true;
   };
@@ -22455,8 +22455,8 @@
   Inflate$1.prototype.onEnd = function (status) {
     // On success - join
     if (status === Z_OK) {
-      if (this.options.to === 'string') {
-        this.result = this.chunks.join('');
+      if (this.options.to === "string") {
+        this.result = this.chunks.join("");
       } else {
         this.result = common.flattenChunks(this.chunks);
       }
@@ -22510,7 +22510,7 @@
     inflator.push(input);
 
     // That will never happens, if you don't cheat with options :)
-    if (inflator.err) throw inflator.msg || messages[inflator.err];
+    if (inflator.err) {throw inflator.msg || messages[inflator.err];}
     return inflator.result;
   }
 
@@ -22658,7 +22658,7 @@
     const pa = Math.abs(p - a);
     const pb = Math.abs(p - b);
     const pc = Math.abs(p - c);
-    if (pa <= pb && pa <= pc) return a;else if (pb <= pc) return b;else return c;
+    if (pa <= pb && pa <= pc) {return a;}else if (pb <= pc) {return b;}else {return c;}
   }
 
   /**
@@ -22768,7 +22768,7 @@
       // Calculate pass dimensions
       const passWidth = Math.ceil((width - pass.x) / pass.xStep);
       const passHeight = Math.ceil((height - pass.y) / pass.yStep);
-      if (passWidth <= 0 || passHeight <= 0) continue;
+      if (passWidth <= 0 || passHeight <= 0) {continue;}
       const passLineBytes = passWidth * bytesPerPixel;
       const prevLine = new Uint8Array(passLineBytes);
       // Process each scanline in this pass
@@ -22785,7 +22785,7 @@
         for (let x = 0; x < passWidth; x++) {
           const outputX = pass.x + x * pass.xStep;
           const outputY = pass.y + y * pass.yStep;
-          if (outputX >= width || outputY >= height) continue;
+          if (outputX >= width || outputY >= height) {continue;}
           for (let i = 0; i < bytesPerPixel; i++) {
             resultData[(outputY * width + outputX) * bytesPerPixel + i] = newLine[x * bytesPerPixel + i];
           }
@@ -22874,7 +22874,7 @@
   const pngSignature = Uint8Array.of(137, 80, 78, 71, 13, 10, 26, 10);
   function checkSignature(buffer) {
     if (!hasPngSignature(buffer.readBytes(pngSignature.length))) {
-      throw new Error('wrong PNG signature');
+      throw new Error("wrong PNG signature");
     }
   }
   function hasPngSignature(array) {
@@ -22890,20 +22890,20 @@
   }
 
   // https://www.w3.org/TR/png/#11tEXt
-  const textChunkName = 'tEXt';
+  const textChunkName = "tEXt";
   const NULL = 0;
-  const latin1Decoder = new TextDecoder('latin1');
+  const latin1Decoder = new TextDecoder("latin1");
   function validateKeyword(keyword) {
     validateLatin1(keyword);
     if (keyword.length === 0 || keyword.length > 79) {
-      throw new Error('keyword length must be between 1 and 79');
+      throw new Error("keyword length must be between 1 and 79");
     }
   }
   // eslint-disable-next-line no-control-regex
   const latin1Regex = /^[\u0000-\u00FF]*$/;
   function validateLatin1(text) {
     if (!latin1Regex.test(text)) {
-      throw new Error('invalid latin1 text');
+      throw new Error("invalid latin1 text");
     }
   }
   function decodetEXt(text, buffer, length) {
@@ -23046,28 +23046,28 @@
       const offset = this.offset;
       switch (type) {
         // 11.2 Critical chunks
-        case 'IHDR':
+        case "IHDR":
           // 11.2.2 IHDR Image header
           this.decodeIHDR();
           break;
-        case 'PLTE':
+        case "PLTE":
           // 11.2.3 PLTE Palette
           this.decodePLTE(length);
           break;
-        case 'IDAT':
+        case "IDAT":
           // 11.2.4 IDAT Image data
           this.decodeIDAT(length);
           break;
-        case 'IEND':
+        case "IEND":
           // 11.2.5 IEND Image trailer
           this._end = true;
           break;
         // 11.3 Ancillary chunks
-        case 'tRNS':
+        case "tRNS":
           // 11.3.2.1 tRNS Transparency
           this.decodetRNS(length);
           break;
-        case 'iCCP':
+        case "iCCP":
           // 11.3.3.3 iCCP Embedded ICC profile
           this.decodeiCCP(length);
           break;
@@ -23075,7 +23075,7 @@
           // 11.3.4.3 tEXt Textual data
           decodetEXt(this._png.text, this, length);
           break;
-        case 'pHYs':
+        case "pHYs":
           // 11.3.5.3 pHYs Physical pixel dimensions
           this.decodepHYs();
           break;
@@ -23094,17 +23094,17 @@
     }
     decodeApngChunk(length, type) {
       const offset = this.offset;
-      if (type !== 'fdAT' && type !== 'IDAT' && this._writingDataChunks) {
+      if (type !== "fdAT" && type !== "IDAT" && this._writingDataChunks) {
         this.pushDataToFrame();
       }
       switch (type) {
-        case 'acTL':
+        case "acTL":
           this.decodeACTL();
           break;
-        case 'fcTL':
+        case "fcTL":
           this.decodeFCTL();
           break;
-        case 'fdAT':
+        case "fdAT":
           this.decodeFDAT(length);
           break;
         default:
@@ -23347,7 +23347,7 @@
           imageFrame.data.set(prevFrame.data);
           break;
         default:
-          throw new Error('Unknown disposeOp');
+          throw new Error("Unknown disposeOp");
       }
     }
     addFrameDataToCanvas(imageFrame, frame) {
@@ -23392,7 +23392,7 @@
           }
           break;
         default:
-          throw new Error('Unknown blendOp');
+          throw new Error("Unknown blendOp");
       }
     }
     decodeImage() {
@@ -23464,11 +23464,11 @@
     /**
      * Unit is unknown
      */
-    ResolutionUnitSpecifier[ResolutionUnitSpecifier["UNKNOWN"] = 0] = "UNKNOWN";
+    ResolutionUnitSpecifier[ResolutionUnitSpecifier.UNKNOWN = 0] = "UNKNOWN";
     /**
      * Unit is the metre
      */
-    ResolutionUnitSpecifier[ResolutionUnitSpecifier["METRE"] = 1] = "METRE";
+    ResolutionUnitSpecifier[ResolutionUnitSpecifier.METRE = 1] = "METRE";
   })(ResolutionUnitSpecifier || (ResolutionUnitSpecifier = {}));
 
   function decodePng(data, options) {
@@ -23548,7 +23548,7 @@
       filter = undefined;
       decodeParameters = undefined;
       imageData = colorBytes;
-      if (needSMask) sMask = alphaBytes;
+      if (needSMask) {sMask = alphaBytes;}
     }
     if (this.__addimage__.isArrayBuffer(imageData) || this.__addimage__.isArrayBufferView(imageData)) {
       imageData = this.__addimage__.arrayBufferToBinaryString(imageData);
@@ -23992,19 +23992,19 @@
                   // Seek through subblocks.
                   var block_size = buf[p++];
                   // Bad block size (ex: undefined from an out of bounds read).
-                  if (!(block_size >= 0)) throw Error("Invalid block size");
-                  if (block_size === 0) break; // 0 size is terminator
+                  if (!(block_size >= 0)) {throw Error("Invalid block size");}
+                  if (block_size === 0) {break;} // 0 size is terminator
                   p += block_size;
                 }
               }
               break;
             case 0xf9:
               // Graphics Control Extension
-              if (buf[p++] !== 0x4 || buf[p + 4] !== 0) throw new Error("Invalid graphics extension block.");
+              if (buf[p++] !== 0x4 || buf[p + 4] !== 0) {throw new Error("Invalid graphics extension block.");}
               var pf1 = buf[p++];
               delay = buf[p++] | buf[p++] << 8;
               transparent_index = buf[p++];
-              if ((pf1 & 1) === 0) transparent_index = null;
+              if ((pf1 & 1) === 0) {transparent_index = null;}
               disposal = pf1 >> 2 & 0x7;
               p++; // Skip terminator.
               break;
@@ -24014,8 +24014,8 @@
                 // Seek through subblocks.
                 var block_size = buf[p++];
                 // Bad block size (ex: undefined from an out of bounds read).
-                if (!(block_size >= 0)) throw Error("Invalid block size");
-                if (block_size === 0) break; // 0 size is terminator
+                if (!(block_size >= 0)) {throw Error("Invalid block size");}
+                if (block_size === 0) {break;} // 0 size is terminator
                 // console.log(buf.slice(p, p+block_size).toString('ascii'));
                 p += block_size;
               }
@@ -24049,8 +24049,8 @@
           while (true) {
             var block_size = buf[p++];
             // Bad block size (ex: undefined from an out of bounds read).
-            if (!(block_size >= 0)) throw Error("Invalid block size");
-            if (block_size === 0) break; // 0 size is terminator
+            if (!(block_size >= 0)) {throw Error("Invalid block size");}
+            if (block_size === 0) {break;} // 0 size is terminator
             p += block_size;
           }
           frames.push({
@@ -24084,7 +24084,7 @@
       return loop_count;
     };
     this.frameInfo = function (frame_num) {
-      if (frame_num < 0 || frame_num >= frames.length) throw new Error("Frame index out of range.");
+      if (frame_num < 0 || frame_num >= frames.length) {throw new Error("Frame index out of range.");}
       return frames[frame_num];
     };
     this.decodeAndBlitFrameBGRA = function (frame_num, pixels) {
@@ -24101,7 +24101,7 @@
       // to === null.  Not sure why, but CompareStub_EQ_STRICT shows up high in
       // the profile, not sure if it's related to using a Uint8Array.
       var trans = frame.transparent_index;
-      if (trans === null) trans = 256;
+      if (trans === null) {trans = 256;}
 
       // We are possibly just blitting to a portion of the entire frame.
       // That is a subrect within the framerect, so the additional pixels
@@ -24167,7 +24167,7 @@
       // to === null.  Not sure why, but CompareStub_EQ_STRICT shows up high in
       // the profile, not sure if it's related to using a Uint8Array.
       var trans = frame.transparent_index;
-      if (trans === null) trans = 256;
+      if (trans === null) {trans = 256;}
 
       // We are possibly just blitting to a portion of the entire frame.
       // That is a subrect within the framerect, so the additional pixels
@@ -24243,7 +24243,7 @@
     while (true) {
       // Read up to two bytes, making sure we always 12-bits for max sized code.
       while (cur_shift < 16) {
-        if (subblock_size === 0) break; // No more data to be read.
+        if (subblock_size === 0) {break;} // No more data to be read.
 
         cur |= code_stream[p++] << cur_shift;
         cur_shift += 8;
@@ -24257,7 +24257,7 @@
 
       // TODO(deanm): We should never really get here, we should have received
       // and EOI.
-      if (cur_shift < cur_code_size) break;
+      if (cur_shift < cur_code_size) {break;}
       var code = cur & code_mask;
       cur >>= cur_code_size;
       cur_shift -= cur_code_size;
@@ -24323,7 +24323,7 @@
 
       if (chase_code !== code)
         // The case of emitting {CODE-1} + k.
-        output[op++] = k;
+        {output[op++] = k;}
       chase = chase_code;
       while (chase_length--) {
         chase = code_table[chase];
@@ -24446,7 +24446,7 @@
     function computeHuffmanTbl(nrcodes, std_table) {
       var codevalue = 0;
       var pos_in_table = 0;
-      var HT = new Array();
+      var HT = [];
       for (var k = 1; k <= 16; k++) {
         for (var j = 1; j <= nrcodes[k]; j++) {
           HT[std_table[pos_in_table]] = [];
@@ -24807,10 +24807,10 @@
     }
     this.encode = function (image, quality // image data object
     ) {
-      if (quality) setQuality(quality);
+      if (quality) {setQuality(quality);}
 
       // Initialize bit writer
-      byteout = new Array();
+      byteout = [];
       bytenew = 0;
       bytepos = 7;
 
@@ -24893,7 +24893,7 @@
     };
     function setQuality(quality) {
       quality = Math.min(Math.max(quality, 1), 100);
-      if (currentQuality == quality) return; // don't recalc if unchanged
+      if (currentQuality == quality) {return;} // don't recalc if unchanged
 
       var sf = quality < 50 ? Math.floor(5000 / quality) : Math.floor(200 - quality * 2);
       initQuantTables(sf);
@@ -24961,7 +24961,7 @@
     this.bottom_up = true;
     this.flag = String.fromCharCode(this.buffer[0]) + String.fromCharCode(this.buffer[1]);
     this.pos += 2;
-    if (["BM", "BA", "CI", "CP", "IC", "PT"].indexOf(this.flag) === -1) throw new Error("Invalid BMP File");
+    if (["BM", "BA", "CI", "CP", "IC", "PT"].indexOf(this.flag) === -1) {throw new Error("Invalid BMP File");}
     this.parseHeader();
     this.parseBGR();
   }
@@ -25073,7 +25073,7 @@
         this.data[location + 1] = rgb.green;
         this.data[location + 2] = rgb.red;
         this.data[location + 3] = 0xff;
-        if (x * 2 + 1 >= this.width) break;
+        if (x * 2 + 1 >= this.width) {break;}
         rgb = this.palette[after];
         this.data[location + 4] = rgb.blue;
         this.data[location + 4 + 1] = rgb.green;
@@ -25238,11 +25238,11 @@
 
   function WebPDecoder(imageData) {
     function x(F) {
-      if (!F) throw Error("assert :P");
+      if (!F) {throw Error("assert :P");}
     }
     function fa(F, L, J) {
-      for (var H = 0; 4 > H; H++) {
-        if (F[L + H] != J.charCodeAt(H)) return !0;
+      for (var H = 0; H < 4; H++) {
+        if (F[L + H] != J.charCodeAt(H)) {return !0;}
       }
       return !1;
     }
@@ -25269,7 +25269,7 @@
       function F(J, H, Z) {
         for (var O = Z[H], L = 0; L < O; L++) {
           J.push(Z.length > H + 1 ? [] : 0);
-          if (Z.length < H + 1) break;
+          if (Z.length < H + 1) {break;}
           F(J[L], H + 1, Z);
         }
       }
@@ -25281,7 +25281,7 @@
       function J(H, O, F) {
         for (var Z = F[O], ma = 0; ma < Z; ma++) {
           H.push(F.length > O + 1 ? [] : new L());
-          if (F.length < O + 1) break;
+          if (F.length < O + 1) {break;}
           J(H[ma], O + 1, F);
         }
       }
@@ -25301,7 +25301,7 @@
         x(!(d % c));
         do {
           d -= c, a[b + d] = e;
-        } while (0 < d);
+        } while (d > 0);
       }
       function H(a, b, c, d, e, f) {
         var g = b,
@@ -25310,24 +25310,24 @@
           l,
           m = V(16),
           n = V(16);
-        x(0 != e);
-        x(null != d);
-        x(null != a);
-        x(0 < c);
+        x(e != 0);
+        x(d != null);
+        x(a != null);
+        x(c > 0);
         for (l = 0; l < e; ++l) {
-          if (15 < d[l]) return 0;
+          if (d[l] > 15) {return 0;}
           ++m[d[l]];
         }
-        if (m[0] == e) return 0;
+        if (m[0] == e) {return 0;}
         n[1] = 0;
-        for (k = 1; 15 > k; ++k) {
-          if (m[k] > 1 << k) return 0;
+        for (k = 1; k < 15; ++k) {
+          if (m[k] > 1 << k) {return 0;}
           n[k + 1] = n[k] + m[k];
         }
         for (l = 0; l < e; ++l) {
-          k = d[l], 0 < d[l] && (f[n[k]++] = l);
+          k = d[l], d[l] > 0 && (f[n[k]++] = l);
         }
-        if (1 == n[15]) return d = new O(), d.g = 0, d.value = f[0], J(a, g, 1, h, d), h;
+        if (n[15] == 1) {return d = new O(), d.g = 0, d.value = f[0], J(a, g, 1, h, d), h;}
         var r = -1,
           q = h - 1,
           t = 0,
@@ -25341,25 +25341,25 @@
           p <<= 1;
           v += p;
           p -= m[k];
-          if (0 > p) return 0;
-          for (; 0 < m[k]; --m[k]) {
+          if (p < 0) {return 0;}
+          for (; m[k] > 0; --m[k]) {
             d = new O(), d.g = k, d.value = f[l++], J(a, g + t, e, w, d), t = L(t, k);
           }
         }
         k = c + 1;
-        for (e = 2; 15 >= k; ++k, e <<= 1) {
+        for (e = 2; k <= 15; ++k, e <<= 1) {
           p <<= 1;
           v += p;
           p -= m[k];
-          if (0 > p) return 0;
-          for (; 0 < m[k]; --m[k]) {
+          if (p < 0) {return 0;}
+          for (; m[k] > 0; --m[k]) {
             d = new O();
             if ((t & q) != r) {
               g += w;
               r = k;
-              for (u = 1 << r - c; 15 > r;) {
+              for (u = 1 << r - c; r < 15;) {
                 u -= m[r];
-                if (0 >= u) break;
+                if (u <= 0) {break;}
                 ++r;
                 u <<= 1;
               }
@@ -25379,8 +25379,8 @@
         return v != 2 * n[15] - 1 ? 0 : h;
       }
       function Z(a, b, c, d, e) {
-        x(2328 >= e);
-        if (512 >= e) var f = V(512);else if (f = V(e), null == f) return 0;
+        x(e <= 2328);
+        if (e <= 512) {var f = V(512);}else if (f = V(e), f == null) {return 0;}
         return H(a, b, c, d, e, f);
       }
       function O() {
@@ -25396,9 +25396,9 @@
         this.pd = wa(xb, Fd);
       }
       function ma(a, b, c, d) {
-        x(null != a);
-        x(null != b);
-        x(2147483648 > d);
+        x(a != null);
+        x(b != null);
+        x(d < 2147483648);
         a.Ca = 254;
         a.I = 0;
         a.b = -8;
@@ -25407,11 +25407,11 @@
         a.pa = c;
         a.Jd = b;
         a.Yc = c + d;
-        a.Zc = 4 <= d ? c + d - 4 + 1 : c;
+        a.Zc = d >= 4 ? c + d - 4 + 1 : c;
         Qa(a);
       }
       function na(a, b) {
-        for (var c = 0; 0 < b--;) {
+        for (var c = 0; b-- > 0;) {
           c |= K(a, 128) << b;
         }
         return c;
@@ -25423,14 +25423,14 @@
       function cb(a, b, c, d) {
         var e,
           f = 0;
-        x(null != a);
-        x(null != b);
-        x(4294967288 > d);
+        x(a != null);
+        x(b != null);
+        x(d < 4294967288);
         a.Sb = d;
         a.Ra = 0;
         a.u = 0;
         a.h = 0;
-        4 < d && (d = 4);
+        d > 4 && (d = 4);
         for (e = 0; e < d; ++e) {
           f += b[c + e] << 8 * e;
         }
@@ -25440,13 +25440,13 @@
         a.pa = c;
       }
       function Vb(a) {
-        for (; 8 <= a.u && a.bb < a.Sb;) {
+        for (; a.u >= 8 && a.bb < a.Sb;) {
           a.Ra >>>= 8, a.Ra += a.oa[a.pa + a.bb] << ob - 8 >>> 0, ++a.bb, a.u -= 8;
         }
         db(a) && (a.h = 1, a.u = 0);
       }
       function D(a, b) {
-        x(0 <= b);
+        x(b >= 0);
         if (!a.h && b <= Gd) {
           var c = pb(a) & Hd[b];
           a.u += b;
@@ -25485,21 +25485,21 @@
         a.u >= Xb && (x(a.u >= Xb), Vb(a));
       }
       function Qa(a) {
-        x(null != a && null != a.oa);
-        a.pa < a.Zc ? (a.I = (a.oa[a.pa++] | a.I << 8) >>> 0, a.b += 8) : (x(null != a && null != a.oa), a.pa < a.Yc ? (a.b += 8, a.I = a.oa[a.pa++] | a.I << 8) : a.Ka ? a.b = 0 : (a.I <<= 8, a.b += 8, a.Ka = 1));
+        x(a != null && a.oa != null);
+        a.pa < a.Zc ? (a.I = (a.oa[a.pa++] | a.I << 8) >>> 0, a.b += 8) : (x(a != null && a.oa != null), a.pa < a.Yc ? (a.b += 8, a.I = a.oa[a.pa++] | a.I << 8) : a.Ka ? a.b = 0 : (a.I <<= 8, a.b += 8, a.Ka = 1));
       }
       function G(a) {
         return na(a, 1);
       }
       function K(a, b) {
         var c = a.Ca;
-        0 > a.b && Qa(a);
+        a.b < 0 && Qa(a);
         var d = a.b,
           e = c * b >>> 8,
           f = (a.I >>> d > e) + 0;
         f ? (c -= e, a.I -= e + 1 << d >>> 0) : c = e + 1;
         d = c;
-        for (e = 0; 256 <= d;) {
+        for (e = 0; d >= 256;) {
           e += 8, d >>= 8;
         }
         d = 7 ^ e + Id[d];
@@ -25524,17 +25524,17 @@
       }
       function Zb(a, b) {
         var c = 1 << b;
-        x(null != a);
-        x(0 < b);
+        x(a != null);
+        x(b > 0);
         a.X = V(c);
-        if (null == a.X) return 0;
+        if (a.X == null) {return 0;}
         a.Mb = 32 - b;
         a.Xa = b;
         return 1;
       }
       function $b(a, b) {
-        x(null != a);
-        x(null != b);
+        x(a != null);
+        x(b != null);
         x(a.Xa == b.Xa);
         I(b.X, 0, a.X, 0, 1 << b.Xa);
       }
@@ -25543,13 +25543,13 @@
         this.Xa = this.Mb = 0;
       }
       function bc(a, b, c, d) {
-        x(null != c);
-        x(null != d);
+        x(c != null);
+        x(d != null);
         var e = c[0],
           f = d[0];
-        0 == e && (e = (a * f + b / 2) / b);
-        0 == f && (f = (b * e + a / 2) / a);
-        if (0 >= e || 0 >= f) return 0;
+        e == 0 && (e = (a * f + b / 2) / b);
+        f == 0 && (f = (b * e + a / 2) / a);
+        if (e <= 0 || f <= 0) {return 0;}
         c[0] = e;
         d[0] = f;
         return 1;
@@ -25576,9 +25576,9 @@
         return (((a ^ b) & 4278124286) >>> 1) + (a & b) >>> 0;
       }
       function sa(a) {
-        if (0 <= a && 256 > a) return a;
-        if (0 > a) return 0;
-        if (255 < a) return 255;
+        if (a >= 0 && a < 256) {return a;}
+        if (a < 0) {return 0;}
+        if (a > 255) {return 255;}
       }
       function eb(a, b) {
         return sa(a + (a - b + 0.5 >> 1));
@@ -25636,13 +25636,13 @@
             g = a.Ea,
             t = a.K[0],
             v = a.w;
-          if (8 > f) for (a = (1 << a.b) - 1, v = (1 << f) - 1; b < h; ++b) {
+          if (f < 8) {for (a = (1 << a.b) - 1, v = (1 << f) - 1; b < h; ++b) {
             var p = 0,
               u;
             for (u = 0; u < g; ++u) {
               u & a || (p = d(k[l++])), m[n++] = e(t[p & v]), p >>= f;
             }
-          } else self["VP8LMapColor" + c](k, l, t, v, m, n, b, h, g);
+          }} else {self["VP8LMapColor" + c](k, l, t, v, m, n, b, h, g);}
         };
       }
       function Md(a, b, c, d, e) {
@@ -25689,9 +25689,9 @@
         }
       }
       function fb(a, b, c, d, e, f) {
-        if (0 == f) for (c = b + c; b < c;) {
+        if (f == 0) {for (c = b + c; b < c;) {
           f = a[b++], ra(d, (f[0] >> 24 | f[1] >> 8 & 65280 | f[2] << 8 & 16711680 | f[3] << 24) >>> 0), e += 32;
-        } else I(d, e, a, b, c);
+        }} else {I(d, e, a, b, c);}
       }
       function gb(a, b) {
         self[b][0] = self[a + "0"];
@@ -25766,7 +25766,7 @@
           w = a.ka + a.T,
           y = a.U,
           A = y + 1 >> 1;
-        0 == u ? g(h, k, null, null, l, m, n, r, l, m, n, r, e, f, null, null, y) : (g(b.ec, b.fc, h, k, q, t, v, p, l, m, n, r, e, f - d.A, e, f, y), ++c);
+        u == 0 ? g(h, k, null, null, l, m, n, r, l, m, n, r, e, f, null, null, y) : (g(b.ec, b.fc, h, k, q, t, v, p, l, m, n, r, e, f - d.A, e, f, y), ++c);
         for (; u + 2 < w; u += 2) {
           q = l, t = m, v = n, p = r, m += a.Rc, r += a.Rc, f += 2 * d.A, k += 2 * a.fa, g(h, k - a.fa, h, k, q, t, v, p, l, m, n, r, e, f - d.A, e, f, y);
         }
@@ -25777,7 +25777,7 @@
       function Xd(a, b, c) {
         var d = a.F,
           e = [a.J];
-        if (null != d) {
+        if (d != null) {
           var f = a.U,
             g = b.ba.S,
             h = g == ya || g == Ja;
@@ -25785,7 +25785,7 @@
           var k = [0],
             l = a.ka;
           k[0] = a.T;
-          a.Kb && (0 == l ? --k[0] : (--l, e[0] -= a.width), a.j + a.ka + a.T == a.o && (k[0] = a.o - a.j - l));
+          a.Kb && (l == 0 ? --k[0] : (--l, e[0] -= a.width), a.j + a.ka + a.T == a.o && (k[0] = a.o - a.j - l));
           var m = b.eb,
             l = b.fb + l * b.A;
           a = fc(d, e[0], a.width, f, k, m, l + (h ? 0 : 3), b.A);
@@ -25797,20 +25797,20 @@
       function gc(a) {
         var b = a.ma,
           c = b.ba.S,
-          d = 11 > c,
-          e = c == Ua || c == Va || c == ya || c == Db || 12 == c || hb(c);
+          d = c < 11,
+          e = c == Ua || c == Va || c == ya || c == Db || c == 12 || hb(c);
         b.memory = null;
         b.Ib = null;
         b.Jb = null;
         b.Nd = null;
-        if (!hc(b.Oa, a, e ? 11 : 12)) return 0;
+        if (!hc(b.Oa, a, e ? 11 : 12)) {return 0;}
         e && hb(c) && ic();
-        if (a.da) alert("todo:use_scaling");else {
+        if (a.da) {alert("todo:use_scaling");}else {
           if (d) {
             if (b.Ib = Vd, a.Kb) {
               c = a.U + 1 >> 1;
               b.memory = V(a.U + 2 * c);
-              if (null == b.memory) return 0;
+              if (b.memory == null) {return 0;}
               b.ec = b.memory;
               b.fc = 0;
               b.cc = b.ec;
@@ -25820,11 +25820,11 @@
               b.Ib = Wd;
               ic();
             }
-          } else alert("todo:EmitYUV");
+          } else {alert("todo:EmitYUV");}
           e && (b.Jb = Xd, d && Aa());
         }
         if (d && !jc) {
-          for (a = 0; 256 > a; ++a) {
+          for (a = 0; a < 256; ++a) {
             Yd[a] = 89858 * (a - 128) + Ba >> Wa, Zd[a] = -22014 * (a - 128) + Ba, $d[a] = -45773 * (a - 128), ae[a] = 113618 * (a - 128) + Ba >> Wa;
           }
           for (a = ta; a < Eb; ++a) {
@@ -25839,9 +25839,9 @@
           c = a.U,
           d = a.T;
         x(!(a.ka & 1));
-        if (0 >= c || 0 >= d) return 0;
+        if (c <= 0 || d <= 0) {return 0;}
         c = b.Ib(a, b);
-        null != b.Jb && b.Jb(a, b, c);
+        b.Jb != null && b.Jb(a, b, c);
         b.Dc += c;
         return 1;
       }
@@ -25849,40 +25849,40 @@
         a.ma.memory = null;
       }
       function mc(a, b, c, d) {
-        if (47 != D(a, 8)) return 0;
+        if (D(a, 8) != 47) {return 0;}
         b[0] = D(a, 14) + 1;
         c[0] = D(a, 14) + 1;
         d[0] = D(a, 1);
-        return 0 != D(a, 3) ? 0 : !a.h;
+        return D(a, 3) != 0 ? 0 : !a.h;
       }
       function ib(a, b) {
-        if (4 > a) return a + 1;
+        if (a < 4) {return a + 1;}
         var c = a - 2 >> 1;
         return (2 + (a & 1) << c) + D(b, c) + 1;
       }
       function nc(a, b) {
-        if (120 < b) return b - 120;
+        if (b > 120) {return b - 120;}
         var c = de[b - 1],
           c = (c >> 4) * a + (8 - (c & 15));
-        return 1 <= c ? c : 1;
+        return c >= 1 ? c : 1;
       }
       function ua(a, b, c) {
         var d = pb(c);
         b += d & 255;
         var e = a[b].g - 8;
-        0 < e && (qb(c, c.u + 8), d = pb(c), b += a[b].value, b += d & (1 << e) - 1);
+        e > 0 && (qb(c, c.u + 8), d = pb(c), b += a[b].value, b += d & (1 << e) - 1);
         qb(c, c.u + a[b].g);
         return a[b].value;
       }
       function ub(a, b, c) {
         c.g += a.g;
         c.value += a.value << b >>> 0;
-        x(8 >= c.g);
+        x(c.g <= 8);
         return a.g;
       }
       function ha(a, b, c) {
         var d = a.xc;
-        b = 0 == d ? 0 : a.vc[a.md * (c >> d) + (b >> d)];
+        b = d == 0 ? 0 : a.vc[a.md * (c >> d) + (b >> d)];
         x(b < a.Wb);
         return a.Ya[b];
       }
@@ -25894,7 +25894,7 @@
         var h = c,
           k = d;
         d = a.Ta;
-        for (c = a.Ua; 0 < e--;) {
+        for (c = a.Ua; e-- > 0;) {
           var l = a.gc[e],
             m = g,
             n = b,
@@ -25916,7 +25916,7 @@
                 w = k,
                 y = h,
                 A = v.Ea;
-              0 == p && (ee(r, q, null, null, 1, w, y), cc(r, q + 1, 0, 0, A - 1, w, y + 1), q += A, y += A, ++p);
+              p == 0 && (ee(r, q, null, null, 1, w, y), cc(r, q + 1, 0, 0, A - 1, w, y + 1), q += A, y += A, ++p);
               for (var E = 1 << v.b, B = E - 1, C = xa(A, v.b), N = v.K, v = v.w + (p >> v.b) * C; p < u;) {
                 var z = N,
                   Q = v,
@@ -25959,7 +25959,7 @@
               }
               break;
             case 3:
-              if (r == k && q == h && 0 < l.b) {
+              if (r == k && q == h && l.b > 0) {
                 y = (n - m) * xa(l.Ea, l.b);
                 t = h + (n - m) * t - y;
                 u = k;
@@ -25968,14 +25968,14 @@
                 w = h;
                 A = y;
                 p = [];
-                for (y = A - 1; 0 <= y; --y) {
+                for (y = A - 1; y >= 0; --y) {
                   p[y] = q[w + y];
                 }
-                for (y = A - 1; 0 <= y; --y) {
+                for (y = A - 1; y >= 0; --y) {
                   u[r + y] = p[y];
                 }
                 rc(l, m, n, k, t, k, h);
-              } else rc(l, m, n, r, q, k, h);
+              } else {rc(l, m, n, r, q, k, h);}
           }
           h = d;
           k = c;
@@ -25987,8 +25987,8 @@
           d = a.Ba + a.c * a.C,
           e = b - a.C;
         x(b <= a.l.o);
-        x(16 >= e);
-        if (0 < e) {
+        x(e <= 16);
+        if (e > 0) {
           var f = a.l,
             g = a.Ta,
             h = a.Ua,
@@ -26010,8 +26010,8 @@
           if (c) {
             h = h[0];
             c = a.ca;
-            if (11 > c.S) {
-              for (var m = c.f.RGBA, d = c.S, e = f.U, f = f.T, l = m.eb, n = m.A, r = f, m = m.fb + a.Ma * m.A; 0 < r--;) {
+            if (c.S < 11) {
+              for (var m = c.f.RGBA, d = c.S, e = f.U, f = f.T, l = m.eb, n = m.A, r = f, m = m.fb + a.Ma * m.A; r-- > 0;) {
                 var q = g,
                   t = h,
                   v = e,
@@ -26062,7 +26062,7 @@
                 m += n;
               }
               a.Ma += f;
-            } else alert("todo:EmitRescaledRowsYUVA");
+            } else {alert("todo:EmitRescaledRowsYUVA");}
             x(a.Ma <= c.height);
           }
         }
@@ -26071,19 +26071,19 @@
       }
       function yc(a) {
         var b;
-        if (0 < a.ua) return 0;
+        if (a.ua > 0) {return 0;}
         for (b = 0; b < a.Wb; ++b) {
           var c = a.Ya[b].G,
             d = a.Ya[b].H;
-          if (0 < c[1][d[1] + 0].g || 0 < c[2][d[2] + 0].g || 0 < c[3][d[3] + 0].g) return 0;
+          if (c[1][d[1] + 0].g > 0 || c[2][d[2] + 0].g > 0 || c[3][d[3] + 0].g > 0) {return 0;}
         }
         return 1;
       }
       function zc(a, b, c, d, e, f) {
-        if (0 != a.Z) {
+        if (a.Z != 0) {
           var g = a.qd,
             h = a.rd;
-          for (x(null != ia[a.Z]); b < c; ++b) {
+          for (x(ia[a.Z] != null); b < c; ++b) {
             ia[a.Z](g, h, d, e, d, e, f), g = d, h = e, e += f;
           }
           a.qd = g;
@@ -26092,7 +26092,7 @@
       }
       function Ib(a, b) {
         var c = a.l.ma,
-          d = 0 == c.Z || 1 == c.Z ? a.l.j : a.C,
+          d = c.Z == 0 || c.Z == 1 ? a.l.j : a.C,
           d = a.C < d ? d : a.C;
         x(b <= a.l.o);
         if (b > d) {
@@ -26102,8 +26102,8 @@
             h = a.V,
             k = a.Ba + a.c * d,
             l = a.gc;
-          x(1 == a.ab);
-          x(3 == l[0].hc);
+          x(a.ab == 1);
+          x(l[0].hc == 3);
           he(l[0], d, b, h, k, f, g);
           zc(c, d, b, f, g, e);
         }
@@ -26120,7 +26120,7 @@
         var q = c + d * f,
           t = 280 + m.ua,
           v = a.Pb ? h : 16777216,
-          p = 0 < m.ua ? m.Wa : null,
+          p = m.ua > 0 ? m.Wa : null,
           u = m.wc,
           w = n < q ? ha(m, k, h) : null;
         x(a.C < f);
@@ -26135,60 +26135,60 @@
               x(v.Pb);
               v.wd = v.m;
               v.xd = E;
-              0 < v.s.ua && $b(v.s.Wa, v.s.vb);
+              v.s.ua > 0 && $b(v.s.Wa, v.s.vb);
               v = h + ie;
             }
             k & u || (w = ha(m, k, h));
-            x(null != w);
+            x(w != null);
             w.Qb && (b[n] = w.qb, y = !0);
-            if (!y) if (Sa(l), w.jc) {
+            if (!y) {if (Sa(l), w.jc) {
               var A = l,
                 E = b,
                 B = n,
                 C = w.pd[pb(A) & xb - 1];
               x(w.jc);
-              256 > C.g ? (qb(A, A.u + C.g), E[B] = C.value, A = 0) : (qb(A, A.u + C.g - 256), x(256 <= C.value), A = C.value);
-              0 == A && (y = !0);
-            } else A = ua(w.G[0], w.H[0], l);
-            if (l.h) break;
-            if (y || 256 > A) {
-              if (!y) if (w.nd) b[n] = (w.qb | A << 8) >>> 0;else {
+              C.g < 256 ? (qb(A, A.u + C.g), E[B] = C.value, A = 0) : (qb(A, A.u + C.g - 256), x(C.value >= 256), A = C.value);
+              A == 0 && (y = !0);
+            } else {A = ua(w.G[0], w.H[0], l);}}
+            if (l.h) {break;}
+            if (y || A < 256) {
+              if (!y) {if (w.nd) {b[n] = (w.qb | A << 8) >>> 0;}else {
                 Sa(l);
                 y = ua(w.G[1], w.H[1], l);
                 Sa(l);
                 E = ua(w.G[2], w.H[2], l);
                 B = ua(w.G[3], w.H[3], l);
-                if (l.h) break;
+                if (l.h) {break;}
                 b[n] = (B << 24 | y << 16 | A << 8 | E) >>> 0;
-              }
+              }}
               y = !1;
               ++n;
               ++k;
-              if (k >= d && (k = 0, ++h, null != g && h <= f && !(h % 16) && g(a, h), null != p)) for (; r < n;) {
+              if (k >= d && (k = 0, ++h, g != null && h <= f && !(h % 16) && g(a, h), p != null)) {for (; r < n;) {
                 A = b[r++], p.X[(506832829 * A & 4294967295) >>> p.Mb] = A;
-              }
-            } else if (280 > A) {
+              }}
+            } else if (A < 280) {
               A = ib(A - 256, l);
               E = ua(w.G[4], w.H[4], l);
               Sa(l);
               E = ib(E, l);
               E = nc(d, E);
-              if (l.h) break;
-              if (n - c < E || e - n < A) break a;else for (B = 0; B < A; ++B) {
+              if (l.h) {break;}
+              if (n - c < E || e - n < A) {break a;}else {for (B = 0; B < A; ++B) {
                 b[n + B] = b[n + B - E];
-              }
+              }}
               n += A;
               for (k += A; k >= d;) {
-                k -= d, ++h, null != g && h <= f && !(h % 16) && g(a, h);
+                k -= d, ++h, g != null && h <= f && !(h % 16) && g(a, h);
               }
               x(n <= e);
               k & u && (w = ha(m, k, h));
-              if (null != p) for (; r < n;) {
+              if (p != null) {for (; r < n;) {
                 A = b[r++], p.X[(506832829 * A & 4294967295) >>> p.Mb] = A;
-              }
+              }}
             } else if (A < t) {
               y = A - 280;
-              for (x(null != p); r < n;) {
+              for (x(p != null); r < n;) {
                 A = b[r++], p.X[(506832829 * A & 4294967295) >>> p.Mb] = A;
               }
               A = n;
@@ -26196,28 +26196,28 @@
               x(!(y >>> E.Xa));
               b[A] = E.X[y];
               y = !0;
-            } else break a;
+            } else {break a;}
             y || x(l.h == db(l));
           }
-          if (a.Pb && l.h && n < e) x(a.m.h), a.a = 5, a.m = a.wd, a.$ = a.xd, 0 < a.s.ua && $b(a.s.vb, a.s.Wa);else if (l.h) break a;else null != g && g(a, h > f ? f : h), a.a = 0, a.$ = n - c;
+          if (a.Pb && l.h && n < e) {x(a.m.h), a.a = 5, a.m = a.wd, a.$ = a.xd, a.s.ua > 0 && $b(a.s.vb, a.s.Wa);}else if (l.h) {break a;}else {g != null && g(a, h > f ? f : h), a.a = 0, a.$ = n - c;}
           return 1;
         }
         a.a = 3;
         return 0;
       }
       function Ac(a) {
-        x(null != a);
+        x(a != null);
         a.vc = null;
         a.yc = null;
         a.Ya = null;
         var b = a.Wa;
-        null != b && (b.X = null);
+        b != null && (b.X = null);
         a.vb = null;
-        x(null != a);
+        x(a != null);
       }
       function Bc() {
         var a = new je();
-        if (null == a) return null;
+        if (a == null) {return null;}
         a.a = 0;
         a.xb = Cc;
         gb("Predictor", "VP8LPredictors");
@@ -26244,7 +26244,7 @@
           m = null,
           n = 0;
         a: for (;;) {
-          if (c) for (; f && D(k, 1);) {
+          if (c) {for (; f && D(k, 1);) {
             var r = g,
               q = h,
               t = d,
@@ -26252,14 +26252,14 @@
               p = t.m,
               u = t.gc[t.ab],
               w = D(p, 2);
-            if (t.Oc & 1 << w) f = 0;else {
+            if (t.Oc & 1 << w) {f = 0;}else {
               t.Oc |= 1 << w;
               u.hc = w;
               u.Ea = r[0];
               u.nc = q[0];
               u.K = [null];
               ++t.ab;
-              x(4 >= t.ab);
+              x(t.ab <= 4);
               switch (w) {
                 case 0:
                 case 1:
@@ -26269,7 +26269,7 @@
                   break;
                 case 3:
                   var y = D(p, 8) + 1,
-                    A = 16 < y ? 0 : 4 < y ? 1 : 2 < y ? 2 : 3;
+                    A = y > 16 ? 0 : y > 4 ? 1 : y > 2 ? 2 : 3;
                   r[0] = xa(u.Ea, A);
                   u.b = A;
                   var v = rb(y, 1, 0, t, u.K),
@@ -26280,7 +26280,7 @@
                       N = u,
                       z = 1 << (8 >> N.b),
                       Q = V(z);
-                    if (null == Q) E = 0;else {
+                    if (Q == null) {E = 0;}else {
                       var S = N.K[0],
                         K = N.w;
                       Q[0] = N.K[0][0];
@@ -26304,15 +26304,15 @@
               }
               f = v;
             }
-          }
+          }}
           g = g[0];
           h = h[0];
-          if (f && D(k, 1) && (n = D(k, 4), f = 1 <= n && 11 >= n, !f)) {
+          if (f && D(k, 1) && (n = D(k, 4), f = n >= 1 && n <= 11, !f)) {
             d.a = 3;
             break a;
           }
           var H;
-          if (H = f) b: {
+          if (H = f) {b: {
             var F = d,
               G = g,
               L = h,
@@ -26333,7 +26333,7 @@
                   ga = xa(G, ca),
                   ka = xa(L, ca),
                   qa = ga * ka;
-                if (!rb(ga, ka, 0, F, P)) break c;
+                if (!rb(ga, ka, 0, F, P)) {break c;}
                 P = P[0];
                 R.xc = ca;
                 for (Da = 0; Da < qa; ++Da) {
@@ -26342,18 +26342,18 @@
                   ia >= W && (W = ia + 1);
                 }
               }
-              if (X.h) break c;
-              for (ba = 0; 5 > ba; ++ba) {
+              if (X.h) {break c;}
+              for (ba = 0; ba < 5; ++ba) {
                 var Y = Dc[ba];
-                !ba && 0 < J && (Y += 1 << J);
+                !ba && J > 0 && (Y += 1 << J);
                 aa < Y && (aa = Y);
               }
               var ma = wa(W * na, O);
               var ua = W,
                 va = wa(ua, Ub);
-              if (null == va) var la = null;else x(65536 >= ua), la = va;
+              if (va == null) {var la = null;}else {x(ua <= 65536), la = va;}
               var ha = V(aa);
-              if (null == la || null == ha || null == ma) {
+              if (la == null || ha == null || ma == null) {
                 F.a = 1;
                 break c;
               }
@@ -26365,11 +26365,11 @@
                   Fa = 0,
                   ra = 1,
                   Ha = 0;
-                for (ba = 0; 5 > ba; ++ba) {
+                for (ba = 0; ba < 5; ++ba) {
                   Y = Dc[ba];
                   da[ba] = pa;
                   ea[ba] = U;
-                  !ba && 0 < J && (Y += 1 << J);
+                  !ba && J > 0 && (Y += 1 << J);
                   d: {
                     var sa,
                       za = Y,
@@ -26384,14 +26384,14 @@
                     if (fb) {
                       var gb = D(Ka, 1) + 1,
                         hb = D(Ka, 1),
-                        Ja = D(Ka, 0 == hb ? 1 : 8);
+                        Ja = D(Ka, hb == 0 ? 1 : 8);
                       oa[Ja] = 1;
-                      2 == gb && (Ja = D(Ka, 8), oa[Ja] = 1);
+                      gb == 2 && (Ja = D(Ka, 8), oa[Ja] = 1);
                       var ya = 1;
                     } else {
                       var Ua = V(19),
                         Va = D(Ka, 4) + 4;
-                      if (19 < Va) {
+                      if (Va > 19) {
                         ta.a = 3;
                         var Aa = 0;
                         break d;
@@ -26410,25 +26410,25 @@
                         Ya = 8,
                         Za = wa(128, O);
                       e: for (;;) {
-                        if (!Z(Za, 0, 7, ib, 19)) break e;
+                        if (!Z(Za, 0, 7, ib, 19)) {break e;}
                         if (D(La, 1)) {
                           var kb = 2 + 2 * D(La, 3),
                             Ba = 2 + D(La, kb);
-                          if (Ba > Ca) break e;
-                        } else Ba = Ca;
+                          if (Ba > Ca) {break e;}
+                        } else {Ba = Ca;}
                         for (sb = 0; sb < Ca && Ba--;) {
                           Sa(La);
                           var $a = Za[0 + (pb(La) & 127)];
                           qb(La, La.u + $a.g);
                           var jb = $a.value;
-                          if (16 > jb) Xa[sb++] = jb, 0 != jb && (Ya = jb);else {
-                            var lb = 16 == jb,
+                          if (jb < 16) {Xa[sb++] = jb, jb != 0 && (Ya = jb);}else {
+                            var lb = jb == 16,
                               ab = jb - 16,
                               mb = oe[ab],
                               bb = D(La, pe[ab]) + mb;
-                            if (sb + bb > Ca) break e;else for (var nb = lb ? Ya : 0; 0 < bb--;) {
+                            if (sb + bb > Ca) {break e;}else {for (var nb = lb ? Ya : 0; bb-- > 0;) {
                               Xa[sb++] = nb;
-                            }
+                            }}
                           }
                         }
                         Oa = 1;
@@ -26438,13 +26438,13 @@
                       ya = Oa;
                     }
                     (ya = ya && !Ka.h) && (Ia = Z(db, eb, 8, oa, za));
-                    ya && 0 != Ia ? Aa = Ia : (ta.a = 3, Aa = 0);
+                    ya && Ia != 0 ? Aa = Ia : (ta.a = 3, Aa = 0);
                   }
-                  if (0 == Aa) break c;
-                  ra && 1 == qe[ba] && (ra = 0 == pa[U].g);
+                  if (Aa == 0) {break c;}
+                  ra && qe[ba] == 1 && (ra = pa[U].g == 0);
                   Fa += pa[U].g;
                   U += Aa;
-                  if (3 >= ba) {
+                  if (ba <= 3) {
                     var Pa = ha[0],
                       tb;
                     for (tb = 1; tb < Y; ++tb) {
@@ -26455,8 +26455,8 @@
                 }
                 ja.nd = ra;
                 ja.Qb = 0;
-                ra && (ja.qb = (da[3][ea[3] + 0].value << 24 | da[1][ea[1] + 0].value << 16 | da[2][ea[2] + 0].value) >>> 0, 0 == Fa && 256 > da[0][ea[0] + 0].value && (ja.Qb = 1, ja.qb += da[0][ea[0] + 0].value << 8));
-                ja.jc = !ja.Qb && 6 > Ha;
+                ra && (ja.qb = (da[3][ea[3] + 0].value << 24 | da[1][ea[1] + 0].value << 16 | da[2][ea[2] + 0].value) >>> 0, Fa == 0 && da[0][ea[0] + 0].value < 256 && (ja.Qb = 1, ja.qb += da[0][ea[0] + 0].value << 8));
+                ja.jc = !ja.Qb && Ha < 6;
                 if (ja.jc) {
                   var Ga,
                     Ea = ja;
@@ -26464,7 +26464,7 @@
                     var Ma = Ga,
                       Na = Ea.pd[Ma],
                       vb = Ea.G[0][Ea.H[0] + Ma];
-                    256 <= vb.value ? (Na.g = vb.g + 256, Na.value = vb.value) : (Na.g = 0, Na.value = 0, Ma >>= ub(vb, 8, Na), Ma >>= ub(Ea.G[1][Ea.H[1] + Ma], 16, Na), Ma >>= ub(Ea.G[2][Ea.H[2] + Ma], 0, Na), ub(Ea.G[3][Ea.H[3] + Ma], 24, Na));
+                    vb.value >= 256 ? (Na.g = vb.g + 256, Na.value = vb.value) : (Na.g = 0, Na.value = 0, Ma >>= ub(vb, 8, Na), Ma >>= ub(Ea.G[1][Ea.H[1] + Ma], 16, Na), Ma >>= ub(Ea.G[2][Ea.H[2] + Ma], 0, Na), ub(Ea.G[3][Ea.H[3] + Ma], 24, Na));
                   }
                 }
               }
@@ -26476,19 +26476,19 @@
               break b;
             }
             H = 0;
-          }
+          }}
           f = H;
           if (!f) {
             d.a = 3;
             break a;
           }
-          if (0 < n) {
+          if (n > 0) {
             if (l.ua = 1 << n, !Zb(l.Wa, n)) {
               d.a = 1;
               f = 0;
               break a;
             }
-          } else l.ua = 0;
+          } else {l.ua = 0;}
           var Qa = d,
             cb = g,
             ob = h,
@@ -26497,13 +26497,13 @@
           Qa.c = cb;
           Qa.i = ob;
           Ra.md = xa(cb, Ta);
-          Ra.wc = 0 == Ta ? -1 : (1 << Ta) - 1;
+          Ra.wc = Ta == 0 ? -1 : (1 << Ta) - 1;
           if (c) {
             d.xb = re;
             break a;
           }
           m = V(g * h);
-          if (null == m) {
+          if (m == null) {
             d.a = 1;
             f = 0;
             break a;
@@ -26511,7 +26511,7 @@
           f = (f = Jb(d, m, 0, g, h, h, null)) && !k.h;
           break a;
         }
-        f ? (null != e ? e[0] = m : (x(null == m), x(c)), d.$ = 0, c || Ac(l)) : Ac(l);
+        f ? (e != null ? e[0] = m : (x(m == null), x(c)), d.$ = 0, c || Ac(l)) : Ac(l);
         return f;
       }
       function Ec(a, b) {
@@ -26519,7 +26519,7 @@
           d = c + b + 16 * b;
         x(a.c <= b);
         a.V = V(d);
-        if (null == a.V) return a.Ta = null, a.Ua = 0, a.a = 1, 0;
+        if (a.V == null) {return a.Ta = null, a.Ua = 0, a.a = 1, 0;}
         a.Ta = a.V;
         a.Ua = a.Ba + c + b;
         return 1;
@@ -26529,8 +26529,8 @@
           d = b - c,
           e = a.V,
           f = a.Ba + a.c * c;
-        for (x(b <= a.l.o); 0 < d;) {
-          var g = 16 < d ? 16 : d,
+        for (x(b <= a.l.o); d > 0;) {
+          var g = d > 16 ? 16 : d,
             h = a.l.ma,
             k = a.l.width,
             l = k * g,
@@ -26553,8 +26553,8 @@
           d = [0],
           e = [0];
         a: for (;;) {
-          if (null == a) return 0;
-          if (null == b) return a.a = 2, 0;
+          if (a == null) {return 0;}
+          if (b == null) {return a.a = 2, 0;}
           a.l = b;
           a.a = 0;
           cb(a.m, b.data, b.w, b.ha);
@@ -26565,10 +26565,10 @@
           a.xb = Cc;
           b.width = c[0];
           b.height = d[0];
-          if (!rb(c[0], d[0], 1, a, null)) break a;
+          if (!rb(c[0], d[0], 1, a, null)) {break a;}
           return 1;
         }
-        x(0 != a.a);
+        x(a.a != 0);
         return 0;
       }
       function ue() {
@@ -26675,7 +26675,7 @@
         this.Ga = this.Vc = 0;
       }
       function ga(a, b) {
-        return 0 > a ? 0 : a > b ? b : a;
+        return a < 0 ? 0 : a > b ? b : a;
       }
       function Oa() {
         this.T = this.U = this.ka = this.height = this.width = 0;
@@ -26695,39 +26695,39 @@
       }
       function Ce() {
         var a = new Be();
-        null != a && (a.a = 0, a.sc = "OK", a.cb = 0, a.Xb = 0, oa || (oa = De));
+        a != null && (a.a = 0, a.sc = "OK", a.cb = 0, a.Xb = 0, oa || (oa = De));
         return a;
       }
       function T(a, b, c) {
-        0 == a.a && (a.a = b, a.sc = c, a.cb = 0);
+        a.a == 0 && (a.a = b, a.sc = c, a.cb = 0);
         return 0;
       }
       function Jc(a, b, c) {
-        return 3 <= c && 157 == a[b + 0] && 1 == a[b + 1] && 42 == a[b + 2];
+        return c >= 3 && a[b + 0] == 157 && a[b + 1] == 1 && a[b + 2] == 42;
       }
       function Kc(a, b) {
-        if (null == a) return 0;
+        if (a == null) {return 0;}
         a.a = 0;
         a.sc = "OK";
-        if (null == b) return T(a, 2, "null VP8Io passed to VP8GetHeaders()");
+        if (b == null) {return T(a, 2, "null VP8Io passed to VP8GetHeaders()");}
         var c = b.data;
         var d = b.w;
         var e = b.ha;
-        if (4 > e) return T(a, 7, "Truncated header.");
+        if (e < 4) {return T(a, 7, "Truncated header.");}
         var f = c[d + 0] | c[d + 1] << 8 | c[d + 2] << 16;
         var g = a.Od;
         g.Rb = !(f & 1);
         g.td = f >> 1 & 7;
         g.yd = f >> 4 & 1;
         g.ub = f >> 5;
-        if (3 < g.td) return T(a, 3, "Incorrect keyframe parameters.");
-        if (!g.yd) return T(a, 4, "Frame not displayable.");
+        if (g.td > 3) {return T(a, 3, "Incorrect keyframe parameters.");}
+        if (!g.yd) {return T(a, 4, "Frame not displayable.");}
         d += 3;
         e -= 3;
         var h = a.Kc;
         if (g.Rb) {
-          if (7 > e) return T(a, 7, "cannot parse picture header");
-          if (!Jc(c, d, e)) return T(a, 3, "Bad code word");
+          if (e < 7) {return T(a, 7, "cannot parse picture header");}
+          if (!Jc(c, d, e)) {return T(a, 3, "Bad code word");}
           h.c = (c[d + 4] << 8 | c[d + 3]) & 16383;
           h.Td = c[d + 4] >> 6;
           h.i = (c[d + 6] << 8 | c[d + 5]) & 16383;
@@ -26751,14 +26751,14 @@
           f = a.Pa;
           M(f.jb, 0, 255, f.jb.length);
           f = a.Qa;
-          x(null != f);
+          x(f != null);
           f.Cb = 0;
           f.Bb = 0;
           f.Fb = 1;
           M(f.Zb, 0, 0, f.Zb.length);
           M(f.Lb, 0, 0, f.Lb);
         }
-        if (g.ub > e) return T(a, 7, "bad partition length");
+        if (g.ub > e) {return T(a, 7, "bad partition length");}
         f = a.m;
         ma(f, c, d, g.ub);
         d += g.ub;
@@ -26767,40 +26767,40 @@
         h = a.Qa;
         var k = a.Pa,
           l;
-        x(null != f);
-        x(null != h);
+        x(f != null);
+        x(h != null);
         h.Cb = G(f);
         if (h.Cb) {
           h.Bb = G(f);
           if (G(f)) {
             h.Fb = G(f);
-            for (l = 0; 4 > l; ++l) {
+            for (l = 0; l < 4; ++l) {
               h.Zb[l] = G(f) ? ca(f, 7) : 0;
             }
-            for (l = 0; 4 > l; ++l) {
+            for (l = 0; l < 4; ++l) {
               h.Lb[l] = G(f) ? ca(f, 6) : 0;
             }
           }
-          if (h.Bb) for (l = 0; 3 > l; ++l) {
+          if (h.Bb) {for (l = 0; l < 3; ++l) {
             k.jb[l] = G(f) ? na(f, 8) : 255;
-          }
-        } else h.Bb = 0;
-        if (f.Ka) return T(a, 3, "cannot parse segment header");
+          }}
+        } else {h.Bb = 0;}
+        if (f.Ka) {return T(a, 3, "cannot parse segment header");}
         h = a.ed;
         h.zd = G(f);
         h.Tb = na(f, 6);
         h.wb = na(f, 3);
         h.Pc = G(f);
         if (h.Pc && G(f)) {
-          for (k = 0; 4 > k; ++k) {
+          for (k = 0; k < 4; ++k) {
             G(f) && (h.vd[k] = ca(f, 6));
           }
-          for (k = 0; 4 > k; ++k) {
+          for (k = 0; k < 4; ++k) {
             G(f) && (h.od[k] = ca(f, 6));
           }
         }
-        a.L = 0 == h.Tb ? 0 : h.zd ? 1 : 2;
-        if (f.Ka) return T(a, 3, "cannot parse filter header");
+        a.L = h.Tb == 0 ? 0 : h.zd ? 1 : 2;
+        if (f.Ka) {return T(a, 3, "cannot parse filter header");}
         l = d;
         var m = e;
         e = l;
@@ -26808,7 +26808,7 @@
         h = m;
         a.Xb = (1 << na(a.m, 2)) - 1;
         k = a.Xb;
-        if (m < 3 * k) c = 7;else {
+        if (m < 3 * k) {c = 7;}else {
           l += 3 * k;
           h -= 3 * k;
           for (m = 0; m < k; ++m) {
@@ -26822,7 +26822,7 @@
           ma(a.Jc[+k], c, l, h);
           c = l < d ? 0 : 5;
         }
-        if (0 != c) return T(a, c, "cannot parse partitions");
+        if (c != 0) {return T(a, c, "cannot parse partitions");}
         l = a.m;
         c = na(l, 7);
         e = G(l) ? ca(l, 4) : 0;
@@ -26831,36 +26831,36 @@
         k = G(l) ? ca(l, 4) : 0;
         l = G(l) ? ca(l, 4) : 0;
         m = a.Qa;
-        for (n = 0; 4 > n; ++n) {
+        for (n = 0; n < 4; ++n) {
           if (m.Cb) {
             var r = m.Zb[n];
             m.Fb || (r += c);
-          } else if (0 < n) {
+          } else if (n > 0) {
             a.pb[n] = a.pb[0];
             continue;
-          } else r = c;
+          } else {r = c;}
           var q = a.pb[n];
           q.Sc[0] = Lb[ga(r + e, 127)];
           q.Sc[1] = Mb[ga(r + 0, 127)];
           q.Eb[0] = 2 * Lb[ga(r + d, 127)];
           q.Eb[1] = 101581 * Mb[ga(r + h, 127)] >> 16;
-          8 > q.Eb[1] && (q.Eb[1] = 8);
+          q.Eb[1] < 8 && (q.Eb[1] = 8);
           q.Qc[0] = Lb[ga(r + k, 117)];
           q.Qc[1] = Mb[ga(r + l, 127)];
           q.lc = r + l;
         }
-        if (!g.Rb) return T(a, 4, "Not a key frame.");
+        if (!g.Rb) {return T(a, 4, "Not a key frame.");}
         G(f);
         g = a.Pa;
-        for (c = 0; 4 > c; ++c) {
-          for (e = 0; 8 > e; ++e) {
-            for (d = 0; 3 > d; ++d) {
-              for (h = 0; 11 > h; ++h) {
+        for (c = 0; c < 4; ++c) {
+          for (e = 0; e < 8; ++e) {
+            for (d = 0; d < 3; ++d) {
+              for (h = 0; h < 11; ++h) {
                 k = K(f, Ee[c][e][d][h]) ? na(f, 8) : Fe[c][e][d][h], g.Wc[c][e].Yb[d][h] = k;
               }
             }
           }
-          for (e = 0; 17 > e; ++e) {
+          for (e = 0; e < 17; ++e) {
             g.Xc[c][e] = g.Wc[c][Ge[e]];
           }
         }
@@ -26870,10 +26870,10 @@
       }
       function De(a, b, c, d, e, f, g) {
         var h = b[e].Yb[c];
-        for (c = 0; 16 > e; ++e) {
-          if (!K(a, h[c + 0])) return e;
+        for (c = 0; e < 16; ++e) {
+          if (!K(a, h[c + 0])) {return e;}
           for (; !K(a, h[c + 1]);) {
-            if (h = b[++e].Yb[0], c = 0, 16 == e) return 16;
+            if (h = b[++e].Yb[0], c = 0, e == 16) {return 16;}
           }
           var k = b[e + 1].Yb;
           if (K(a, h[c + 2])) {
@@ -26892,13 +26892,13 @@
                   r += r + K(l, m[h]);
                 }
                 r += 3 + (8 << n);
-              } else K(l, m[n + 7]) ? (r = 7 + 2 * K(l, 165), r += K(l, 145)) : r = 5 + K(l, 159);
-            } else K(l, m[n + 4]) ? r = 3 + K(l, m[n + 5]) : r = 2;
+              } else {K(l, m[n + 7]) ? (r = 7 + 2 * K(l, 165), r += K(l, 145)) : r = 5 + K(l, 159);}
+            } else {K(l, m[n + 4]) ? r = 3 + K(l, m[n + 5]) : r = 2;}
             h = k[2];
-          } else r = 1, h = k[1];
+          } else {r = 1, h = k[1];}
           k = g + Ie[e];
           l = a;
-          0 > l.b && Qa(l);
+          l.b < 0 && Qa(l);
           var m = l.b,
             n = l.Ca >> 1,
             q = n - (l.I >> m) >> 31;
@@ -26906,7 +26906,7 @@
           l.Ca += q;
           l.Ca |= 1;
           l.I -= (n + 1 & q) << m;
-          f[k] = ((r ^ q) - q) * d[(0 < e) + 0];
+          f[k] = ((r ^ q) - q) * d[(e > 0) + 0];
         }
         return 16;
       }
@@ -26936,12 +26936,12 @@
             if (n.Za) {
               var r = n.Ob,
                 q = 0;
-              for (h = 0; 4 > h; ++h) {
+              for (h = 0; h < 4; ++h) {
                 var t = m[0 + h];
                 var v;
-                for (v = 0; 4 > v; ++v) {
+                for (v = 0; v < 4; ++v) {
                   t = Ke[k[l + v]][t];
-                  for (var p = Mc[K(g, t[0])]; 0 < p;) {
+                  for (var p = Mc[K(g, t[0])]; p > 0;) {
                     p = Mc[2 * p + K(g, t[p])];
                   }
                   t = -p;
@@ -26951,17 +26951,17 @@
                 q += 4;
                 m[0 + h] = t;
               }
-            } else t = K(g, 156) ? K(g, 128) ? 1 : 3 : K(g, 163) ? 2 : 0, n.Ob[0] = t, M(k, l, t, 4), M(m, 0, t, 4);
+            } else {t = K(g, 156) ? K(g, 128) ? 1 : 3 : K(g, 163) ? 2 : 0, n.Ob[0] = t, M(k, l, t, 4), M(m, 0, t, 4);}
             n.Dd = K(g, 142) ? K(g, 114) ? K(g, 183) ? 1 : 3 : 2 : 0;
           }
-          if (e.m.Ka) return T(a, 7, "Premature end-of-partition0 encountered.");
+          if (e.m.Ka) {return T(a, 7, "Premature end-of-partition0 encountered.");}
           for (; a.ja < a.za; ++a.ja) {
             d = a;
             e = c;
             g = d.rb[d.sb - 1];
             k = d.rb[d.sb + d.ja];
             f = d.ya[d.aa + d.ja];
-            if (l = d.kc ? f.Ad : 0) g.la = k.la = 0, f.Za || (g.Na = k.Na = 0), f.Hc = 0, f.Gc = 0, f.ia = 0;else {
+            if (l = d.kc ? f.Ad : 0) {g.la = k.la = 0, f.Za || (g.Na = k.Na = 0), f.Hc = 0, f.Gc = 0, f.ia = 0;}else {
               var u,
                 w,
                 g = k,
@@ -26981,10 +26981,10 @@
                 p = V(16);
                 var E = g.Na + q.Na;
                 E = oa(k, l[1], E, n.Eb, 0, p, 0);
-                g.Na = q.Na = (0 < E) + 0;
-                if (1 < E) Nc(p, 0, h, r);else {
+                g.Na = q.Na = (E > 0) + 0;
+                if (E > 1) {Nc(p, 0, h, r);}else {
                   var B = p[0] + 3 >> 3;
-                  for (p = 0; 256 > p; p += 16) {
+                  for (p = 0; p < 256; p += 16) {
                     h[r + p] = B;
                   }
                 }
@@ -26993,10 +26993,10 @@
               }
               var C = g.la & 15;
               var N = q.la & 15;
-              for (p = 0; 4 > p; ++p) {
+              for (p = 0; p < 4; ++p) {
                 var z = N & 1;
-                for (B = w = 0; 4 > B; ++B) {
-                  E = z + (C & 1), E = oa(k, A, E, n.Sc, y, h, r), z = E > y, C = C >> 1 | z << 7, w = w << 2 | (3 < E ? 3 : 1 < E ? 2 : 0 != h[r + 0]), r += 16;
+                for (B = w = 0; B < 4; ++B) {
+                  E = z + (C & 1), E = oa(k, A, E, n.Sc, y, h, r), z = E > y, C = C >> 1 | z << 7, w = w << 2 | (E > 3 ? 3 : E > 1 ? 2 : h[r + 0] != 0), r += 16;
                 }
                 C >>= 4;
                 N = N >> 1 | z << 7;
@@ -27004,14 +27004,14 @@
               }
               A = C;
               y = N >> 4;
-              for (u = 0; 4 > u; u += 2) {
+              for (u = 0; u < 4; u += 2) {
                 w = 0;
                 C = g.la >> 4 + u;
                 N = q.la >> 4 + u;
-                for (p = 0; 2 > p; ++p) {
+                for (p = 0; p < 2; ++p) {
                   z = N & 1;
-                  for (B = 0; 2 > B; ++B) {
-                    E = z + (C & 1), E = oa(k, l[2], E, n.Qc, 0, h, r), z = 0 < E, C = C >> 1 | z << 3, w = w << 2 | (3 < E ? 3 : 1 < E ? 2 : 0 != h[r + 0]), r += 16;
+                  for (B = 0; B < 2; ++B) {
+                    E = z + (C & 1), E = oa(k, l[2], E, n.Qc, 0, h, r), z = E > 0, C = C >> 1 | z << 3, w = w << 2 | (E > 3 ? 3 : E > 1 ? 2 : h[r + 0] != 0), r += 16;
                   }
                   C >>= 2;
                   N = N >> 1 | z << 5;
@@ -27027,16 +27027,16 @@
               m.ia = t & 43690 ? 0 : n.ia;
               l = !(v | t);
             }
-            0 < d.L && (d.wa[d.Y + d.ja] = d.gd[f.$b][f.Za], d.wa[d.Y + d.ja].La |= !l);
-            if (e.Ka) return T(a, 7, "Premature end-of-file encountered.");
+            d.L > 0 && (d.wa[d.Y + d.ja] = d.gd[f.$b][f.Za], d.wa[d.Y + d.ja].La |= !l);
+            if (e.Ka) {return T(a, 7, "Premature end-of-file encountered.");}
           }
           Lc(a);
           c = a;
           d = b;
           e = 1;
           f = c.D;
-          g = 0 < c.L && c.M >= c.zb && c.M <= c.Va;
-          if (0 == c.Aa) a: {
+          g = c.L > 0 && c.M >= c.zb && c.M <= c.Va;
+          if (c.Aa == 0) {a: {
             f.M = c.M, f.uc = g, Oc(c, f), e = 1;
             w = c.D;
             f = w.Nb;
@@ -27052,10 +27052,10 @@
             r = c.Ha;
             q = c.Ia - k + B;
             C = w.M;
-            N = 0 == C;
+            N = C == 0;
             v = C >= c.Va - 1;
-            2 == c.Aa && Oc(c, w);
-            if (w.uc) for (E = c, z = E.D.M, x(E.D.uc), w = E.yb; w < E.Hb; ++w) {
+            c.Aa == 2 && Oc(c, w);
+            if (w.uc) {for (E = c, z = E.D.M, x(E.D.uc), w = E.yb; w < E.Hb; ++w) {
               var Q = E;
               y = w;
               A = z;
@@ -27067,21 +27067,21 @@
                 H = Q.ta + 16 * D * u + 16 * y,
                 J = S.dd,
                 G = S.tc;
-              if (0 != G) if (x(3 <= G), 1 == Q.L) 0 < y && Pc(F, H, u, G + 4), S.La && Qc(F, H, u, G), 0 < A && Rc(F, H, u, G + 4), S.La && Sc(F, H, u, G);else {
+              if (G != 0) {if (x(G >= 3), Q.L == 1) {y > 0 && Pc(F, H, u, G + 4), S.La && Qc(F, H, u, G), A > 0 && Rc(F, H, u, G + 4), S.La && Sc(F, H, u, G);} else {
                 var L = Q.B,
                   O = Q.qa,
                   P = Q.ra + 8 * D * L + 8 * y,
                   R = Q.Ha,
                   Q = Q.Ia + 8 * D * L + 8 * y,
                   D = S.ld;
-                0 < y && (Tc(F, H, u, G + 4, J, D), Uc(O, P, R, Q, L, G + 4, J, D));
+                y > 0 && (Tc(F, H, u, G + 4, J, D), Uc(O, P, R, Q, L, G + 4, J, D));
                 S.La && (Vc(F, H, u, G, J, D), Wc(O, P, R, Q, L, G, J, D));
-                0 < A && (Xc(F, H, u, G + 4, J, D), Yc(O, P, R, Q, L, G + 4, J, D));
+                A > 0 && (Xc(F, H, u, G + 4, J, D), Yc(O, P, R, Q, L, G + 4, J, D));
                 S.La && (Zc(F, H, u, G, J, D), $c(O, P, R, Q, L, G, J, D));
-              }
-            }
+              }}
+            }}
             c.ia && alert("todo:DitherRow");
-            if (null != d.put) {
+            if (d.put != null) {
               w = 16 * C;
               C = 16 * (C + 1);
               N ? (d.y = c.sa, d.O = c.ta + p, d.f = c.qa, d.N = c.ra + B, d.ea = c.Ha, d.W = c.Ia + B) : (w -= t, d.y = l, d.O = m, d.f = n, d.N = h, d.ea = r, d.W = q);
@@ -27089,80 +27089,80 @@
               C > d.o && (C = d.o);
               d.F = null;
               d.J = null;
-              if (null != c.Fa && 0 < c.Fa.length && w < C && (d.J = Le(c, d, w, C - w), d.F = c.mb, null == d.F && 0 == d.F.length)) {
+              if (c.Fa != null && c.Fa.length > 0 && w < C && (d.J = Le(c, d, w, C - w), d.F = c.mb, d.F == null && d.F.length == 0)) {
                 e = T(c, 3, "Could not decode alpha data.");
                 break a;
               }
-              w < d.j && (t = d.j - w, w = d.j, x(!(t & 1)), d.O += c.R * t, d.N += c.B * (t >> 1), d.W += c.B * (t >> 1), null != d.F && (d.J += d.width * t));
-              w < C && (d.O += d.v, d.N += d.v >> 1, d.W += d.v >> 1, null != d.F && (d.J += d.v), d.ka = w - d.j, d.U = d.va - d.v, d.T = C - w, e = d.put(d));
+              w < d.j && (t = d.j - w, w = d.j, x(!(t & 1)), d.O += c.R * t, d.N += c.B * (t >> 1), d.W += c.B * (t >> 1), d.F != null && (d.J += d.width * t));
+              w < C && (d.O += d.v, d.N += d.v >> 1, d.W += d.v >> 1, d.F != null && (d.J += d.v), d.ka = w - d.j, d.U = d.va - d.v, d.T = C - w, e = d.put(d));
             }
             f + 1 != c.Ic || v || (I(c.sa, c.ta - g, l, m + 16 * c.R, g), I(c.qa, c.ra - k, n, h + 8 * c.B, k), I(c.Ha, c.Ia - k, r, q + 8 * c.B, k));
-          }
-          if (!e) return T(a, 6, "Output aborted.");
+          }}
+          if (!e) {return T(a, 6, "Output aborted.");}
         }
         return 1;
       }
       function Me(a, b) {
-        if (null == a) return 0;
-        if (null == b) return T(a, 2, "NULL VP8Io parameter in VP8Decode().");
-        if (!a.cb && !Kc(a, b)) return 0;
+        if (a == null) {return 0;}
+        if (b == null) {return T(a, 2, "NULL VP8Io parameter in VP8Decode().");}
+        if (!a.cb && !Kc(a, b)) {return 0;}
         x(a.cb);
-        if (null == b.ac || b.ac(b)) {
+        if (b.ac == null || b.ac(b)) {
           b.ob && (a.L = 0);
           var c = Ya[a.L];
-          2 == a.L ? (a.yb = 0, a.zb = 0) : (a.yb = b.v - c >> 4, a.zb = b.j - c >> 4, 0 > a.yb && (a.yb = 0), 0 > a.zb && (a.zb = 0));
+          a.L == 2 ? (a.yb = 0, a.zb = 0) : (a.yb = b.v - c >> 4, a.zb = b.j - c >> 4, a.yb < 0 && (a.yb = 0), a.zb < 0 && (a.zb = 0));
           a.Va = b.o + 15 + c >> 4;
           a.Hb = b.va + 15 + c >> 4;
           a.Hb > a.za && (a.Hb = a.za);
           a.Va > a.Ub && (a.Va = a.Ub);
-          if (0 < a.L) {
+          if (a.L > 0) {
             var d = a.ed;
-            for (c = 0; 4 > c; ++c) {
+            for (c = 0; c < 4; ++c) {
               var e;
               if (a.Qa.Cb) {
                 var f = a.Qa.Lb[c];
                 a.Qa.Fb || (f += d.Tb);
-              } else f = d.Tb;
-              for (e = 0; 1 >= e; ++e) {
+              } else {f = d.Tb;}
+              for (e = 0; e <= 1; ++e) {
                 var g = a.gd[c][e],
                   h = f;
                 d.Pc && (h += d.vd[0], e && (h += d.od[0]));
-                h = 0 > h ? 0 : 63 < h ? 63 : h;
-                if (0 < h) {
+                h = h < 0 ? 0 : h > 63 ? 63 : h;
+                if (h > 0) {
                   var k = h;
-                  0 < d.wb && (k = 4 < d.wb ? k >> 2 : k >> 1, k > 9 - d.wb && (k = 9 - d.wb));
-                  1 > k && (k = 1);
+                  d.wb > 0 && (k = d.wb > 4 ? k >> 2 : k >> 1, k > 9 - d.wb && (k = 9 - d.wb));
+                  k < 1 && (k = 1);
                   g.dd = k;
                   g.tc = 2 * h + k;
-                  g.ld = 40 <= h ? 2 : 15 <= h ? 1 : 0;
-                } else g.tc = 0;
+                  g.ld = h >= 40 ? 2 : h >= 15 ? 1 : 0;
+                } else {g.tc = 0;}
                 g.La = e;
               }
             }
           }
           c = 0;
-        } else T(a, 6, "Frame setup failed"), c = a.a;
-        if (c = 0 == c) {
+        } else {T(a, 6, "Frame setup failed"), c = a.a;}
+        if (c = c == 0) {
           if (c) {
             a.$c = 0;
-            0 < a.Aa || (a.Ic = Ne);
+            a.Aa > 0 || (a.Ic = Ne);
             b: {
               c = a.Ic;
               var k = a.za,
                 d = 4 * k,
                 l = 32 * k,
                 m = k + 1,
-                n = 0 < a.L ? k * (0 < a.Aa ? 2 : 1) : 0,
-                r = (2 == a.Aa ? 2 : 1) * k;
+                n = a.L > 0 ? k * (a.Aa > 0 ? 2 : 1) : 0,
+                r = (a.Aa == 2 ? 2 : 1) * k;
               e = 3 * (16 * c + Ya[a.L]) / 2 * l;
-              f = null != a.Fa && 0 < a.Fa.length ? a.Kc.c * a.Kc.i : 0;
+              f = a.Fa != null && a.Fa.length > 0 ? a.Kc.c * a.Kc.i : 0;
               g = d + 832 + e + f;
-              if (g != g) c = 0;else {
+              if (g != g) {c = 0;}else {
                 if (g > a.Vb) {
                   a.Vb = 0;
                   a.Ec = V(g);
                   a.Fc = 0;
-                  if (null == a.Ec) {
+                  if (a.Ec == null) {
                     c = T(a, 1, "no memory during frame initialization.");
                     break b;
                   }
@@ -27182,7 +27182,7 @@
                 a.D.Nb = 0;
                 a.D.wa = a.wa;
                 a.D.Y = a.Y;
-                0 < a.Aa && (a.D.Y += k);
+                a.Aa > 0 && (a.D.Y += k);
                 x(!0);
                 a.oc = g;
                 a.pc = h;
@@ -27191,7 +27191,7 @@
                 a.aa = 0;
                 a.D.ya = a.ya;
                 a.D.aa = a.aa;
-                2 == a.Aa && (a.D.aa += k);
+                a.Aa == 2 && (a.D.aa += k);
                 a.R = 16 * k;
                 a.B = 8 * k;
                 l = Ya[a.L];
@@ -27226,17 +27226,17 @@
               b.F = null;
               b.J = 0;
               if (!ad) {
-                for (c = -255; 255 >= c; ++c) {
-                  bd[255 + c] = 0 > c ? -c : c;
+                for (c = -255; c <= 255; ++c) {
+                  bd[255 + c] = c < 0 ? -c : c;
                 }
-                for (c = -1020; 1020 >= c; ++c) {
-                  cd[1020 + c] = -128 > c ? -128 : 127 < c ? 127 : c;
+                for (c = -1020; c <= 1020; ++c) {
+                  cd[1020 + c] = c < -128 ? -128 : c > 127 ? 127 : c;
                 }
-                for (c = -112; 112 >= c; ++c) {
-                  dd[112 + c] = -16 > c ? -16 : 15 < c ? 15 : c;
+                for (c = -112; c <= 112; ++c) {
+                  dd[112 + c] = c < -16 ? -16 : c > 15 ? 15 : c;
                 }
-                for (c = -255; 510 >= c; ++c) {
-                  ed[255 + c] = 0 > c ? 0 : 255 < c ? 255 : c;
+                for (c = -255; c <= 510; ++c) {
+                  ed[255 + c] = c < 0 ? 0 : c > 255 ? 255 : c;
                 }
                 ad = 1;
               }
@@ -27283,19 +27283,19 @@
               ka[5] = Af;
               ka[6] = Bf;
               c = 1;
-            } else c = 0;
+            } else {c = 0;}
           }
           c && (c = Je(a, b));
-          null != b.bc && b.bc(b);
+          b.bc != null && b.bc(b);
           c &= 1;
         }
-        if (!c) return 0;
+        if (!c) {return 0;}
         a.cb = 0;
         return c;
       }
       function qa(a, b, c, d, e) {
         e = a[b + c + 32 * d] + (e >> 3);
-        a[b + c + 32 * d] = e & -256 ? 0 > e ? 0 : 255 : e;
+        a[b + c + 32 * d] = e & -256 ? e < 0 ? 0 : 255 : e;
       }
       function kb(a, b, c, d, e, f) {
         qa(a, b, 0, c, d + e);
@@ -27310,7 +27310,7 @@
         var e = 0,
           f;
         var g = V(16);
-        for (f = 0; 4 > f; ++f) {
+        for (f = 0; f < 4; ++f) {
           var h = a[b + 0] + a[b + 8];
           var k = a[b + 0] - a[b + 8];
           var l = (35468 * a[b + 4] >> 16) - da(a[b + 12]);
@@ -27322,7 +27322,7 @@
           e += 4;
           b++;
         }
-        for (f = e = 0; 4 > f; ++f) {
+        for (f = e = 0; f < 4; ++f) {
           a = g[e + 0] + 4, h = a + g[e + 8], k = a - g[e + 8], l = (35468 * g[e + 4] >> 16) - da(g[e + 12]), m = da(g[e + 4]) + (35468 * g[e + 12] >> 16), qa(c, d, 0, 0, h + m), qa(c, d, 1, 0, k + l), qa(c, d, 2, 0, k - l), qa(c, d, 3, 0, h - m), e++, d += 32;
         }
       }
@@ -27348,8 +27348,8 @@
       function Re(a, b, c, d) {
         a = a[b + 0] + 4;
         var e;
-        for (e = 0; 4 > e; ++e) {
-          for (b = 0; 4 > b; ++b) {
+        for (e = 0; e < 4; ++e) {
+          for (b = 0; b < 4; ++b) {
             qa(c, d, b, e, a);
           }
         }
@@ -27363,7 +27363,7 @@
       function Oe(a, b, c, d) {
         var e = V(16),
           f;
-        for (f = 0; 4 > f; ++f) {
+        for (f = 0; f < 4; ++f) {
           var g = a[b + 0 + f] + a[b + 12 + f];
           var h = a[b + 4 + f] + a[b + 8 + f];
           var k = a[b + 4 + f] - a[b + 8 + f];
@@ -27373,7 +27373,7 @@
           e[4 + f] = l + k;
           e[12 + f] = l - k;
         }
-        for (f = 0; 4 > f; ++f) {
+        for (f = 0; f < 4; ++f) {
           a = e[0 + 4 * f] + 3, g = a + e[3 + 4 * f], h = e[1 + 4 * f] + e[2 + 4 * f], k = e[1 + 4 * f] - e[2 + 4 * f], l = a - e[3 + 4 * f], c[d + 0] = g + h >> 3, c[d + 16] = l + k >> 3, c[d + 32] = g - h >> 3, c[d + 48] = l - k >> 3, d += 64;
         }
       }
@@ -27403,26 +27403,26 @@
       }
       function qf(a, b) {
         var c;
-        for (c = 0; 16 > c; ++c) {
+        for (c = 0; c < 16; ++c) {
           I(a, b + 32 * c, a, b - 32, 16);
         }
       }
       function rf(a, b) {
         var c;
-        for (c = 16; 0 < c; --c) {
+        for (c = 16; c > 0; --c) {
           M(a, b, a[b - 1], 16), b += 32;
         }
       }
       function $a(a, b, c) {
         var d;
-        for (d = 0; 16 > d; ++d) {
+        for (d = 0; d < 16; ++d) {
           M(b, c + 32 * d, a, 16);
         }
       }
       function of(a, b) {
         var c = 16,
           d;
-        for (d = 0; 16 > d; ++d) {
+        for (d = 0; d < 16; ++d) {
           c += a[b - 1 + 32 * d] + a[b + d - 32];
         }
         $a(c >> 5, a, b);
@@ -27430,7 +27430,7 @@
       function sf(a, b) {
         var c = 8,
           d;
-        for (d = 0; 16 > d; ++d) {
+        for (d = 0; d < 16; ++d) {
           c += a[b - 1 + 32 * d];
         }
         $a(c >> 4, a, b);
@@ -27438,7 +27438,7 @@
       function tf(a, b) {
         var c = 8,
           d;
-        for (d = 0; 16 > d; ++d) {
+        for (d = 0; d < 16; ++d) {
           c += a[b + d - 32];
         }
         $a(c >> 4, a, b);
@@ -27453,7 +27453,7 @@
         var c = b - 32,
           c = new Uint8Array([z(a[c - 1], a[c + 0], a[c + 1]), z(a[c + 0], a[c + 1], a[c + 2]), z(a[c + 1], a[c + 2], a[c + 3]), z(a[c + 2], a[c + 3], a[c + 4])]),
           d;
-        for (d = 0; 4 > d; ++d) {
+        for (d = 0; d < 4; ++d) {
           I(a, b + 32 * d, c, 0, c.length);
         }
       }
@@ -27470,11 +27470,11 @@
       function df(a, b) {
         var c = 4,
           d;
-        for (d = 0; 4 > d; ++d) {
+        for (d = 0; d < 4; ++d) {
           c += a[b + d - 32] + a[b - 1 + 32 * d];
         }
         c >>= 3;
-        for (d = 0; 4 > d; ++d) {
+        for (d = 0; d < 4; ++d) {
           M(a, b + 32 * d, c, 4);
         }
       }
@@ -27586,26 +27586,26 @@
       }
       function xf(a, b) {
         var c;
-        for (c = 0; 8 > c; ++c) {
+        for (c = 0; c < 8; ++c) {
           I(a, b + 32 * c, a, b - 32, 8);
         }
       }
       function yf(a, b) {
         var c;
-        for (c = 0; 8 > c; ++c) {
+        for (c = 0; c < 8; ++c) {
           M(a, b, a[b - 1], 8), b += 32;
         }
       }
       function lb(a, b, c) {
         var d;
-        for (d = 0; 8 > d; ++d) {
+        for (d = 0; d < 8; ++d) {
           M(b, c + 32 * d, a, 8);
         }
       }
       function vf(a, b) {
         var c = 8,
           d;
-        for (d = 0; 8 > d; ++d) {
+        for (d = 0; d < 8; ++d) {
           c += a[b + d - 32] + a[b - 1 + 32 * d];
         }
         lb(c >> 4, a, b);
@@ -27613,7 +27613,7 @@
       function Af(a, b) {
         var c = 4,
           d;
-        for (d = 0; 8 > d; ++d) {
+        for (d = 0; d < 8; ++d) {
           c += a[b + d - 32];
         }
         lb(c >> 3, a, b);
@@ -27621,7 +27621,7 @@
       function zf(a, b) {
         var c = 4,
           d;
-        for (d = 0; 8 > d; ++d) {
+        for (d = 0; d < 8; ++d) {
           c += a[b - 1 + 32 * d];
         }
         lb(c >> 3, a, b);
@@ -27657,31 +27657,31 @@
       }
       function gd(a, b, c, d) {
         var e = 2 * d + 1;
-        for (d = 0; 16 > d; ++d) {
+        for (d = 0; d < 16; ++d) {
           kd(a, b + d, c, e) && ab(a, b + d, c);
         }
       }
       function hd(a, b, c, d) {
         var e = 2 * d + 1;
-        for (d = 0; 16 > d; ++d) {
+        for (d = 0; d < 16; ++d) {
           kd(a, b + d * c, 1, e) && ab(a, b + d * c, 1);
         }
       }
       function bf(a, b, c, d) {
         var e;
-        for (e = 3; 0 < e; --e) {
+        for (e = 3; e > 0; --e) {
           b += 4 * c, gd(a, b, c, d);
         }
       }
       function cf(a, b, c, d) {
         var e;
-        for (e = 3; 0 < e; --e) {
+        for (e = 3; e > 0; --e) {
           b += 4, hd(a, b, c, d);
         }
       }
       function ea(a, b, c, d, e, f, g, h) {
-        for (f = 2 * f + 1; 0 < e--;) {
-          if (ld(a, b, c, f, g)) if (jd(a, b, c, h)) ab(a, b, c);else {
+        for (f = 2 * f + 1; e-- > 0;) {
+          if (ld(a, b, c, f, g)) {if (jd(a, b, c, h)) {ab(a, b, c);}else {
             var k = a,
               l = b,
               m = c,
@@ -27700,13 +27700,13 @@
             k[l + 0] = R[255 + q - u];
             k[l + m] = R[255 + t - w];
             k[l + 2 * m] = R[255 + v - p];
-          }
+          }}
           b += d;
         }
       }
       function Fa(a, b, c, d, e, f, g, h) {
-        for (f = 2 * f + 1; 0 < e--;) {
-          if (ld(a, b, c, f, g)) if (jd(a, b, c, h)) ab(a, b, c);else {
+        for (f = 2 * f + 1; e-- > 0;) {
+          if (ld(a, b, c, f, g)) {if (jd(a, b, c, h)) {ab(a, b, c);}else {
             var k = a,
               l = b,
               m = c,
@@ -27721,7 +27721,7 @@
             k[l - m] = R[255 + n + t];
             k[l + 0] = R[255 + r - v];
             k[l + m] = R[255 + q - p];
-          }
+          }}
           b += d;
         }
       }
@@ -27733,13 +27733,13 @@
       }
       function Ye(a, b, c, d, e, f) {
         var g;
-        for (g = 3; 0 < g; --g) {
+        for (g = 3; g > 0; --g) {
           b += 4 * c, Fa(a, b, c, 1, 16, d, e, f);
         }
       }
       function Ze(a, b, c, d, e, f) {
         var g;
-        for (g = 3; 0 < g; --g) {
+        for (g = 3; g > 0; --g) {
           b += 4, Fa(a, b, 1, c, 16, d, e, f);
         }
       }
@@ -27819,13 +27819,13 @@
         this.rd = 0;
       }
       function Rb(a, b, c, d, e, f, g) {
-        a = null == a ? 0 : a[b + 0];
+        a = a == null ? 0 : a[b + 0];
         for (b = 0; b < g; ++b) {
           e[f + b] = a + c[d + b] & 255, a = e[f + b];
         }
       }
       function Gf(a, b, c, d, e, f, g) {
-        if (null == a) Rb(null, null, c, d, e, f, g);else {
+        if (a == null) {Rb(null, null, c, d, e, f, g);}else {
           var h;
           for (h = 0; h < g; ++h) {
             e[f + h] = a[b + h] + c[d + h] & 255;
@@ -27833,26 +27833,26 @@
         }
       }
       function Hf(a, b, c, d, e, f, g) {
-        if (null == a) Rb(null, null, c, d, e, f, g);else {
+        if (a == null) {Rb(null, null, c, d, e, f, g);}else {
           var h = a[b + 0],
             k = h,
             l = h,
             m;
           for (m = 0; m < g; ++m) {
-            h = a[b + m], k = l + h - k, l = c[d + m] + (k & -256 ? 0 > k ? 0 : 255 : k) & 255, k = h, e[f + m] = l;
+            h = a[b + m], k = l + h - k, l = c[d + m] + (k & -256 ? k < 0 ? 0 : 255 : k) & 255, k = h, e[f + m] = l;
           }
         }
       }
       function Le(a, b, c, d) {
         var e = b.width,
           f = b.o;
-        x(null != a && null != b);
-        if (0 > c || 0 >= d || c + d > f) return null;
+        x(a != null && b != null);
+        if (c < 0 || d <= 0 || c + d > f) {return null;}
         if (!a.Cc) {
-          if (null == a.ga) {
+          if (a.ga == null) {
             a.ga = new Ff();
             var g;
-            (g = null == a.ga) || (g = b.width * b.o, x(0 == a.Gb.length), a.Gb = V(g), a.Uc = 0, null == a.Gb ? g = 0 : (a.mb = a.Gb, a.nb = a.Uc, a.rc = null, g = 1), g = !g);
+            (g = a.ga == null) || (g = b.width * b.o, x(a.Gb.length == 0), a.Gb = V(g), a.Uc = 0, a.Gb == null ? g = 0 : (a.mb = a.Gb, a.nb = a.Uc, a.rc = null, g = 1), g = !g);
             if (!g) {
               g = a.ga;
               var h = a.Fa,
@@ -27863,7 +27863,7 @@
                 r = k + 1,
                 q = l - 1,
                 t = g.l;
-              x(null != h && null != m && null != b);
+              x(h != null && m != null && b != null);
               ia[0] = null;
               ia[1] = Rb;
               ia[2] = Gf;
@@ -27872,15 +27872,15 @@
               g.tb = n;
               g.c = b.width;
               g.i = b.height;
-              x(0 < g.c && 0 < g.i);
-              if (1 >= l) b = 0;else if (g.$a = h[k + 0] >> 0 & 3, g.Z = h[k + 0] >> 2 & 3, g.Lc = h[k + 0] >> 4 & 3, k = h[k + 0] >> 6 & 3, 0 > g.$a || 1 < g.$a || 4 <= g.Z || 1 < g.Lc || k) b = 0;else if (t.put = kc, t.ac = gc, t.bc = lc, t.ma = g, t.width = b.width, t.height = b.height, t.Da = b.Da, t.v = b.v, t.va = b.va, t.j = b.j, t.o = b.o, g.$a) b: {
-                x(1 == g.$a), b = Bc();
+              x(g.c > 0 && g.i > 0);
+              if (l <= 1) {b = 0;}else if (g.$a = h[k + 0] >> 0 & 3, g.Z = h[k + 0] >> 2 & 3, g.Lc = h[k + 0] >> 4 & 3, k = h[k + 0] >> 6 & 3, g.$a < 0 || g.$a > 1 || g.Z >= 4 || g.Lc > 1 || k) {b = 0;}else if (t.put = kc, t.ac = gc, t.bc = lc, t.ma = g, t.width = b.width, t.height = b.height, t.Da = b.Da, t.v = b.v, t.va = b.va, t.j = b.j, t.o = b.o, g.$a) {b: {
+                x(g.$a == 1), b = Bc();
                 c: for (;;) {
-                  if (null == b) {
+                  if (b == null) {
                     b = 0;
                     break b;
                   }
-                  x(null != g);
+                  x(g != null);
                   g.mc = b;
                   b.c = g.c;
                   b.i = g.i;
@@ -27890,27 +27890,27 @@
                   b.l.height = g.i;
                   b.a = 0;
                   cb(b.m, h, r, q);
-                  if (!rb(g.c, g.i, 1, b, null)) break c;
-                  1 == b.ab && 3 == b.gc[0].hc && yc(b.s) ? (g.ic = 1, h = b.c * b.i, b.Ta = null, b.Ua = 0, b.V = V(h), b.Ba = 0, null == b.V ? (b.a = 1, b = 0) : b = 1) : (g.ic = 0, b = Ec(b, g.c));
-                  if (!b) break c;
+                  if (!rb(g.c, g.i, 1, b, null)) {break c;}
+                  b.ab == 1 && b.gc[0].hc == 3 && yc(b.s) ? (g.ic = 1, h = b.c * b.i, b.Ta = null, b.Ua = 0, b.V = V(h), b.Ba = 0, b.V == null ? (b.a = 1, b = 0) : b = 1) : (g.ic = 0, b = Ec(b, g.c));
+                  if (!b) {break c;}
                   b = 1;
                   break b;
                 }
                 g.mc = null;
                 b = 0;
-              } else b = q >= g.c * g.i;
+              }} else {b = q >= g.c * g.i;}
               g = !b;
             }
-            if (g) return null;
-            1 != a.ga.Lc ? a.Ga = 0 : d = f - c;
+            if (g) {return null;}
+            a.ga.Lc != 1 ? a.Ga = 0 : d = f - c;
           }
-          x(null != a.ga);
+          x(a.ga != null);
           x(c + d <= f);
           a: {
             h = a.ga;
             b = h.c;
             f = h.l.o;
-            if (0 == h.$a) {
+            if (h.$a == 0) {
               r = a.rc;
               q = a.Vc;
               t = a.Fa;
@@ -27918,20 +27918,20 @@
               l = a.mb;
               m = a.nb + c * b;
               x(k <= a.P + a.qc);
-              if (0 != h.Z) for (x(null != ia[h.Z]), g = 0; g < d; ++g) {
+              if (h.Z != 0) {for (x(ia[h.Z] != null), g = 0; g < d; ++g) {
                 ia[h.Z](r, q, t, k, l, m, b), r = l, q = m, m += b, k += b;
-              } else for (g = 0; g < d; ++g) {
+              }} else {for (g = 0; g < d; ++g) {
                 I(l, m, t, k, b), r = l, q = m, m += b, k += b;
-              }
+              }}
               a.rc = r;
               a.Vc = q;
             } else {
-              x(null != h.mc);
+              x(h.mc != null);
               b = c + d;
               g = h.mc;
-              x(null != g);
+              x(g != null);
               x(b <= g.i);
-              if (g.C >= b) b = 1;else if (h.ic || Aa(), h.ic) {
+              if (g.C >= b) {b = 1;}else if (h.ic || Aa(), h.ic) {
                 var h = g.V,
                   r = g.Ba,
                   q = g.c,
@@ -27952,10 +27952,10 @@
                 c: for (;;) {
                   for (; !m.h && p < w;) {
                     l & y || (A = ha(n, l, k));
-                    x(null != A);
+                    x(A != null);
                     Sa(m);
                     v = ua(A.G[0], A.H[0], m);
-                    if (256 > v) h[r + p] = v, ++p, ++l, l >= q && (l = 0, ++k, k <= b && !(k % 16) && Ib(g, k));else if (280 > v) {
+                    if (v < 256) {h[r + p] = v, ++p, ++l, l >= q && (l = 0, ++k, k <= b && !(k % 16) && Ib(g, k));}else if (v < 280) {
                       var v = ib(v - 256, m);
                       var E = ua(A.G[4], A.H[4], m);
                       Sa(m);
@@ -27986,7 +27986,7 @@
                 }
                 !t || m.h && p < u ? (t = 0, g.a = m.h ? 5 : 3) : g.$ = p;
                 b = t;
-              } else b = Jb(g, g.V, g.Ba, g.c, g.i, b, se);
+              } else {b = Jb(g, g.V, g.Ba, g.c, g.i, b, se);}
               if (!b) {
                 d = 0;
                 break a;
@@ -27995,13 +27995,13 @@
             c + d >= f && (a.Cc = 1);
             d = 1;
           }
-          if (!d) return null;
-          if (a.Cc && (d = a.ga, null != d && (d.mc = null), a.ga = null, 0 < a.Ga)) return alert("todo:WebPDequantizeLevels"), null;
+          if (!d) {return null;}
+          if (a.Cc && (d = a.ga, d != null && (d.mc = null), a.ga = null, a.Ga > 0)) {return alert("todo:WebPDequantizeLevels"), null;}
         }
         return a.nb + c * e;
       }
       function If(a, b, c, d, e, f) {
-        for (; 0 < e--;) {
+        for (; e-- > 0;) {
           var g = a,
             h = b + (c ? 1 : 0),
             k = a,
@@ -28009,13 +28009,13 @@
             m;
           for (m = 0; m < d; ++m) {
             var n = k[l + 4 * m];
-            255 != n && (n *= 32897, g[h + 4 * m + 0] = g[h + 4 * m + 0] * n >> 23, g[h + 4 * m + 1] = g[h + 4 * m + 1] * n >> 23, g[h + 4 * m + 2] = g[h + 4 * m + 2] * n >> 23);
+            n != 255 && (n *= 32897, g[h + 4 * m + 0] = g[h + 4 * m + 0] * n >> 23, g[h + 4 * m + 1] = g[h + 4 * m + 1] * n >> 23, g[h + 4 * m + 2] = g[h + 4 * m + 2] * n >> 23);
           }
           b += f;
         }
       }
       function Jf(a, b, c, d, e) {
-        for (; 0 < d--;) {
+        for (; d-- > 0;) {
           var f;
           for (f = 0; f < c; ++f) {
             var g = a[b + 2 * f + 0],
@@ -28042,7 +28042,7 @@
           b += c;
           g += h;
         }
-        return 255 != k;
+        return k != 255;
       }
       function Lf(a, b, c, d, e) {
         var f;
@@ -28062,10 +28062,10 @@
             E = y - 1 >> 1;
           var B = h[k + 0] | l[m + 0] << 16;
           var C = n[r + 0] | q[t + 0] << 16;
-          x(null != a);
+          x(a != null);
           var z = 3 * B + C + 131074 >> 2;
           b(a[e + 0], z & 255, z >> 16, v, p);
-          null != f && (z = 3 * C + B + 131074 >> 2, b(f[g + 0], z & 255, z >> 16, u, w));
+          f != null && (z = 3 * C + B + 131074 >> 2, b(f[g + 0], z & 255, z >> 16, u, w));
           for (d = 1; d <= E; ++d) {
             var D = h[k + d] | l[m + d] << 16;
             var G = n[r + d] | q[t + d] << 16;
@@ -28076,11 +28076,11 @@
             B = F + D >> 1;
             b(a[e + 2 * d - 1], z & 255, z >> 16, v, p + (2 * d - 1) * c);
             b(a[e + 2 * d - 0], B & 255, B >> 16, v, p + (2 * d - 0) * c);
-            null != f && (z = F + C >> 1, B = H + G >> 1, b(f[g + 2 * d - 1], z & 255, z >> 16, u, w + (2 * d - 1) * c), b(f[g + 2 * d + 0], B & 255, B >> 16, u, w + (2 * d + 0) * c));
+            f != null && (z = F + C >> 1, B = H + G >> 1, b(f[g + 2 * d - 1], z & 255, z >> 16, u, w + (2 * d - 1) * c), b(f[g + 2 * d + 0], B & 255, B >> 16, u, w + (2 * d + 0) * c));
             B = D;
             C = G;
           }
-          y & 1 || (z = 3 * B + C + 131074 >> 2, b(a[e + y - 1], z & 255, z >> 16, v, p + (y - 1) * c), null != f && (z = 3 * C + B + 131074 >> 2, b(f[g + y - 1], z & 255, z >> 16, u, w + (y - 1) * c)));
+          y & 1 || (z = 3 * B + C + 131074 >> 2, b(a[e + y - 1], z & 255, z >> 16, v, p + (y - 1) * c), f != null && (z = 3 * C + B + 131074 >> 2, b(f[g + y - 1], z & 255, z >> 16, u, w + (y - 1) * c)));
         };
       }
       function ic() {
@@ -28097,7 +28097,7 @@
         P[Bb] = qd;
       }
       function Sb(a) {
-        return a & ~Pf ? 0 > a ? 0 : 255 : a >> rd;
+        return a & ~Pf ? a < 0 ? 0 : 255 : a >> rd;
       }
       function bb(a, b) {
         return Sb((19077 * a >> 8) + (26149 * b >> 8) - 14234);
@@ -28150,7 +28150,7 @@
         };
       }
       function xd(a, b, c) {
-        return 0 == c ? 0 == a ? 0 == b ? 6 : 5 : 0 == b ? 4 : 0 : c;
+        return c == 0 ? a == 0 ? b == 0 ? 6 : 5 : b == 0 ? 4 : 0 : c;
       }
       function yd(a, b, c, d, e) {
         switch (a >>> 30) {
@@ -28175,20 +28175,20 @@
           l = a.pc + 584,
           m = a.oc,
           n = a.pc + 600;
-        for (c = 0; 16 > c; ++c) {
+        for (c = 0; c < 16; ++c) {
           g[h + 32 * c - 1] = 129;
         }
-        for (c = 0; 8 > c; ++c) {
+        for (c = 0; c < 8; ++c) {
           k[l + 32 * c - 1] = 129, m[n + 32 * c - 1] = 129;
         }
-        0 < e ? g[h - 1 - 32] = k[l - 1 - 32] = m[n - 1 - 32] = 129 : (M(g, h - 32 - 1, 127, 21), M(k, l - 32 - 1, 127, 9), M(m, n - 32 - 1, 127, 9));
+        e > 0 ? g[h - 1 - 32] = k[l - 1 - 32] = m[n - 1 - 32] = 129 : (M(g, h - 32 - 1, 127, 21), M(k, l - 32 - 1, 127, 9), M(m, n - 32 - 1, 127, 9));
         for (d = 0; d < a.za; ++d) {
           var r = b.ya[b.aa + d];
-          if (0 < d) {
-            for (c = -1; 16 > c; ++c) {
+          if (d > 0) {
+            for (c = -1; c < 16; ++c) {
               I(g, h + 32 * c - 4, g, h + 32 * c + 12, 4);
             }
-            for (c = -1; 8 > c; ++c) {
+            for (c = -1; c < 8; ++c) {
               I(k, l + 32 * c - 4, k, l + 32 * c + 4, 4), I(m, n + 32 * c - 4, m, n + 32 * c + 4, 4);
             }
           }
@@ -28196,20 +28196,20 @@
             t = a.Hd + d,
             v = r.ad,
             p = r.Hc;
-          0 < e && (I(g, h - 32, q[t].y, 0, 16), I(k, l - 32, q[t].f, 0, 8), I(m, n - 32, q[t].ea, 0, 8));
+          e > 0 && (I(g, h - 32, q[t].y, 0, 16), I(k, l - 32, q[t].f, 0, 8), I(m, n - 32, q[t].ea, 0, 8));
           if (r.Za) {
             var u = g;
             var w = h - 32 + 16;
-            0 < e && (d >= a.za - 1 ? M(u, w, q[t].y[15], 4) : I(u, w, q[t + 1].y, 0, 4));
-            for (c = 0; 4 > c; c++) {
+            e > 0 && (d >= a.za - 1 ? M(u, w, q[t].y[15], 4) : I(u, w, q[t + 1].y, 0, 4));
+            for (c = 0; c < 4; c++) {
               u[w + 128 + c] = u[w + 256 + c] = u[w + 384 + c] = u[w + 0 + c];
             }
-            for (c = 0; 16 > c; ++c, p <<= 2) {
+            for (c = 0; c < 16; ++c, p <<= 2) {
               u = g, w = h + zd[c], W[r.Ob[c]](u, w), yd(p, v, 16 * +c, u, w);
             }
-          } else if (u = xd(d, e, r.Ob[0]), Y[u](g, h), 0 != p) for (c = 0; 16 > c; ++c, p <<= 2) {
+          } else if (u = xd(d, e, r.Ob[0]), Y[u](g, h), p != 0) {for (c = 0; c < 16; ++c, p <<= 2) {
             yd(p, v, 16 * +c, g, h + zd[c]);
-          }
+          }}
           c = r.Gc;
           u = xd(d, e, r.Dd);
           ka[u](k, l);
@@ -28231,10 +28231,10 @@
           r = a.ra + 8 * d + c;
           p = a.Ha;
           u = a.Ia + 8 * d + c;
-          for (c = 0; 16 > c; ++c) {
+          for (c = 0; c < 16; ++c) {
             I(q, t + c * a.R, g, h + 32 * c, 16);
           }
-          for (c = 0; 8 > c; ++c) {
+          for (c = 0; c < 8; ++c) {
             I(v, r + c * a.B, k, l + 32 * c, 8), I(p, u + c * a.B, m, n + 32 * c, 8);
           }
         }
@@ -28243,9 +28243,9 @@
         var l = [0],
           m = [0],
           n = 0,
-          r = null != k ? k.kd : 0,
-          q = null != k ? k : new md();
-        if (null == a || 12 > c) return 7;
+          r = k != null ? k.kd : 0,
+          q = k != null ? k : new md();
+        if (a == null || c < 12) {return 7;}
         q.data = a;
         q.w = b;
         q.ha = c;
@@ -28256,17 +28256,17 @@
           var t = b;
           var v = c;
           var p = q.gb;
-          x(null != a);
-          x(null != v);
-          x(null != p);
+          x(a != null);
+          x(v != null);
+          x(p != null);
           p[0] = 0;
-          if (12 <= v[0] && !fa(a, t[0], "RIFF")) {
+          if (v[0] >= 12 && !fa(a, t[0], "RIFF")) {
             if (fa(a, t[0] + 8, "WEBP")) {
               p = 3;
               break a;
             }
             var u = Ha(a, t[0] + 4);
-            if (12 > u || 4294967286 < u) {
+            if (u < 12 || u > 4294967286) {
               p = 3;
               break a;
             }
@@ -28280,9 +28280,9 @@
           }
           p = 0;
         }
-        if (0 != p) return p;
-        u = 0 < q.gb[0];
-        for (c = c[0];;) {
+        if (p != 0) {return p;}
+        u = q.gb[0] > 0;
+        for (c = c[0]; ;) {
           t = [0];
           n = [n];
           a: {
@@ -28294,26 +28294,26 @@
               z = m,
               B = t;
             y[0] = 0;
-            if (8 > p[0]) p = 7;else {
+            if (p[0] < 8) {p = 7;}else {
               if (!fa(w, v[0], "VP8X")) {
-                if (10 != Ha(w, v[0] + 4)) {
+                if (Ha(w, v[0] + 4) != 10) {
                   p = 3;
                   break a;
                 }
-                if (18 > p[0]) {
+                if (p[0] < 18) {
                   p = 7;
                   break a;
                 }
                 var C = Ha(w, v[0] + 8);
                 var D = 1 + Yb(w, v[0] + 12);
                 w = 1 + Yb(w, v[0] + 15);
-                if (2147483648 <= D * w) {
+                if (D * w >= 2147483648) {
                   p = 3;
                   break a;
                 }
-                null != B && (B[0] = C);
-                null != A && (A[0] = D);
-                null != z && (z[0] = w);
+                B != null && (B[0] = C);
+                A != null && (A[0] = D);
+                z != null && (z[0] = w);
                 v[0] += 18;
                 p[0] -= 18;
                 y[0] = 1;
@@ -28323,19 +28323,19 @@
           }
           n = n[0];
           t = t[0];
-          if (0 != p) return p;
+          if (p != 0) {return p;}
           v = !!(t & 2);
-          if (!u && n) return 3;
-          null != f && (f[0] = !!(t & 16));
-          null != g && (g[0] = v);
-          null != h && (h[0] = 0);
+          if (!u && n) {return 3;}
+          f != null && (f[0] = !!(t & 16));
+          g != null && (g[0] = v);
+          h != null && (h[0] = 0);
           g = l[0];
           t = m[0];
-          if (n && v && null == k) {
+          if (n && v && k == null) {
             p = 0;
             break;
           }
-          if (4 > c) {
+          if (c < 4) {
             p = 7;
             break;
           }
@@ -28353,29 +28353,29 @@
                 z = q.P,
                 B = q.Sa;
               D = 22;
-              x(null != C);
-              x(null != u);
+              x(C != null);
+              x(u != null);
               w = p[0];
               var F = u[0];
-              x(null != A);
-              x(null != B);
+              x(A != null);
+              x(B != null);
               A[0] = null;
               z[0] = null;
-              for (B[0] = 0;;) {
+              for (B[0] = 0; ;) {
                 p[0] = w;
                 u[0] = F;
-                if (8 > F) {
+                if (F < 8) {
                   p = 7;
                   break a;
                 }
                 var G = Ha(C, w + 4);
-                if (4294967286 < G) {
+                if (G > 4294967286) {
                   p = 3;
                   break a;
                 }
                 var H = 8 + G + 1 & -2;
                 D += H;
-                if (0 < y && D > y) {
+                if (y > 0 && D > y) {
                   p = 3;
                   break a;
                 }
@@ -28396,15 +28396,15 @@
             q.na = q.na[0];
             q.P = q.P[0];
             q.Sa = q.Sa[0];
-            if (0 != p) break;
+            if (p != 0) {break;}
           }
           c = [c];
           q.Ja = [q.Ja];
           q.xa = [q.xa];
-          a: if (y = a, p = b, u = c, A = q.gb[0], z = q.Ja, B = q.xa, C = p[0], w = !fa(y, C, "VP8 "), D = !fa(y, C, "VP8L"), x(null != y), x(null != u), x(null != z), x(null != B), 8 > u[0]) p = 7;else {
+          a: if (y = a, p = b, u = c, A = q.gb[0], z = q.Ja, B = q.xa, C = p[0], w = !fa(y, C, "VP8 "), D = !fa(y, C, "VP8L"), x(y != null), x(u != null), x(z != null), x(B != null), u[0] < 8) {p = 7;}else {
             if (w || D) {
               y = Ha(y, C + 4);
-              if (12 <= A && y > A - 12) {
+              if (A >= 12 && y > A - 12) {
                 p = 3;
                 break a;
               }
@@ -28416,43 +28416,43 @@
               p[0] += 8;
               u[0] -= 8;
               B[0] = D;
-            } else B[0] = 5 <= u[0] && 47 == y[C + 0] && !(y[C + 4] >> 5), z[0] = u[0];
+            } else {B[0] = u[0] >= 5 && y[C + 0] == 47 && !(y[C + 4] >> 5), z[0] = u[0];}
             p = 0;
           }
           c = c[0];
           q.Ja = q.Ja[0];
           q.xa = q.xa[0];
           b = b[0];
-          if (0 != p) break;
-          if (4294967286 < q.Ja) return 3;
-          null == h || v || (h[0] = q.xa ? 2 : 1);
+          if (p != 0) {break;}
+          if (q.Ja > 4294967286) {return 3;}
+          h == null || v || (h[0] = q.xa ? 2 : 1);
           g = [g];
           t = [t];
           if (q.xa) {
-            if (5 > c) {
+            if (c < 5) {
               p = 7;
               break;
             }
             h = g;
             r = t;
             v = f;
-            null == a || 5 > c ? a = 0 : 5 <= c && 47 == a[b + 0] && !(a[b + 4] >> 5) ? (u = [0], y = [0], A = [0], z = new Ra(), cb(z, a, b, c), mc(z, u, y, A) ? (null != h && (h[0] = u[0]), null != r && (r[0] = y[0]), null != v && (v[0] = A[0]), a = 1) : a = 0) : a = 0;
+            a == null || c < 5 ? a = 0 : c >= 5 && a[b + 0] == 47 && !(a[b + 4] >> 5) ? (u = [0], y = [0], A = [0], z = new Ra(), cb(z, a, b, c), mc(z, u, y, A) ? (h != null && (h[0] = u[0]), r != null && (r[0] = y[0]), v != null && (v[0] = A[0]), a = 1) : a = 0) : a = 0;
           } else {
-            if (10 > c) {
+            if (c < 10) {
               p = 7;
               break;
             }
             h = t;
-            null == a || 10 > c || !Jc(a, b + 3, c - 3) ? a = 0 : (r = a[b + 0] | a[b + 1] << 8 | a[b + 2] << 16, v = (a[b + 7] << 8 | a[b + 6]) & 16383, a = (a[b + 9] << 8 | a[b + 8]) & 16383, r & 1 || 3 < (r >> 1 & 7) || !(r >> 4 & 1) || r >> 5 >= q.Ja || !v || !a ? a = 0 : (g && (g[0] = v), h && (h[0] = a), a = 1));
+            a == null || c < 10 || !Jc(a, b + 3, c - 3) ? a = 0 : (r = a[b + 0] | a[b + 1] << 8 | a[b + 2] << 16, v = (a[b + 7] << 8 | a[b + 6]) & 16383, a = (a[b + 9] << 8 | a[b + 8]) & 16383, r & 1 || (r >> 1 & 7) > 3 || !(r >> 4 & 1) || r >> 5 >= q.Ja || !v || !a ? a = 0 : (g && (g[0] = v), h && (h[0] = a), a = 1));
           }
-          if (!a) return 3;
+          if (!a) {return 3;}
           g = g[0];
           t = t[0];
-          if (n && (l[0] != g || m[0] != t)) return 3;
-          null != k && (k[0] = q, k.offset = b - k.w, x(4294967286 > b - k.w), x(k.offset == k.ha - c));
+          if (n && (l[0] != g || m[0] != t)) {return 3;}
+          k != null && (k[0] = q, k.offset = b - k.w, x(b - k.w < 4294967286), x(k.offset == k.ha - c));
           break;
         }
-        return 0 == p || 7 == p && n && null == k ? (null != f && (f[0] |= null != q.na && 0 < q.na.length), null != d && (d[0] = g), null != e && (e[0] = t), 0) : p;
+        return p == 0 || p == 7 && n && k == null ? (f != null && (f[0] |= q.na != null && q.na.length > 0), d != null && (d[0] = g), e != null && (e[0] = t), 0) : p;
       }
       function hc(a, b, c) {
         var d = b.width,
@@ -28461,52 +28461,52 @@
           g = 0,
           h = d,
           k = e;
-        b.Da = null != a && 0 < a.Da;
-        if (b.Da && (h = a.cd, k = a.bd, f = a.v, g = a.j, 11 > c || (f &= -2, g &= -2), 0 > f || 0 > g || 0 >= h || 0 >= k || f + h > d || g + k > e)) return 0;
+        b.Da = a != null && a.Da > 0;
+        if (b.Da && (h = a.cd, k = a.bd, f = a.v, g = a.j, c < 11 || (f &= -2, g &= -2), f < 0 || g < 0 || h <= 0 || k <= 0 || f + h > d || g + k > e)) {return 0;}
         b.v = f;
         b.j = g;
         b.va = f + h;
         b.o = g + k;
         b.U = h;
         b.T = k;
-        b.da = null != a && 0 < a.da;
+        b.da = a != null && a.da > 0;
         if (b.da) {
           c = [a.ib];
           f = [a.hb];
-          if (!bc(h, k, c, f)) return 0;
+          if (!bc(h, k, c, f)) {return 0;}
           b.ib = c[0];
           b.hb = f[0];
         }
-        b.ob = null != a && a.ob;
-        b.Kb = null == a || !a.Sd;
+        b.ob = a != null && a.ob;
+        b.Kb = a == null || !a.Sd;
         b.da && (b.ob = b.ib < 3 * d / 4 && b.hb < 3 * e / 4, b.Kb = 0);
         return 1;
       }
       function Bd(a) {
-        if (null == a) return 2;
-        if (11 > a.S) {
+        if (a == null) {return 2;}
+        if (a.S < 11) {
           var b = a.f.RGBA;
           b.fb += (a.height - 1) * b.A;
           b.A = -b.A;
-        } else b = a.f.kb, a = a.height, b.O += (a - 1) * b.fa, b.fa = -b.fa, b.N += (a - 1 >> 1) * b.Ab, b.Ab = -b.Ab, b.W += (a - 1 >> 1) * b.Db, b.Db = -b.Db, null != b.F && (b.J += (a - 1) * b.lb, b.lb = -b.lb);
+        } else {b = a.f.kb, a = a.height, b.O += (a - 1) * b.fa, b.fa = -b.fa, b.N += (a - 1 >> 1) * b.Ab, b.Ab = -b.Ab, b.W += (a - 1 >> 1) * b.Db, b.Db = -b.Db, b.F != null && (b.J += (a - 1) * b.lb, b.lb = -b.lb);}
         return 0;
       }
       function Cd(a, b, c, d) {
-        if (null == d || 0 >= a || 0 >= b) return 2;
-        if (null != c) {
+        if (d == null || a <= 0 || b <= 0) {return 2;}
+        if (c != null) {
           if (c.Da) {
             var e = c.cd,
               f = c.bd,
               g = c.v & -2,
               h = c.j & -2;
-            if (0 > g || 0 > h || 0 >= e || 0 >= f || g + e > a || h + f > b) return 2;
+            if (g < 0 || h < 0 || e <= 0 || f <= 0 || g + e > a || h + f > b) {return 2;}
             a = e;
             b = f;
           }
           if (c.da) {
             e = [c.ib];
             f = [c.hb];
-            if (!bc(a, b, e, f)) return 2;
+            if (!bc(a, b, e, f)) {return 2;}
             a = e[0];
             b = f[0];
           }
@@ -28517,26 +28517,26 @@
           var k = d.width;
           var l = d.height;
           a = d.S;
-          if (0 >= k || 0 >= l || !(a >= Ca && 13 > a)) a = 2;else {
-            if (0 >= d.Rd && null == d.sd) {
+          if (k <= 0 || l <= 0 || !(a >= Ca && a < 13)) {a = 2;}else {
+            if (d.Rd <= 0 && d.sd == null) {
               var g = f = e = b = 0,
                 h = k * Dd[a],
                 m = h * l;
-              11 > a || (b = (k + 1) / 2, f = (l + 1) / 2 * b, 12 == a && (e = k, g = e * l));
+              a < 11 || (b = (k + 1) / 2, f = (l + 1) / 2 * b, a == 12 && (e = k, g = e * l));
               l = V(m + 2 * f + g);
-              if (null == l) {
+              if (l == null) {
                 a = 1;
                 break a;
               }
               d.sd = l;
-              11 > a ? (k = d.f.RGBA, k.eb = l, k.fb = 0, k.A = h, k.size = m) : (k = d.f.kb, k.y = l, k.O = 0, k.fa = h, k.Fd = m, k.f = l, k.N = 0 + m, k.Ab = b, k.Cd = f, k.ea = l, k.W = 0 + m + f, k.Db = b, k.Ed = f, 12 == a && (k.F = l, k.J = 0 + m + 2 * f), k.Tc = g, k.lb = e);
+              a < 11 ? (k = d.f.RGBA, k.eb = l, k.fb = 0, k.A = h, k.size = m) : (k = d.f.kb, k.y = l, k.O = 0, k.fa = h, k.Fd = m, k.f = l, k.N = 0 + m, k.Ab = b, k.Cd = f, k.ea = l, k.W = 0 + m + f, k.Db = b, k.Ed = f, a == 12 && (k.F = l, k.J = 0 + m + 2 * f), k.Tc = g, k.lb = e);
             }
             b = 1;
             e = d.S;
             f = d.width;
             g = d.height;
-            if (e >= Ca && 13 > e) {
-              if (11 > e) a = d.f.RGBA, h = Math.abs(a.A), b &= h * (g - 1) + f <= a.size, b &= h >= f * Dd[e], b &= null != a.eb;else {
+            if (e >= Ca && e < 13) {
+              if (e < 11) {a = d.f.RGBA, h = Math.abs(a.A), b &= h * (g - 1) + f <= a.size, b &= h >= f * Dd[e], b &= a.eb != null;}else {
                 a = d.f.kb;
                 h = (f + 1) / 2;
                 m = (g + 1) / 2;
@@ -28549,17 +28549,17 @@
                 b &= l * (m - 1) + h <= a.Cd;
                 b &= n * (m - 1) + h <= a.Ed;
                 b = b & k >= f & l >= h & n >= h;
-                b &= null != a.y;
-                b &= null != a.f;
-                b &= null != a.ea;
-                12 == e && (b &= r >= f, b &= q <= a.Tc, b &= null != a.F);
+                b &= a.y != null;
+                b &= a.f != null;
+                b &= a.ea != null;
+                e == 12 && (b &= r >= f, b &= q <= a.Tc, b &= a.F != null);
               }
-            } else b = 0;
+            } else {b = 0;}
             a = b ? 0 : 2;
           }
         }
-        if (0 != a) return a;
-        null != c && c.fd && (a = Bd(d));
+        if (a != 0) {return a;}
+        c != null && c.fd && (a = Bd(d));
         return a;
       }
       var xb = 64,
@@ -28605,7 +28605,7 @@
       self.Predictor11 = function (a, b, c) {
         var d = b[c + 0];
         b = b[c - 1];
-        return 0 >= Ia(d >> 24 & 255, a >> 24 & 255, b >> 24 & 255) + Ia(d >> 16 & 255, a >> 16 & 255, b >> 16 & 255) + Ia(d >> 8 & 255, a >> 8 & 255, b >> 8 & 255) + Ia(d & 255, a & 255, b & 255) ? d : a;
+        return Ia(d >> 24 & 255, a >> 24 & 255, b >> 24 & 255) + Ia(d >> 16 & 255, a >> 16 & 255, b >> 16 & 255) + Ia(d >> 8 & 255, a >> 8 & 255, b >> 8 & 255) + Ia(d & 255, a & 255, b & 255) <= 0 ? d : a;
       };
       self.Predictor12 = function (a, b, c) {
         var d = b[c + 0];
@@ -28774,13 +28774,13 @@
         var k = h.width;
         var l = h.height,
           m = new Td();
-        if (null == m || null == a) var n = 2;else x(null != m), n = Ad(a, b, c, m.width, m.height, m.Pd, m.Qd, m.format, null);
-        0 != n ? k = 0 : (null != k && (k[0] = m.width[0]), null != l && (l[0] = m.height[0]), k = 1);
+        if (m == null || a == null) {var n = 2;}else {x(m != null), n = Ad(a, b, c, m.width, m.height, m.Pd, m.Qd, m.format, null);}
+        n != 0 ? k = 0 : (k != null && (k[0] = m.width[0]), l != null && (l[0] = m.height[0]), k = 1);
         if (k) {
           h.width = h.width[0];
           h.height = h.height[0];
-          null != d && (d[0] = h.width);
-          null != e && (e[0] = h.height);
+          d != null && (d[0] = h.width);
+          e != null && (e[0] = h.height);
           b: {
             d = new Oa();
             e = new md();
@@ -28789,12 +28789,12 @@
             e.ha = c;
             e.kd = 1;
             b = [0];
-            x(null != e);
+            x(e != null);
             a = Ad(e.data, e.w, e.ha, null, null, null, b, null, e);
-            (0 == a || 7 == a) && b[0] && (a = 4);
+            (a == 0 || a == 7) && b[0] && (a = 4);
             b = a;
-            if (0 == b) {
-              x(null != g);
+            if (b == 0) {
+              x(g != null);
               d.data = e.data;
               d.w = e.w + e.offset;
               d.ha = e.ha - e.offset;
@@ -28804,60 +28804,60 @@
               d.ma = g;
               if (e.xa) {
                 a = Bc();
-                if (null == a) {
+                if (a == null) {
                   g = 1;
                   break b;
                 }
                 if (te(a, d)) {
                   b = Cd(d.width, d.height, g.Oa, g.ba);
-                  if (d = 0 == b) {
+                  if (d = b == 0) {
                     c: {
                       d = a;
                       d: for (;;) {
-                        if (null == d) {
+                        if (d == null) {
                           d = 0;
                           break c;
                         }
-                        x(null != d.s.yc);
-                        x(null != d.s.Ya);
-                        x(0 < d.s.Wb);
+                        x(d.s.yc != null);
+                        x(d.s.Ya != null);
+                        x(d.s.Wb > 0);
                         c = d.l;
-                        x(null != c);
+                        x(c != null);
                         e = c.ma;
-                        x(null != e);
-                        if (0 != d.xb) {
+                        x(e != null);
+                        if (d.xb != 0) {
                           d.ca = e.ba;
                           d.tb = e.tb;
-                          x(null != d.ca);
+                          x(d.ca != null);
                           if (!hc(e.Oa, c, Va)) {
                             d.a = 2;
                             break d;
                           }
-                          if (!Ec(d, c.width)) break d;
-                          if (c.da) break d;
+                          if (!Ec(d, c.width)) {break d;}
+                          if (c.da) {break d;}
                           (c.da || hb(d.ca.S)) && Aa();
-                          11 > d.ca.S || (alert("todo:WebPInitConvertARGBToYUV"), null != d.ca.f.kb.F && Aa());
-                          if (d.Pb && 0 < d.s.ua && null == d.s.vb.X && !Zb(d.s.vb, d.s.Wa.Xa)) {
+                          d.ca.S < 11 || (alert("todo:WebPInitConvertARGBToYUV"), d.ca.f.kb.F != null && Aa());
+                          if (d.Pb && d.s.ua > 0 && d.s.vb.X == null && !Zb(d.s.vb, d.s.Wa.Xa)) {
                             d.a = 1;
                             break d;
                           }
                           d.xb = 0;
                         }
-                        if (!Jb(d, d.V, d.Ba, d.c, d.i, c.o, ge)) break d;
+                        if (!Jb(d, d.V, d.Ba, d.c, d.i, c.o, ge)) {break d;}
                         e.Dc = d.Ma;
                         d = 1;
                         break c;
                       }
-                      x(0 != d.a);
+                      x(d.a != 0);
                       d = 0;
                     }
                     d = !d;
                   }
                   d && (b = a.a);
-                } else b = a.a;
+                } else {b = a.a;}
               } else {
                 a = new Ce();
-                if (null == a) {
+                if (a == null) {
                   g = 1;
                   break b;
                 }
@@ -28865,33 +28865,33 @@
                 a.P = e.P;
                 a.qc = e.Sa;
                 if (Kc(a, d)) {
-                  if (b = Cd(d.width, d.height, g.Oa, g.ba), 0 == b) {
+                  if (b = Cd(d.width, d.height, g.Oa, g.ba), b == 0) {
                     a.Aa = 0;
                     c = g.Oa;
                     e = a;
-                    x(null != e);
-                    if (null != c) {
+                    x(e != null);
+                    if (c != null) {
                       k = c.Md;
-                      k = 0 > k ? 0 : 100 < k ? 255 : 255 * k / 100;
-                      if (0 < k) {
-                        for (l = m = 0; 4 > l; ++l) {
-                          n = e.pb[l], 12 > n.lc && (n.ia = k * Qf[0 > n.lc ? 0 : n.lc] >> 3), m |= n.ia;
+                      k = k < 0 ? 0 : k > 100 ? 255 : 255 * k / 100;
+                      if (k > 0) {
+                        for (l = m = 0; l < 4; ++l) {
+                          n = e.pb[l], n.lc < 12 && (n.ia = k * Qf[n.lc < 0 ? 0 : n.lc] >> 3), m |= n.ia;
                         }
                         m && (alert("todo:VP8InitRandom"), e.ia = 1);
                       }
                       e.Ga = c.Id;
-                      100 < e.Ga ? e.Ga = 100 : 0 > e.Ga && (e.Ga = 0);
+                      e.Ga > 100 ? e.Ga = 100 : e.Ga < 0 && (e.Ga = 0);
                     }
                     Me(a, d) || (b = a.a);
                   }
-                } else b = a.a;
+                } else {b = a.a;}
               }
-              0 == b && null != g.Oa && g.Oa.fd && (b = Bd(g.ba));
+              b == 0 && g.Oa != null && g.Oa.fd && (b = Bd(g.ba));
             }
             g = b;
           }
-          f = 0 != g ? null : 11 > f ? h.f.RGBA.eb : h.f.kb.y;
-        } else f = null;
+          f = g != 0 ? null : f < 11 ? h.f.RGBA.eb : h.f.kb.y;
+        } else {f = null;}
         return f;
       };
       var Dd = [3, 4, 3, 4, 4, 2, 2, 4, 4, 4, 2, 1, 1];
@@ -28909,7 +28909,7 @@
 
     function memcmp(data, data_off, str, size) {
       for (var i = 0; i < size; i++) {
-        if (data[data_off + i] != str.charCodeAt(i)) return true;
+        if (data[data_off + i] != str.charCodeAt(i)) {return true;}
       }
       return false;
     }
@@ -28935,8 +28935,8 @@
       var alpha_chunk = false;
       var alpha_size = 0;
       var alpha_offset = 0;
-      imagearray["frames"] = [];
-      if (memcmp(src, src_off, "RIFF", 4)) return;
+      imagearray.frames = [];
+      if (memcmp(src, src_off, "RIFF", 4)) {return;}
       src_off += 4;
       GetLE32(src, src_off) + 8;
       src_off += 8;
@@ -28949,10 +28949,10 @@
         switch (fourcc) {
           case "VP8 ":
           case "VP8L":
-            if (typeof imagearray["frames"][i] === "undefined") imagearray["frames"][i] = {};
-            var obj = imagearray["frames"][i];
-            obj["src_off"] = alpha_chunk ? alpha_offset : src_off - 8;
-            obj["src_size"] = alpha_size + payload_size + 8;
+            if (typeof imagearray.frames[i] === "undefined") {imagearray.frames[i] = {};}
+            var obj = imagearray.frames[i];
+            obj.src_off = alpha_chunk ? alpha_offset : src_off - 8;
+            obj.src_size = alpha_size + payload_size + 8;
             //var rgba = webpdecoder.WebPDecodeRGBA(src,(alpha_chunk?alpha_offset:src_off-8),alpha_size+payload_size+8,width,height);
             //imagearray[i]={'rgba':rgba,'width':width[0],'height':height[0]};
             i++;
@@ -28963,12 +28963,12 @@
             }
             break;
           case "VP8X":
-            var obj = imagearray["header"] = {};
-            obj["feature_flags"] = src[src_off];
+            var obj = imagearray.header = {};
+            obj.feature_flags = src[src_off];
             var src_off_ = src_off + 4;
-            obj["canvas_width"] = 1 + GetLE24(src, src_off_);
+            obj.canvas_width = 1 + GetLE24(src, src_off_);
             src_off_ += 3;
-            obj["canvas_height"] = 1 + GetLE24(src, src_off_);
+            obj.canvas_height = 1 + GetLE24(src, src_off_);
             src_off_ += 3;
             break;
           case "ALPH":
@@ -28977,31 +28977,31 @@
             alpha_offset = src_off - 8;
             break;
           case "ANIM":
-            var obj = imagearray["header"];
-            obj["bgcolor"] = GetLE32(src, src_off);
+            var obj = imagearray.header;
+            obj.bgcolor = GetLE32(src, src_off);
             src_off_ = src_off + 4;
-            obj["loop_count"] = GetLE16(src, src_off_);
+            obj.loop_count = GetLE16(src, src_off_);
             src_off_ += 2;
             break;
           case "ANMF":
             var temp = 0;
-            var obj = imagearray["frames"][i] = {};
-            obj["offset_x"] = 2 * GetLE24(src, src_off);
+            var obj = imagearray.frames[i] = {};
+            obj.offset_x = 2 * GetLE24(src, src_off);
             src_off += 3;
-            obj["offset_y"] = 2 * GetLE24(src, src_off);
+            obj.offset_y = 2 * GetLE24(src, src_off);
             src_off += 3;
-            obj["width"] = 1 + GetLE24(src, src_off);
+            obj.width = 1 + GetLE24(src, src_off);
             src_off += 3;
-            obj["height"] = 1 + GetLE24(src, src_off);
+            obj.height = 1 + GetLE24(src, src_off);
             src_off += 3;
-            obj["duration"] = GetLE24(src, src_off);
+            obj.duration = GetLE24(src, src_off);
             src_off += 3;
             temp = src[src_off++];
-            obj["dispose"] = temp & 1;
-            obj["blend"] = temp >> 1 & 1;
+            obj.dispose = temp & 1;
+            obj.blend = temp >> 1 & 1;
             break;
         }
-        if (fourcc != "ANMF") src_off += payload_size_padded;
+        if (fourcc != "ANMF") {src_off += payload_size_padded;}
       }
       return imagearray;
     }
@@ -29011,26 +29011,26 @@
     var webpdecoder = new _WebPDecoder();
     var response = imageData;
     var imagearray = WebPRiffParser(response, 0);
-    imagearray["response"] = response;
-    imagearray["rgbaoutput"] = true;
-    imagearray["dataurl"] = false;
-    var header = imagearray["header"] ? imagearray["header"] : null;
-    var frames = imagearray["frames"] ? imagearray["frames"] : null;
+    imagearray.response = response;
+    imagearray.rgbaoutput = true;
+    imagearray.dataurl = false;
+    var header = imagearray.header ? imagearray.header : null;
+    var frames = imagearray.frames ? imagearray.frames : null;
     if (header) {
-      header["loop_counter"] = header["loop_count"];
-      height = [header["canvas_height"]];
-      width = [header["canvas_width"]];
+      header.loop_counter = header.loop_count;
+      height = [header.canvas_height];
+      width = [header.canvas_width];
       for (var f = 0; f < frames.length; f++) {
-        if (frames[f]["blend"] == 0) {
+        if (frames[f].blend == 0) {
           break;
         }
       }
     }
     var frame = frames[0];
-    var rgba = webpdecoder.WebPDecodeRGBA(response, frame["src_off"], frame["src_size"], width, height);
-    frame["rgba"] = rgba;
-    frame["imgwidth"] = width[0];
-    frame["imgheight"] = height[0];
+    var rgba = webpdecoder.WebPDecodeRGBA(response, frame.src_off, frame.src_size, width, height);
+    frame.rgba = rgba;
+    frame.imgwidth = width[0];
+    frame.imgheight = height[0];
     for (var i = 0; i < width[0] * height[0] * 4; i++) {
       pixels[i] = rgba[i];
     }
@@ -29746,7 +29746,7 @@
         } else {
           keystring = "'" + key + "'";
         }
-        if (typeof value == "number") {
+        if (typeof value === "number") {
           if (value < 0) {
             valuestring = hex(value).slice(3);
             numberprefix = "-";
@@ -29924,15 +29924,15 @@
     */
     API.events.push(["addFont", function (data) {
       var font = data.font;
-      var metrics = fontMetrics["Unicode"][font.postScriptName];
+      var metrics = fontMetrics.Unicode[font.postScriptName];
       if (metrics) {
-        font.metadata["Unicode"] = {};
-        font.metadata["Unicode"].widths = metrics.widths;
-        font.metadata["Unicode"].kerning = metrics.kerning;
+        font.metadata.Unicode = {};
+        font.metadata.Unicode.widths = metrics.widths;
+        font.metadata.Unicode.kerning = metrics.kerning;
       }
-      var encodingBlock = encodings["Unicode"][font.postScriptName];
+      var encodingBlock = encodings.Unicode[font.postScriptName];
       if (encodingBlock) {
-        font.metadata["Unicode"].encoding = encodingBlock;
+        font.metadata.Unicode.encoding = encodingBlock;
         font.encoding = encodingBlock.codePages[0];
       }
     }]); // end of adding event handler
@@ -30005,9 +30005,9 @@
   (function (jsPDFAPI) {
 
     function loadCanvg() {
-      return function () {
-        if (globalObject["canvg"]) {
-          return Promise.resolve(globalObject["canvg"]);
+      return (function () {
+        if (globalObject.canvg) {
+          return Promise.resolve(globalObject.canvg);
         }
         if ((typeof exports === "undefined" ? "undefined" : _typeof(exports)) === "object" && typeof module !== "undefined") {
           return new Promise(function (resolve, reject) {
@@ -30028,7 +30028,7 @@
           });
         }
         return Promise.reject(new Error("Could not load canvg"));
-      }().catch(function (e) {
+      }()).catch(function (e) {
         return Promise.reject(new Error("Could not load canvg: " + e));
       }).then(function (canvg) {
         return canvg.default ? canvg.default : canvg;
@@ -31470,7 +31470,7 @@
   })(jsPDF);
 
   /* eslint-disable no-control-regex */
-  jsPDF.API.TTFFont = function () {
+  jsPDF.API.TTFFont = (function () {
     /************************************************************************/
     /* function : open                                                       */
     /* comment : Decode the encoded ttf content and create a TTFFont object. */
@@ -31587,7 +31587,7 @@
       var charCode, i, scale, width, _ref;
       string = "" + string;
       width = 0;
-      for (i = 0, _ref = string.length; 0 <= _ref ? i < _ref : i > _ref; i = 0 <= _ref ? ++i : --i) {
+      for (i = 0, _ref = string.length; _ref >= 0 ? i < _ref : i > _ref; i = _ref >= 0 ? ++i : --i) {
         charCode = string.charCodeAt(i);
         width += this.widthOfGlyph(this.characterToGlyph(charCode)) + charSpace * (1000 / size) || 0;
       }
@@ -31603,13 +31603,13 @@
       return (this.ascender + gap - this.decender) / 1000 * size;
     };
     return TTFFont;
-  }();
+  }());
 
   /************************************************************************************************/
   /* function : Data                                                                              */
   /* comment : The ttf data decoded and stored in an array is read and written to the Data object.*/
   /************************************************************************************************/
-  var Data = function () {
+  var Data = (function () {
     function Data(data) {
       this.data = data != null ? data : [];
       this.pos = 0;
@@ -31678,7 +31678,7 @@
     Data.prototype.readString = function (length) {
       var i, ret;
       ret = [];
-      for (i = 0; 0 <= length ? i < length : i > length; i = 0 <= length ? ++i : --i) {
+      for (i = 0; length >= 0 ? i < length : i > length; i = length >= 0 ? ++i : --i) {
         ret[i] = String.fromCharCode(this.readByte());
       }
       return ret.join("");
@@ -31686,7 +31686,7 @@
     Data.prototype.writeString = function (val) {
       var i, _ref, _results;
       _results = [];
-      for (i = 0, _ref = val.length; 0 <= _ref ? i < _ref : i > _ref; i = 0 <= _ref ? ++i : --i) {
+      for (i = 0, _ref = val.length; _ref >= 0 ? i < _ref : i > _ref; i = _ref >= 0 ? ++i : --i) {
         _results.push(this.writeByte(val.charCodeAt(i)));
       }
       return _results;
@@ -31741,7 +31741,7 @@
     Data.prototype.read = function (bytes) {
       var buf, i;
       buf = [];
-      for (i = 0; 0 <= bytes ? i < bytes : i > bytes; i = 0 <= bytes ? ++i : --i) {
+      for (i = 0; bytes >= 0 ? i < bytes : i > bytes; i = bytes >= 0 ? ++i : --i) {
         buf.push(this.readByte());
       }
       return buf;
@@ -31756,8 +31756,8 @@
       return _results;
     };
     return Data;
-  }();
-  var Directory = function () {
+  }());
+  var Directory = (function () {
     var checksum;
 
     /*****************************************************************************************************/
@@ -31772,7 +31772,7 @@
       this.entrySelector = data.readShort();
       this.rangeShift = data.readShort();
       this.tables = {};
-      for (i = 0, _ref = this.tableCount; 0 <= _ref ? i < _ref : i > _ref; i = 0 <= _ref ? ++i : --i) {
+      for (i = 0, _ref = this.tableCount; _ref >= 0 ? i < _ref : i > _ref; i = _ref >= 0 ? ++i : --i) {
         entry = {
           tag: data.readString(4),
           checksum: data.readInt(),
@@ -31844,12 +31844,12 @@
       return sum & 0xffffffff;
     };
     return Directory;
-  }();
+  }());
   var Table,
     __hasProp = {}.hasOwnProperty,
     __extends = function __extends(child, parent) {
       for (var key in parent) {
-        if (__hasProp.call(parent, key)) child[key] = parent[key];
+        if (__hasProp.call(parent, key)) {child[key] = parent[key];}
       }
       function ctor() {
         this.constructor = child;
@@ -31864,7 +31864,7 @@
   /* function : Table                                            */
   /* comment : Save info for each table, and parse the table.    */
   /***************************************************************/
-  Table = function () {
+  Table = (function () {
     function Table(file) {
       var info;
       this.file = file;
@@ -31885,8 +31885,8 @@
       return this.file.contents.read(this.length);
     };
     return Table;
-  }();
-  var HeadTable = function (_super) {
+  }());
+  var HeadTable = (function (_super) {
     __extends(HeadTable, _super);
     function HeadTable() {
       return HeadTable.__super__.constructor.apply(this, arguments);
@@ -31935,13 +31935,13 @@
       return table.data;
     };
     return HeadTable;
-  }(Table);
+  }(Table));
 
   /************************************************************************************/
   /* function : CmapEntry                                                             */
   /* comment : Cmap Initializes and encodes object information (required by pdf spec).*/
   /************************************************************************************/
-  var CmapEntry = function () {
+  var CmapEntry = (function () {
     function CmapEntry(data, offset) {
       var code, count, endCode, glyphId, glyphIds, i, idDelta, idRangeOffset, index, saveOffset, segCount, segCountX2, start, startCode, tail, _j, _k, _len;
       this.platformID = data.readUInt16();
@@ -31964,48 +31964,48 @@
           segCountX2 = data.readUInt16();
           segCount = segCountX2 / 2;
           data.pos += 6;
-          endCode = function () {
+          endCode = (function () {
             var _j, _results;
             _results = [];
-            for (i = _j = 0; 0 <= segCount ? _j < segCount : _j > segCount; i = 0 <= segCount ? ++_j : --_j) {
+            for (i = _j = 0; segCount >= 0 ? _j < segCount : _j > segCount; i = segCount >= 0 ? ++_j : --_j) {
               _results.push(data.readUInt16());
             }
             return _results;
-          }();
+          }());
           data.pos += 2;
-          startCode = function () {
+          startCode = (function () {
             var _j, _results;
             _results = [];
-            for (i = _j = 0; 0 <= segCount ? _j < segCount : _j > segCount; i = 0 <= segCount ? ++_j : --_j) {
+            for (i = _j = 0; segCount >= 0 ? _j < segCount : _j > segCount; i = segCount >= 0 ? ++_j : --_j) {
               _results.push(data.readUInt16());
             }
             return _results;
-          }();
-          idDelta = function () {
+          }());
+          idDelta = (function () {
             var _j, _results;
             _results = [];
-            for (i = _j = 0; 0 <= segCount ? _j < segCount : _j > segCount; i = 0 <= segCount ? ++_j : --_j) {
+            for (i = _j = 0; segCount >= 0 ? _j < segCount : _j > segCount; i = segCount >= 0 ? ++_j : --_j) {
               _results.push(data.readUInt16());
             }
             return _results;
-          }();
-          idRangeOffset = function () {
+          }());
+          idRangeOffset = (function () {
             var _j, _results;
             _results = [];
-            for (i = _j = 0; 0 <= segCount ? _j < segCount : _j > segCount; i = 0 <= segCount ? ++_j : --_j) {
+            for (i = _j = 0; segCount >= 0 ? _j < segCount : _j > segCount; i = segCount >= 0 ? ++_j : --_j) {
               _results.push(data.readUInt16());
             }
             return _results;
-          }();
+          }());
           count = (this.length - data.pos + this.offset) / 2;
-          glyphIds = function () {
+          glyphIds = (function () {
             var _j, _results;
             _results = [];
-            for (i = _j = 0; 0 <= count ? _j < count : _j > count; i = 0 <= count ? ++_j : --_j) {
+            for (i = _j = 0; count >= 0 ? _j < count : _j > count; i = count >= 0 ? ++_j : --_j) {
               _results.push(data.readUInt16());
             }
             return _results;
-          }();
+          }());
           for (i = _j = 0, _len = endCode.length; _j < _len; i = ++_j) {
             tail = endCode[i];
             start = startCode[i];
@@ -32034,13 +32034,13 @@
       switch (encoding) {
         case "macroman":
           id = 0;
-          indexes = function () {
+          indexes = (function () {
             var _results = [];
             for (i = 0; i < 256; ++i) {
               _results.push(0);
             }
             return _results;
-          }();
+          }());
           map = {
             0: 0
           };
@@ -32116,12 +32116,12 @@
               rangeOffsets.push(0);
               break;
             }
-            startGlyph = charMap[startCode]["new"];
+            startGlyph = charMap[startCode].new;
             if (startCode - startGlyph >= 0x8000) {
               deltas.push(0);
               rangeOffsets.push(2 * (glyphIDs.length + segCount - i));
               for (code = _l = startCode; startCode <= endCode ? _l <= endCode : _l >= endCode; code = startCode <= endCode ? ++_l : --_l) {
-                glyphIDs.push(charMap[code]["new"]);
+                glyphIDs.push(charMap[code].new);
               }
             } else {
               deltas.push(startGlyph - startCode);
@@ -32167,8 +32167,8 @@
       }
     };
     return CmapEntry;
-  }();
-  var CmapTable = function (_super) {
+  }());
+  var CmapTable = (function (_super) {
     __extends(CmapTable, _super);
     function CmapTable() {
       return CmapTable.__super__.constructor.apply(this, arguments);
@@ -32181,7 +32181,7 @@
       tableCount = data.readUInt16();
       this.tables = [];
       this.unicode = null;
-      for (i = 0; 0 <= tableCount ? i < tableCount : i > tableCount; i = 0 <= tableCount ? ++i : --i) {
+      for (i = 0; tableCount >= 0 ? i < tableCount : i > tableCount; i = tableCount >= 0 ? ++i : --i) {
         entry = new CmapEntry(data, this.offset);
         this.tables.push(entry);
         if (entry.isUnicode) {
@@ -32209,8 +32209,8 @@
       return result;
     };
     return CmapTable;
-  }(Table);
-  var HheaTable = function (_super) {
+  }(Table));
+  var HheaTable = (function (_super) {
     __extends(HheaTable, _super);
     function HheaTable() {
       return HheaTable.__super__.constructor.apply(this, arguments);
@@ -32255,8 +32255,8 @@
               return table.data;
           };*/
     return HheaTable;
-  }(Table);
-  var OS2Table = function (_super) {
+  }(Table));
+  var OS2Table = (function (_super) {
     __extends(OS2Table, _super);
     function OS2Table() {
       return OS2Table.__super__.constructor.apply(this, arguments);
@@ -32280,22 +32280,22 @@
       this.yStrikeoutSize = data.readShort();
       this.yStrikeoutPosition = data.readShort();
       this.familyClass = data.readShort();
-      this.panose = function () {
+      this.panose = (function () {
         var i, _results;
         _results = [];
         for (i = 0; i < 10; ++i) {
           _results.push(data.readByte());
         }
         return _results;
-      }();
-      this.charRange = function () {
+      }());
+      this.charRange = (function () {
         var i, _results;
         _results = [];
         for (i = 0; i < 4; ++i) {
           _results.push(data.readInt());
         }
         return _results;
-      }();
+      }());
       this.vendorID = data.readString(4);
       this.selection = data.readShort();
       this.firstCharIndex = data.readShort();
@@ -32306,14 +32306,14 @@
         this.lineGap = data.readShort();
         this.winAscent = data.readShort();
         this.winDescent = data.readShort();
-        this.codePageRange = function () {
+        this.codePageRange = (function () {
           var i, _results;
           _results = [];
           for (i = 0; i < 2; i = ++i) {
             _results.push(data.readInt());
           }
           return _results;
-        }();
+        }());
         if (this.version > 1) {
           this.xHeight = data.readShort();
           this.capHeight = data.readShort();
@@ -32327,8 +32327,8 @@
               return this.raw();
           };*/
     return OS2Table;
-  }(Table);
-  var PostTable = function (_super) {
+  }(Table));
+  var PostTable = (function (_super) {
     __extends(PostTable, _super);
     function PostTable() {
       return PostTable.__super__.constructor.apply(this, arguments);
@@ -32353,7 +32353,7 @@
           numberOfGlyphs = data.readUInt16();
           this.glyphNameIndex = [];
           var i;
-          for (i = 0; 0 <= numberOfGlyphs ? i < numberOfGlyphs : i > numberOfGlyphs; i = 0 <= numberOfGlyphs ? ++i : --i) {
+          for (i = 0; numberOfGlyphs >= 0 ? i < numberOfGlyphs : i > numberOfGlyphs; i = numberOfGlyphs >= 0 ? ++i : --i) {
             this.glyphNameIndex.push(data.readUInt16());
           }
           this.names = [];
@@ -32372,7 +32372,7 @@
           return this.map = function () {
             var _j, _ref, _results1;
             _results1 = [];
-            for (i = _j = 0, _ref = this.file.maxp.numGlyphs; 0 <= _ref ? _j < _ref : _j > _ref; i = 0 <= _ref ? ++_j : --_j) {
+            for (i = _j = 0, _ref = this.file.maxp.numGlyphs; _ref >= 0 ? _j < _ref : _j > _ref; i = _ref >= 0 ? ++_j : --_j) {
               _results1.push(data.readUInt32());
             }
             return _results1;
@@ -32380,13 +32380,13 @@
       }
     };
     return PostTable;
-  }(Table);
+  }(Table));
 
   /*********************************************************************************************************/
   /* function : NameEntry                                                                                  */
   /* comment : Store copyright information, platformID, encodingID, and languageID in the NameEntry object.*/
   /*********************************************************************************************************/
-  var NameEntry = function () {
+  var NameEntry = (function () {
     function NameEntry(raw, entry) {
       this.raw = raw;
       this.length = raw.length;
@@ -32395,8 +32395,8 @@
       this.languageID = entry.languageID;
     }
     return NameEntry;
-  }();
-  var NameTable = function (_super) {
+  }());
+  var NameTable = (function (_super) {
     __extends(NameTable, _super);
     function NameTable() {
       return NameTable.__super__.constructor.apply(this, arguments);
@@ -32409,7 +32409,7 @@
       count = data.readShort();
       stringOffset = data.readShort();
       entries = [];
-      for (i = 0; 0 <= count ? i < count : i > count; i = 0 <= count ? ++i : --i) {
+      for (i = 0; count >= 0 ? i < count : i > count; i = count >= 0 ? ++i : --i) {
         entries.push({
           platformID: data.readShort(),
           encodingID: data.readShort(),
@@ -32503,8 +32503,8 @@
               };
           };*/
     return NameTable;
-  }(Table);
-  var MaxpTable = function (_super) {
+  }(Table));
+  var MaxpTable = (function (_super) {
     __extends(MaxpTable, _super);
     function MaxpTable() {
       return MaxpTable.__super__.constructor.apply(this, arguments);
@@ -32549,8 +32549,8 @@
               return table.data;
           };*/
     return MaxpTable;
-  }(Table);
-  var HmtxTable = function (_super) {
+  }(Table));
+  var HmtxTable = (function (_super) {
     __extends(HmtxTable, _super);
     function HmtxTable() {
       return HmtxTable.__super__.constructor.apply(this, arguments);
@@ -32560,21 +32560,21 @@
       var i, last, lsbCount, m, _j, _ref, _results;
       data.pos = this.offset;
       this.metrics = [];
-      for (i = 0, _ref = this.file.hhea.numberOfMetrics; 0 <= _ref ? i < _ref : i > _ref; i = 0 <= _ref ? ++i : --i) {
+      for (i = 0, _ref = this.file.hhea.numberOfMetrics; _ref >= 0 ? i < _ref : i > _ref; i = _ref >= 0 ? ++i : --i) {
         this.metrics.push({
           advance: data.readUInt16(),
           lsb: data.readInt16()
         });
       }
       lsbCount = this.file.maxp.numGlyphs - this.file.hhea.numberOfMetrics;
-      this.leftSideBearings = function () {
+      this.leftSideBearings = (function () {
         var _j, _results;
         _results = [];
-        for (i = _j = 0; 0 <= lsbCount ? _j < lsbCount : _j > lsbCount; i = 0 <= lsbCount ? ++_j : --_j) {
+        for (i = _j = 0; lsbCount >= 0 ? _j < lsbCount : _j > lsbCount; i = lsbCount >= 0 ? ++_j : --_j) {
           _results.push(data.readInt16());
         }
         return _results;
-      }();
+      }());
       this.widths = function () {
         var _j, _len, _ref1, _results;
         _ref1 = this.metrics;
@@ -32587,7 +32587,7 @@
       }.call(this);
       last = this.widths[this.widths.length - 1];
       _results = [];
-      for (i = _j = 0; 0 <= lsbCount ? _j < lsbCount : _j > lsbCount; i = 0 <= lsbCount ? ++_j : --_j) {
+      for (i = _j = 0; lsbCount >= 0 ? _j < lsbCount : _j > lsbCount; i = lsbCount >= 0 ? ++_j : --_j) {
         _results.push(this.widths.push(last));
       }
       return _results;
@@ -32617,9 +32617,9 @@
               return table.data;
           };*/
     return HmtxTable;
-  }(Table);
+  }(Table));
   var __slice = [].slice;
-  var GlyfTable = function (_super) {
+  var GlyfTable = (function (_super) {
     __extends(GlyfTable, _super);
     function GlyfTable() {
       return GlyfTable.__super__.constructor.apply(this, arguments);
@@ -32673,8 +32673,8 @@
       };
     };
     return GlyfTable;
-  }(Table);
-  var SimpleGlyph = function () {
+  }(Table));
+  var SimpleGlyph = (function () {
     /**************************************************************************/
     /* function : SimpleGlyph                                                 */
     /* comment : Stores raw, xMin, yMin, xMax, and yMax values for this glyph.*/
@@ -32692,8 +32692,8 @@
       return this.raw.data;
     };
     return SimpleGlyph;
-  }();
-  var CompoundGlyph = function () {
+  }());
+  var CompoundGlyph = (function () {
     var ARG_1_AND_2_ARE_WORDS, MORE_COMPONENTS, WE_HAVE_AN_X_AND_Y_SCALE, WE_HAVE_A_SCALE, WE_HAVE_A_TWO_BY_TWO;
     ARG_1_AND_2_ARE_WORDS = 0x0001;
     WE_HAVE_A_SCALE = 0x0008;
@@ -32751,8 +32751,8 @@
       return result.data;
     };
     return CompoundGlyph;
-  }();
-  var LocaTable = function (_super) {
+  }());
+  var LocaTable = (function (_super) {
     __extends(LocaTable, _super);
     function LocaTable() {
       return LocaTable.__super__.constructor.apply(this, arguments);
@@ -32814,7 +32814,7 @@
       return newLocaTable;
     };
     return LocaTable;
-  }(Table);
+  }(Table));
 
   /************************************************************************************/
   /* function : invert                                                                */
@@ -32877,7 +32877,7 @@
           return result;
       };*/
 
-  var Subset = function () {
+  var Subset = (function () {
     function Subset(font) {
       this.font = font;
       this.subset = {};
@@ -32976,7 +32976,7 @@
       _ref = cmap.charMap;
       for (code in _ref) {
         ids = _ref[code];
-        old2new[ids.old] = ids["new"];
+        old2new[ids.old] = ids.new;
       }
       nextGlyphID = cmap.maxGlyphID;
       for (oldID in glyphs) {
@@ -32988,7 +32988,7 @@
       newIDs = Object.keys(new2old).sort(function (a, b) {
         return a - b;
       });
-      oldIDs = function () {
+      oldIDs = (function () {
         var _i, _len, _results;
         _results = [];
         for (_i = 0, _len = newIDs.length; _i < _len; _i++) {
@@ -32996,7 +32996,7 @@
           _results.push(new2old[id]);
         }
         return _results;
-      }();
+      }());
       glyf = this.font.glyf.encode(glyphs, oldIDs, old2new);
       loca = this.font.loca.encode(glyf.offsets, oldIDs);
       tables = {
@@ -33016,8 +33016,8 @@
       return this.font.directory.encode(tables);
     };
     return Subset;
-  }();
-  jsPDF.API.PDFObject = function () {
+  }());
+  jsPDF.API.PDFObject = (function () {
     var pad;
     function PDFObject() {}
     pad = function pad(str, length) {
@@ -33030,7 +33030,7 @@
     PDFObject.convert = function (object) {
       var e, items, key, out, val;
       if (Array.isArray(object)) {
-        items = function () {
+        items = (function () {
           var _i, _len, _results;
           _results = [];
           for (_i = 0, _len = object.length; _i < _len; _i++) {
@@ -33038,7 +33038,7 @@
             _results.push(PDFObject.convert(e));
           }
           return _results;
-        }().join(" ");
+        }()).join(" ");
         return "[" + items + "]";
       } else if (typeof object === "string") {
         return "/" + object;
@@ -33059,7 +33059,7 @@
       }
     };
     return PDFObject;
-  }();
+  }());
 
   exports.AcroForm = AcroForm;
   exports.AcroFormAppearance = AcroFormAppearance;
@@ -33076,10 +33076,10 @@
   exports.GState = GState;
   exports.ShadingPattern = ShadingPattern;
   exports.TilingPattern = TilingPattern;
-  exports["default"] = jsPDF;
+  exports.default = jsPDF;
   exports.jsPDF = jsPDF;
 
-  Object.defineProperty(exports, '__esModule', { value: true });
+  Object.defineProperty(exports, "__esModule", { value: true });
 
 }));
 //# sourceMappingURL=jspdf.umd.js.map

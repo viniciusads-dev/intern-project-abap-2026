@@ -15,6 +15,7 @@
             <Table 
                 id="inventoryTable"
                 autoPopinMode="true"
+                width="auto"
                 items="{
                     path: '/ZSTR_ESTOQUE_ODATASet', 
                     parameters: {countMode: 'Inline'}
