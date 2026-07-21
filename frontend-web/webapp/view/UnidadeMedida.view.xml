@@ -1,0 +1,6 @@
+<mvc:View controllerName="zpeweb.controller.UnidadeMedida"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page id="unidadePage" title="{i18n>title}">
+    </Page>
+</mvc:View>

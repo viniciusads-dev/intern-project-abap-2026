@@ -1,0 +1,6 @@
+<mvc:View controllerName="zpeweb.controller.CadastroBom"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page id="bomPage" title="{i18n>title}">
+    </Page>
+</mvc:View>

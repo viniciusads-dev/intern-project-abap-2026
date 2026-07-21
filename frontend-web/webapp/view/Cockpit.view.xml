@@ -77,9 +77,65 @@
                         header="Nova Movimentação"
                         subheader="Ação Rápida"
                         frameType="OneByOne"
-                        press=".onQuickMovementPress">
+                        press=".onPress">
                         <TileContent id="quickMovementContent">
                             <ImageContent id="quickMovementImage" src="sap-icon://add-product" />
+                        </TileContent>
+                    </GenericTile>
+                    
+                    <GenericTile 
+                        id="executarProducao"
+                        header="Executar Produção"
+                        subheader="Ação Rápida"
+                        frameType="OneByOne"
+                        press=".onCardPress">
+                        <customData>
+                            <core:CustomData key="route" value="executar"/>
+                        </customData>
+                        <TileContent id="executarContent">
+                            <ImageContent id="executarIcon" src="sap-icon://factory" />
+                        </TileContent>
+                    </GenericTile>
+
+                    <GenericTile 
+                        id="cadastrarBom"
+                        header="Cadastrar Lista BOM"
+                        subheader="Ação Rápida"
+                        frameType="OneByOne"
+                        press=".onCardPress">
+                        <customData>
+                            <core:CustomData key="route" value="cadastrobom"/>
+                        </customData>
+                        <TileContent id="bomContent">
+                            <ImageContent id="bomIcon" src="sap-icon://factory" />
+                        </TileContent>
+                    </GenericTile>
+
+                    <GenericTile 
+                        id="centralCompras"
+                        header="Central de compras"
+                        subheader="Central de compras"
+                        frameType="OneByOne"
+                        press=".onCardPress">
+                        <customData>
+                            <core:CustomData key="route" value="centralcompras"/>
+                        </customData>
+                        <TileContent id="comprasContent">
+                            <ImageContent id="comprasIcon" src="sap-icon://factory" />
+                        </TileContent>
+                    </GenericTile>
+
+                    <GenericTile 
+                        id="unidadeMedida"
+                        header="Cadastro de Unidade Medida"
+                        subheader="Cadastrar Unidade de Medida"
+                        frameType="OneByOne"
+                        press=".onCardPress">
+                        <customData>
+                            <core:CustomData key="route" value="unidademedida"/>
+                        </customData>
+                        <TileContent id="unidadeContent">
+                            <ImageContent id="unidadeIcon" src="sap-icon://factory" />
                         </TileContent>
                     </GenericTile>
 

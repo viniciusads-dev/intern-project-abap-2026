@@ -115,7 +115,36 @@
           "target": [
             "TargetNone"
           ]
+        },
+        {
+          "name": "RouteExecutarProducao",
+          "pattern": "executar",
+          "target": [
+            "TargetExecutarProducao"
+          ]
+        },
+        {
+          "name": "RouteCadastroBom",
+          "pattern": "cadastrobom",
+          "target": [
+            "TargetCadastroBom"
+          ]
+        },
+        {
+          "name": "RouteCentralCompras",
+          "pattern": "centralcompras",
+          "target": [
+            "TargetCentralCompras"
+          ]
+        },
+        {
+          "name": "RouteUnidadeMedida",
+          "pattern": "unidademedida",
+          "target": [
+            "TargetUnidadeMedida"
+          ]
         }
+          
       ],
       "targets": {
         "TargetCockpit": {
@@ -129,7 +158,24 @@
         "TargetNone": {
           "id": "None",
           "name": "None"
+        },
+        "TargetExecutarProducao": {
+          "id": "Executar",
+          "name": "Executar"
+        },
+        "TargetCadastroBom": {
+          "id": "CadastroBom",
+          "name": "CadastroBom"
+        },
+        "TargetCentralCompras": {
+          "id": "CentralCompras",
+          "name": "CentralCompras"
+        },
+        "TargetUnidadeMedida": {
+          "id": "UnidadeMedida",
+          "name": "UnidadeMedida"
         }
+
       }
     },
     "rootView": {

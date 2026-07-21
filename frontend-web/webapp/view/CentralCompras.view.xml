@@ -1,0 +1,6 @@
+<mvc:View controllerName="zpeweb.controller.CentralCompras"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page id="comprasPage" title="{i18n>title}">
+    </Page>
+</mvc:View>

@@ -23,7 +23,11 @@ sap.ui.define([
             const oSource = oEvent.getSource();
             const sRoute = oSource.data("route");
             const mRouteMap = {
-                inventory: "RouteInventory"
+                inventory: "RouteInventory",
+                executar: "RouteExecutarProducao",
+                cadastrobom: "RouteCadastroBom",
+                centralcompras: "RouteCentralCompras",
+                unidademedida: "RouteUnidadeMedida"
             };
             const sRouteName = mRouteMap[sRoute];
 
