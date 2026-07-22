@@ -15,6 +15,8 @@
                 <HBox alignItems="Center" class="sapUiSmallMarginBottom">
                     <Label text="Selecionar Produto Acabado:" labelFor="inputMaterial" class="sapUiTinyMarginEnd" />
                     <Input id="inputMaterial"
+                        type="Number"
+                        liveChange=".onInputLiveChange"
                         width="200px"
                         placeholder="Digite o código..."
                         showValueHelp="true"
@@ -43,23 +45,16 @@
                     <!-- tabela com componentes da BOM -->
                     <Table id="tblMateriasPrima" inset="false">
                         <columns>
-                            <Column width="25%">
-                                <Text text="Cod. Matéria-Prima" />
-                            </Column>
-                            <Column width="50%">
-                                <Text text="Descrição" />
-                            </Column>
-                            <Column hAlign="End" width="25%">
-                                <Text text="Qtd. Necessária" />
-                            </Column>
+                            <Column width="25%"><Text text="Cod. Matéria-Prima" /></Column>
+                            <Column width="50%"><Text text="Descrição" /></Column>
+                            <Column hAlign="End" width="25%"><Text text="Qtd. Necessária" /></Column>
                         </columns>
                         <items>
-                            <!-- dados de exemplo -->
                             <ColumnListItem>
                                 <cells>
-                                    <Text text="00" />
-                                    <Text text="EXEMPLO" />
-                                    <ObjectNumber number="127" />
+                                    <Text text="{Codigomp}" />
+                                    <Text text="{Descricaom}" />
+                                    <ObjectNumber number="{Quantidademp}" />
                                 </cells>
                             </ColumnListItem>
                         </items>

@@ -132,7 +132,7 @@
         },
         {
           "name": "RouteCentralCompras",
-          "pattern": "centralcompras",
+          "pattern": "centralcompras/:materialPA:",
           "target": [
             "TargetCentralCompras"
           ]

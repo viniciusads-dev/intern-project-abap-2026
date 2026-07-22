@@ -86,7 +86,7 @@
                     <GenericTile 
                         id="executarProducao"
                         header="Executar Produção"
-                        subheader="Ação Rápida"
+                        subheader="Gerar Produto Acabado"
                         frameType="OneByOne"
                         press=".onCardPress">
                         <customData>
@@ -114,14 +114,14 @@
                     <GenericTile 
                         id="centralCompras"
                         header="Central de compras"
-                        subheader="Central de compras"
+                        subheader="Controle de pedidos"
                         frameType="OneByOne"
                         press=".onCardPress">
                         <customData>
                             <core:CustomData key="route" value="centralcompras"/>
                         </customData>
                         <TileContent id="comprasContent">
-                            <ImageContent id="comprasIcon" src="sap-icon://factory" />
+                            <ImageContent id="comprasIcon" src="sap-icon://credit-card" />
                         </TileContent>
                     </GenericTile>
 

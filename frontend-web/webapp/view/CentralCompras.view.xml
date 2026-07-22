@@ -10,17 +10,19 @@
         <content>
             <VBox class="sapUiSmallMargin">
                 
-                <!-- barra superior, busca e select all -->
+                <!-- Barra superior: busca e buscar todos -->
                 <FlexBox alignItems="Center" justifyContent="SpaceBetween" class="sapUiSmallMarginBottom">
                     
-                    <!-- buscar PA -->
+                    <!-- Buscar PA -->
                     <HBox alignItems="Center">
                         <Label text="Selecionar Produto Acabado:" labelFor="inputProdutoAcabado" class="sapUiTinyMarginEnd" />
                         <Input id="inputProdutoAcabado"
                             width="200px"
+                            type="Number"
                             placeholder="Digite o código..."
                             showValueHelp="true"
                             valueHelpRequest=".onValueHelpProduto"
+                            liveChange=".onInputLiveChange"
                             class="sapUiTinyMarginEnd" />
                         <Button id="btnBuscar"
                             text="Buscar"
@@ -29,68 +31,69 @@
                             press=".onBuscar" />
                     </HBox>
 
-                    <!-- botao select all -->
-                    <Button id="btnSelecionarTodos"
-                        text="Selecionar Todos"
+                    <!-- Botao Select All -->
+                    <Button id="btnBuscarTodos"
+                        text="Buscar Todos"
                         icon="sap-icon://multi-select"
-                        press=".onSelecionarTodos" />
+                        press=".onBuscarTodos" />
 
                 </FlexBox>
 
-                <VBox id="panelResultadoCompras" class="sapUiSmallMarginTop" visible="true">
-                    <!-- cabeçalho tabela -->
-                    <Table id="tblPedidoCompra" inset="false" class="sapUiSmallMarginBottom">
+                <VBox id="panelResultadoCompras" class="sapUiSmallMarginTop" visible="false">
+                    
+                    <!-- tabela nececidade compra -->
+                    <Table id="tblPedidoCompra" 
+                        mode="MultiSelect"
+                        inset="false" 
+                        class="sapUiSmallMarginBottom"
+                        items="{comprasModel>/}">
                         <columns>
-                            <Column width="14%">
+                            <Column width="12%">
                                 <Text text="Cod. Prod. Final" />
                             </Column>
-                            <Column width="20%">
-                                <Text text="Descrição" />
+                            <Column width="22%">
+                                <Text text="Descrição PA" />
                             </Column>
-                            <Column width="14%">
+                            <Column width="12%">
                                 <Text text="Cod. Mat. Prima" />
                             </Column>
-                            <Column width="20%">
-                                <Text text="Descrição" />
+                            <Column width="22%">
+                                <Text text="Descrição MP" />
                             </Column>
-                            <Column hAlign="End" width="10%">
+                            <Column hAlign="End" width="11%">
                                 <Text text="Qtd. Necessária" />
                             </Column>
                             <Column hAlign="End" width="11%">
                                 <Text text="Qtd. em Estoque" />
                             </Column>
-                            <Column hAlign="End" width="11%">
+                            <Column hAlign="End" width="10%">
                                 <Text text="Qtd. a Comprar" />
                             </Column>
                         </columns>
                         <items>
-                            <!-- dados exemplo -->
                             <ColumnListItem>
                                 <cells>
-                                    <Text text="99" />
-                                    <Text text="EXEMPLO PA" />
-                                    <Text text="00" />
-                                    <Text text="EXEMPLO MP" />
-                                    <ObjectNumber number="5" />
-                                    <ObjectNumber number="0" />
-                                    <ObjectNumber number="5" />
-                                </cells>
-                            </ColumnListItem>
-                            <ColumnListItem>
-                                <cells>
-                                    <Text text="99" />
-                                    <Text text="EXEMPLO PA" />
-                                    <Text text="01" />
-                                    <Text text="EXEMPLO MP1" />
-                                    <ObjectNumber number="5" />
-                                    <ObjectNumber number="5" />
-                                    <ObjectNumber number="0" />
+                                    <Text text="{comprasModel>Codigopa}" />
+                                    <Text text="{comprasModel>Descricaopa}" />
+                                    <Text text="{comprasModel>Codigomp}" />
+                                    <Text text="{comprasModel>Descricaomp}" />
+                                    <ObjectNumber 
+                                        number="{comprasModel>QtdNecessaria}" 
+                                        unit="{comprasModel>UnidadeMedida}" />
+                                    <ObjectNumber 
+                                        number="{comprasModel>QtdEstoque}" 
+                                        unit="{comprasModel>UnidadeMedida}" 
+                                        state="{= ${comprasModel>QtdEstoque} &lt; ${comprasModel>QtdNecessaria} ? 'Error' : 'Success' }" />
+                                    <ObjectNumber 
+                                        number="{comprasModel>QtdComprar}" 
+                                        unit="{comprasModel>UnidadeMedida}" 
+                                        state="{= ${comprasModel>QtdComprar} &gt; 0 ? 'Warning' : 'None' }" />
                                 </cells>
                             </ColumnListItem>
                         </items>
                     </Table>
     
-                    <!-- Botão Rodapé Alinhado à Direita -->
+                    <!-- botao rodapé a direita -->
                     <HBox justifyContent="End" class="sapUiMediumMarginTop">
                         <Button id="btnGerarPedido"
                             text="Gerar pedido"
