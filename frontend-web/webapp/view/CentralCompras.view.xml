@@ -1,6 +1,105 @@
 <mvc:View controllerName="zpeweb.controller.CentralCompras"
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m">
-    <Page id="comprasPage" title="{i18n>title}">
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Page id="comprasPage"
+        title="{i18n>comprasPageTitle}"
+        showNavButton="true"
+        navButtonPress=".onNavBack"
+        enableScrolling="true">
+        <content>
+            <VBox class="sapUiSmallMargin">
+                
+                <!-- barra superior, busca e select all -->
+                <FlexBox alignItems="Center" justifyContent="SpaceBetween" class="sapUiSmallMarginBottom">
+                    
+                    <!-- buscar PA -->
+                    <HBox alignItems="Center">
+                        <Label text="Selecionar Produto Acabado:" labelFor="inputProdutoAcabado" class="sapUiTinyMarginEnd" />
+                        <Input id="inputProdutoAcabado"
+                            width="200px"
+                            placeholder="Digite o código..."
+                            showValueHelp="true"
+                            valueHelpRequest=".onValueHelpProduto"
+                            class="sapUiTinyMarginEnd" />
+                        <Button id="btnBuscar"
+                            text="Buscar"
+                            type="Emphasized"
+                            icon="sap-icon://search"
+                            press=".onBuscar" />
+                    </HBox>
+
+                    <!-- botao select all -->
+                    <Button id="btnSelecionarTodos"
+                        text="Selecionar Todos"
+                        icon="sap-icon://multi-select"
+                        press=".onSelecionarTodos" />
+
+                </FlexBox>
+
+                <VBox id="panelResultadoCompras" class="sapUiSmallMarginTop" visible="true">
+                    <!-- cabeçalho tabela -->
+                    <Table id="tblPedidoCompra" inset="false" class="sapUiSmallMarginBottom">
+                        <columns>
+                            <Column width="14%">
+                                <Text text="Cod. Prod. Final" />
+                            </Column>
+                            <Column width="20%">
+                                <Text text="Descrição" />
+                            </Column>
+                            <Column width="14%">
+                                <Text text="Cod. Mat. Prima" />
+                            </Column>
+                            <Column width="20%">
+                                <Text text="Descrição" />
+                            </Column>
+                            <Column hAlign="End" width="10%">
+                                <Text text="Qtd. Necessária" />
+                            </Column>
+                            <Column hAlign="End" width="11%">
+                                <Text text="Qtd. em Estoque" />
+                            </Column>
+                            <Column hAlign="End" width="11%">
+                                <Text text="Qtd. a Comprar" />
+                            </Column>
+                        </columns>
+                        <items>
+                            <!-- dados exemplo -->
+                            <ColumnListItem>
+                                <cells>
+                                    <Text text="99" />
+                                    <Text text="EXEMPLO PA" />
+                                    <Text text="00" />
+                                    <Text text="EXEMPLO MP" />
+                                    <ObjectNumber number="5" />
+                                    <ObjectNumber number="0" />
+                                    <ObjectNumber number="5" />
+                                </cells>
+                            </ColumnListItem>
+                            <ColumnListItem>
+                                <cells>
+                                    <Text text="99" />
+                                    <Text text="EXEMPLO PA" />
+                                    <Text text="01" />
+                                    <Text text="EXEMPLO MP1" />
+                                    <ObjectNumber number="5" />
+                                    <ObjectNumber number="5" />
+                                    <ObjectNumber number="0" />
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+    
+                    <!-- Botão Rodapé Alinhado à Direita -->
+                    <HBox justifyContent="End" class="sapUiMediumMarginTop">
+                        <Button id="btnGerarPedido"
+                            text="Gerar pedido"
+                            type="Emphasized"
+                            icon="sap-icon://add"
+                            press=".onGerarPedido" />
+                    </HBox>
+                </VBox>
+            </VBox>
+        </content>
     </Page>
 </mvc:View>

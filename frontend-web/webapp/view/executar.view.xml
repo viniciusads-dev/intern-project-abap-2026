@@ -1,7 +1,6 @@
 <mvc:View controllerName="zpeweb.controller.ExecutarProducao"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
-    xmlns:f="sap.ui.layout.form"
     xmlns:core="sap.ui.core">
     <Page 
         id="executarPage"
@@ -14,7 +13,7 @@
                 
                 <!-- campo de busca -->
                 <HBox alignItems="Center" class="sapUiSmallMarginBottom">
-                    <Label text="Código Material:" labelFor="inputMaterial" class="sapUiTinyMarginEnd" />
+                    <Label text="Selecionar Produto Acabado:" labelFor="inputMaterial" class="sapUiTinyMarginEnd" />
                     <Input id="inputMaterial"
                         width="200px"
                         placeholder="Digite o código..."
