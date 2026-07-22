@@ -3,40 +3,42 @@
     xmlns="sap.m"
     xmlns:f="sap.f"
     displayBlock="true">
-    <Page id="unidadePage" title="Manutenção de Unidades de Medida">
+    <Page 
+        id="unidadePage" 
+        title="Manutenção de Unidades de Medida"
+        showNavButton="true"
+        navButtonPress=".onNavBack"
+        enableScrolling="true">
+
         <content>
-<VBox alignItems="Center">
-    <!-- Botão de Ação em Destaque no Topo -->
-    <Button 
-        icon="sap-icon://add" 
-        text="CADASTRAR NOVA UNIDADE" 
-        type="Accept" 
-        press=".onCriarUnidade" 
-        width="400px" 
-        class="sapUiMediumMarginBottom" />
-
-    <!-- Tabela Compacta em Baixo -->
-    <Table id="tableUnidades" width="500px">
-        ...
-    </Table>
-</VBox>
-
-            <VBox width="50%" class="sapUiSmallMargin">
+            <VBox width="75%" class="sapUiSmallMargin">
                 <OverflowToolbar height="5rem" class="sapUiMediumMarginBottom">
-                    <Title text="Unidades Disponíveis"/>
-                    <ToolbarSpacer />
-                    <Button icon="sap-icon://add" text="Nova Unidade" type="Accept" press=".onCriarUnidade" class="sapUiTinyMarginEnd"/>
-                </OverflowToolbar>
+                    <Title text="Cadastro de Unidade de Medida"/>
+                    <ToolbarSpacer/>
+                    <Button 
+                        icon="sap-icon://add" 
+                        text="Nova Unidade" 
+                        type="Emphasized" 
+                        press=".onCriarUnidade" 
+                        class="sapUiTinyMarginEnd"/>
+                    <Button 
+                        text="Excluir" 
+                        icon="sap-icon://delete" 
+                        type="Reject" 
+                        press="onDeletarUnidade" />
 
-                <Table id="tableUnidades">
+                </OverflowToolbar>
+                <Title text="Unidades Cadastradas"/>
+                <Table id="tableUnidades" items="{/ZTPE_UNMEDIDASet}" mode="MultiSelect" width="100%">
                     <columns>
-                        <Column id="colSigla"><Text id="txtSigla" text="Sigla" /></Column>
-                        <Column id="colNomeTecnico"><Text id="txtNomeTecnico" text="Unidade de Medida" /></Column>
+                        <Column id="colSigla" width="100px" ><Text id="txtSigla" text="Sigla"/></Column>
+                        <Column id="colNomeTecnico"><Text id="txtNomeTecnico" text="Descrição" /></Column>
                     </columns>
                     <items>
                         <ColumnListItem id="itemUnidade">
                             <cells>
-
+                                <Text text="{Codigounm}" />
+                                <Text text="{Descricaounm}" />
                             </cells>
                         </ColumnListItem>
                     </items>
