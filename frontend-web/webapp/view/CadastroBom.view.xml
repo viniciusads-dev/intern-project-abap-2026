@@ -1,6 +1,103 @@
 <mvc:View controllerName="zpeweb.controller.CadastroBom"
     xmlns:mvc="sap.ui.core.mvc"
+    xmlns:f="sap.ui.layout.form"
     xmlns="sap.m">
-    <Page id="bomPage" title="{i18n>title}">
+    
+    <Page id="bomPage" 
+        title="Cadastro de Lista BOM" 
+        showNavButton="true"
+        navButtonPress=".onNavBack"
+        enableScrolling="true"
+        class="sapUiContentPadding">
+        <content>
+            <!-- Barra inicial de Buscar PA -->
+            <OverflowToolbar class="sapUiSmallMarginBottom">
+                    <Label text="Código do Produto Acabado:" labelFor="iptCodigoPA"/>
+                    <Input id="iptCodigoPA" placeholder="0000" maxLength="4" width="8rem"/>
+                    
+                    <Button 
+                        icon="sap-icon://search" 
+                        text="Buscar" 
+                        type="Emphasized" 
+                        press=".onBuscarProduto"/>
+                    <Button 
+                        icon="sap-icon://value-help"
+                        text="Selecionar..."
+                        press=".onSelecionar"/>
+                </OverflowToolbar>
+            
+            <!-- Container para o cadastro do BOM -->
+            <VBox id="containerCadastroBom" visible="{viewModel>/bMostrarCadastroBom}">
+                <Title text="BOM do Produto: 0018 - PORTA MÉDIA" 
+                    titleStyle="H3" 
+                    class="sapUiSmallMarginBottom" />
+
+                <!-- Caixa de cadastro -->
+                <Panel headerText="Cadastro de Matérias-Primas que compõe o Produto Acabado" expandable="false" class="sapUiSmallMarginBottom">
+                    <f:SimpleForm 
+                        editable="true"
+                        layout="ResponsiveGridLayout"
+                        labelSpanXL="3" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+                        adjustLabelSpan="false"
+                        emptySpanXL="4" emptySpanL="4" emptySpanM="0" emptySpanS="0"
+                        columnsXL="1" columnsL="1" columnsM="1">
+                        <f:content>
+                            
+                            <Label text="Código da matéria-prima:" labelFor="inputMateriaPrima"/>
+                            <Input id="inputMateriaPrima" placeholder="" maxLength="4" width="10rem" showValueHelp="true" valueHelpRequest=".onSelecionar"/>
+
+                            <Label text="Quantidade do material:" labelFor="inputQtdMaterial"/>
+                            <Input id="inputQtdMaterial" type="Number" maxLength="4" width="10rem"/>
+
+                        </f:content>
+                    </f:SimpleForm>
+
+                    <!-- Botões de ação -->
+                    <HBox class="sapUiLargeMarginBegin sapUiSmallMarginTopBottom">
+                        <Button 
+                            text="Adicionar" 
+                            icon="sap-icon://add" 
+                            type="Accept" 
+                            press=".onAdicionarItem" 
+                            class="sapUiTinyMarginEnd" />
+                        
+                        <Button 
+                            text="Concluir" 
+                            icon="sap-icon://accept" 
+                            type="Emphasized" 
+                            press=".onConcluir" />
+                    </HBox>
+                </Panel>
+
+                <!-- Tabela da Lista BOM -->
+                <Table id="tableBomItems" items="{/ZTPE_BOMSet}" alternateRowColors="true">
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <Title text="Matérias-Primas do Produto" level="H4"/>
+                        </OverflowToolbar>
+                    </headerToolbar>
+                    
+                    <columns>
+                        <Column width="15%"><Text text="Cod. Prod. Fin..." /></Column>
+                        <Column width="25%"><Text text="Produto Final" /></Column>
+                        <Column width="15%"><Text text="Cod. Mat. Pri..." /></Column>
+                        <Column width="30%"><Text text="Matéria-Prima" /></Column>
+                        <Column width="15%" hAlign="End"><Text text="Qtd. Mat. Prima Usa..." /></Column>
+                    </columns>
+
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="{CODIGOPA}" />
+                                <Text text="{NomeProdutoFinal}" />
+                                <Text text="{CODIGOMP}" />
+                                <Text text="{NomeMateriaPrima}" />
+                                <Text text="{QUANTIDADEMP}" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </VBox>
+        </content>
     </Page>
 </mvc:View>

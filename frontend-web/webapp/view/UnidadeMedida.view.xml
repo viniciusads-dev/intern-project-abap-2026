@@ -28,7 +28,12 @@
                         press="onDeletarUnidade" />
                 </OverflowToolbar>
 
-                <Table id="tableUnidades" items="{/ZTPE_UNMEDIDASet}" mode="MultiSelect" width="100%">
+                <Table 
+                id="tableUnidades" 
+                items="{/ZTPE_UNMEDIDASet}" 
+                mode="MultiSelect" 
+                width="100%"
+                alternateRowColors="true">
                     <headerToolbar>
                         <OverflowToolbar>
                             <Title text="Unidades Cadastradas"/>
