@@ -13,17 +13,17 @@
                 
                 <!-- campo de busca -->
                 <HBox alignItems="Center" class="sapUiSmallMarginBottom">
-                    <Label text="Selecionar Produto Acabado:" labelFor="inputMaterial" class="sapUiTinyMarginEnd" />
+                    <Label text="{i18n>inputPA}" labelFor="inputMaterial" class="sapUiTinyMarginEnd" />
                     <Input id="inputMaterial"
                         type="Number"
                         liveChange=".onInputLiveChange"
                         width="200px"
-                        placeholder="Digite o código..."
+                        placeholder="{i18n>inputPAplaceholder}"
                         showValueHelp="true"
                         valueHelpRequest=".onValueHelpMaterial"
                         class="sapUiTinyMarginEnd" />
                     <Button id="btnBuscar"
-                        text="Buscar"
+                        text="{i18n>btnBuscar}"
                         type="Emphasized"
                         icon="sap-icon://search"
                         press=".onBuscar" />
@@ -34,9 +34,9 @@
                     
                     <!-- barra nome e botão processar -->
                     <FlexBox alignItems="Center" justifyContent="SpaceBetween" class="sapUiSmallMarginBottom">
-                        <Title id="txtNomeProduto" text="NOME-PA" level="H2" />
+                        <Title id="txtNomeProduto" text="" level="H2" />
                         <Button id="btnProcessar"
-                            text="Processar"
+                            text="{i18n>btnProcessar}"
                             type="Emphasized"
                             icon="sap-icon://process"
                             press=".onProcessar" />
@@ -45,9 +45,9 @@
                     <!-- tabela com componentes da BOM -->
                     <Table id="tblMateriasPrima" inset="false">
                         <columns>
-                            <Column width="25%"><Text text="Cod. Matéria-Prima" /></Column>
-                            <Column width="50%"><Text text="Descrição" /></Column>
-                            <Column hAlign="End" width="25%"><Text text="Qtd. Necessária" /></Column>
+                            <Column width="25%"><Text text="{i18n>codMP}" /></Column>
+                            <Column width="50%"><Text text="{i18n>descricaoProd}" /></Column>
+                            <Column hAlign="End" width="25%"><Text text="{i18n>quantidadeNec}" /></Column>
                         </columns>
                         <items>
                             <ColumnListItem>

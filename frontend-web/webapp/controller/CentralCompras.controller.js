@@ -12,6 +12,11 @@ sap.ui.define([
 
     return Controller.extend("zpeweb.controller.CentralCompras", {
 
+        // Helper para tradução centralizada
+        _getText(sKey, aArgs) {
+            return this.getView().getModel("i18n").getResourceBundle().getText(sKey, aArgs);
+        },
+
         onInit() {
             // modelo local p tabela
             const oComprasModel = new JSONModel([]);
@@ -59,7 +64,7 @@ sap.ui.define([
             const sMaterialPA = this.byId("inputProdutoAcabado").getValue().trim();
 
             if (!sMaterialPA) {
-                MessageToast.show("Informe o código do produto acabado.");
+                MessageToast.show(this._getText("reportInputPA"));
                 return;
             }
 
@@ -74,7 +79,8 @@ sap.ui.define([
                 ]);
 
                 if (!aBomRows || aBomRows.length === 0) {
-                    MessageToast.show("Nenhuma estrutura (BOM) encontrada para este produto.");
+                    // Reaproveita reportBOMnull do i18n compartilhado
+                    MessageToast.show(this._getText("reportBOMnull"));
                     oPanelResultado.setVisible(false);
                     return;
                 }
@@ -83,7 +89,7 @@ sap.ui.define([
 
             } catch (oError) {
                 oPanelResultado.setVisible(false);
-                this._tratarErro(oError, "Erro ao carregar dados de compras.");
+                this._tratarErro(oError, this._getText("errorFetchComprasData"));
             } finally {
                 oView.setBusy(false);
             }
@@ -103,7 +109,7 @@ sap.ui.define([
                 const aBomRows = await this._readCollection("/ZTPE_BOMSet");
 
                 if (!aBomRows || aBomRows.length === 0) {
-                    MessageToast.show("Nenhuma estrutura (BOM) cadastrada no sistema.");
+                    MessageToast.show(this._getText("reportNoBOMsInSystem"));
                     oPanelResultado.setVisible(false);
                     return;
                 }
@@ -112,7 +118,7 @@ sap.ui.define([
 
             } catch (oError) {
                 oPanelResultado.setVisible(false);
-                this._tratarErro(oError, "Erro ao carregar todas as estruturas.");
+                this._tratarErro(oError, this._getText("errorFetchAllBOMs"));
             } finally {
                 oView.setBusy(false);
             }
@@ -153,7 +159,7 @@ sap.ui.define([
             try {
                 aEstoqueRows = await this._readCollection("/ZSTR_ESTOQUE_ODATASet");
             } catch (oErrEst) {
-                console.warn("Aviso ao carregar /ZSTR_ESTOQUE_ODATASet:", oErrEst);
+                console.warn(this._getText("warnFetchEstoque"), oErrEst);
             }
 
             // Mapa do Cadastro de Materiais (Chave: Codigocm)
@@ -187,9 +193,9 @@ sap.ui.define([
 
                 return {
                     Codigopa: oBomItem.Codigopa,
-                    Descricaopa: oMatPA.Descricaocm || "NULL (problemas no cadastro)",
+                    Descricaopa: oMatPA.Descricaocm || this._getText("cadastroNullDesc"),
                     Codigomp: oBomItem.Codigomp,
-                    Descricaomp: oMatMP.Descricaocm || "NULL (problemas no cadastro)",
+                    Descricaomp: oMatMP.Descricaocm || this._getText("cadastroNullDesc"),
                     UnidadeMedida: oMatMP.UnidadeMedidacm || "UN",
                     QtdNecessaria: nQtdNecessaria,
                     QtdEstoque: nQtdEstoque,
@@ -207,7 +213,7 @@ sap.ui.define([
             const aSelectedContexts = oTable.getSelectedContexts();
 
             if (aSelectedContexts.length === 0) {
-                MessageToast.show("Selecione ao menos uma matéria-prima na tabela.");
+                MessageToast.show(this._getText("msgSelectAtLeastOneMP"));
                 return;
             }
 
@@ -215,14 +221,17 @@ sap.ui.define([
             const aItensComprar = aSelectedItems.filter(item => item.QtdComprar > 0);
 
             if (aItensComprar.length === 0) {
-                MessageBox.information("Os itens selecionados possuem estoque suficiente! Nenhuma compra necessária.");
+                MessageBox.information(this._getText("msgSufficientStockNoPurchase"));
                 return;
             }
 
-            let sResumo = aItensComprar.map(i => `- MP: ${i.Codigomp} (${i.Descricaomp}) | Qtd a Comprar: ${i.QtdComprar} ${i.UnidadeMedida}`).join("\n");
+            // Monta o resumo formatado via i18n
+            let sResumo = aItensComprar.map(i =>
+                this._getText("msgPOItemLine", [i.Codigomp, i.Descricaomp, i.QtdComprar, i.UnidadeMedida])
+            ).join("\n");
 
-            MessageBox.confirm(`Confirma a criação do Pedido de Compra para os itens selecionados?\n\n${sResumo}`, {
-                title: "Gerar Pedido de Compra",
+            MessageBox.confirm(this._getText("msgConfirmCreatePO", [sResumo]), {
+                title: this._getText("titleCreatePO"),
                 onClose: async (sAction) => {
                     if (sAction !== MessageBox.Action.OK) {
                         return;
@@ -250,9 +259,9 @@ sap.ui.define([
                         const oResult = await this._createEntity("/ZTPE_PED_CABSet", oPayload);
                         const sNumPedido = oResult?.Numeropedido ? oResult.Numeropedido : "";
 
-                        const sMsgSucesso = sNumPedido && sNumPedido !== "0000"
-                            ? `Pedido de compra nº ${sNumPedido} criado com sucesso!`
-                            : "Pedido de compra gerado com sucesso!";
+                        const sMsgSucesso = (sNumPedido && sNumPedido !== "0000")
+                            ? this._getText("msgPOSuccessWithNum", [sNumPedido])
+                            : this._getText("msgPOSuccess");
 
                         MessageBox.success(sMsgSucesso, {
                             onClose: () => {
@@ -270,7 +279,7 @@ sap.ui.define([
                         });
 
                     } catch (oError) {
-                        this._tratarErro(oError, "Erro ao gerar o pedido de compra.");
+                        this._tratarErro(oError, this._getText("errorCreatePO"));
                     } finally {
                         oView.setBusy(false);
                     }
@@ -360,7 +369,7 @@ sap.ui.define([
                 const oModel = this.getView().getModel();
 
                 if (!oModel) {
-                    reject(new Error("Modelo OData não encontrado."));
+                    reject(new Error(this._getText("errorODataModelNotFound")));
                     return;
                 }
 
@@ -378,7 +387,7 @@ sap.ui.define([
                 const oModel = this.getView().getModel();
 
                 if (!oModel) {
-                    reject(new Error("Modelo OData não encontrado."));
+                    reject(new Error(this._getText("errorODataModelNotFound")));
                     return;
                 }
 

@@ -15,17 +15,17 @@
                     
                     <!-- Buscar PA -->
                     <HBox alignItems="Center">
-                        <Label text="Selecionar Produto Acabado:" labelFor="inputProdutoAcabado" class="sapUiTinyMarginEnd" />
+                        <Label text="{i18n>inputPA}" labelFor="inputProdutoAcabado" class="sapUiTinyMarginEnd" />
                         <Input id="inputProdutoAcabado"
                             width="200px"
                             type="Number"
-                            placeholder="Digite o código..."
+                            placeholder="{i18n>inputPAplaceholder}"
                             showValueHelp="true"
                             valueHelpRequest=".onValueHelpMaterial"
                             liveChange=".onInputLiveChange"
                             class="sapUiTinyMarginEnd" />
                         <Button id="btnBuscar"
-                            text="Buscar"
+                            text="{i18n>btnBuscar}"
                             type="Emphasized"
                             icon="sap-icon://search"
                             press=".onBuscar" />
@@ -33,7 +33,7 @@
 
                     <!-- Botao Select All -->
                     <Button id="btnBuscarTodos"
-                        text="Buscar Todos"
+                        text="{i18n>btnBuscarTodos}"
                         icon="sap-icon://multi-select"
                         press=".onBuscarTodos" />
 
@@ -41,7 +41,7 @@
 
                 <VBox id="panelResultadoCompras" class="sapUiSmallMarginTop" visible="false">
                     
-                    <!-- tabela nececidade compra -->
+                    <!-- tabela necessidade compra -->
                     <Table id="tblPedidoCompra" 
                         mode="MultiSelect"
                         inset="false" 
@@ -49,25 +49,25 @@
                         items="{comprasModel>/}">
                         <columns>
                             <Column width="12%">
-                                <Text text="Cod. Prod. Final" />
+                                <Text text="{i18n>colCodPA}" />
                             </Column>
                             <Column width="22%">
-                                <Text text="Descrição PA" />
+                                <Text text="{i18n>colDescPA}" />
                             </Column>
                             <Column width="12%">
-                                <Text text="Cod. Mat. Prima" />
+                                <Text text="{i18n>codMP}" />
                             </Column>
                             <Column width="22%">
-                                <Text text="Descrição MP" />
+                                <Text text="{i18n>colDescMP}" />
                             </Column>
                             <Column hAlign="End" width="11%">
-                                <Text text="Qtd. Necessária" />
+                                <Text text="{i18n>quantidadeNec}" />
                             </Column>
                             <Column hAlign="End" width="11%">
-                                <Text text="Qtd. em Estoque" />
+                                <Text text="{i18n>colQtdEstoque}" />
                             </Column>
                             <Column hAlign="End" width="10%">
-                                <Text text="Qtd. a Comprar" />
+                                <Text text="{i18n>colQtdComprar}" />
                             </Column>
                         </columns>
                         <items>
@@ -96,7 +96,7 @@
                     <!-- botao rodapé a direita -->
                     <HBox justifyContent="End" class="sapUiMediumMarginTop">
                         <Button id="btnGerarPedido"
-                            text="Gerar pedido"
+                            text="{i18n>btnGerarPedido}"
                             type="Emphasized"
                             icon="sap-icon://add"
                             press=".onGerarPedido" />

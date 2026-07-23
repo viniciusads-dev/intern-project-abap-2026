@@ -3,7 +3,7 @@
     xmlns:core="sap.ui.core">
     <SelectDialog
         id="dlgValueHelpMaterial"
-        title="Selecionar Produto Acabado"
+        title="{i18n>inputPA}"
         search=".onValueHelpSearch"
         liveChange=".onValueHelpSearch"
         confirm=".onValueHelpClose"

@@ -15,6 +15,11 @@ sap.ui.define([
 
     return Controller.extend("zpeweb.controller.ExecutarProducao", {
 
+        // helper para tradução
+        _getText(sKey, aArgs) {
+            return this.getView().getModel("i18n").getResourceBundle().getText(sKey, aArgs);
+        },
+
         onInit() {
             this.byId("panelResultado").setVisible(false);
 
@@ -71,7 +76,7 @@ sap.ui.define([
             const sMaterial = this.byId("inputMaterial").getValue().trim();
 
             if (!sMaterial) {
-                MessageToast.show("Informe o código do produto acabado.");
+                MessageToast.show(this._getText("reportInputPA"));
                 return;
             }
 
@@ -90,7 +95,7 @@ sap.ui.define([
                 const aBomRows = await this._readCollection("/ZTPE_BOMSet", aBomFilters);
 
                 if (!aBomRows || aBomRows.length === 0) {
-                    MessageToast.show("Nenhuma matéria-prima encontrada para este produto.");
+                    MessageToast.show(this._getText("reportBOMnull"));
                     oPanelResultado.setVisible(false);
                     return;
                 }
@@ -112,16 +117,16 @@ sap.ui.define([
 
                         this._sDescricaoPA = sDesc;
                     } else {
-                        sDescricaoPA = `${sMaterial} - NULL (problemas no cadastro)`;
+                        sDescricaoPA = this._getText("cadastroNull", [sMaterial]);
                         bProblemaCadastro = true;
 
                         this._sDescricaoPA = "";
                     }
                 } catch (oErrPA) {
-                    sDescricaoPA = `${sMaterial} - NULL (problemas no cadastro)`;
+                    sDescricaoPA = this._getText("cadastroNull", [sMaterial]);
                     bProblemaCadastro = true;
                     this._sDescricaoPA = "";
-                    console.warn("Falha ao buscar cadastro do PA:", oErrPA);
+                    console.warn(this._getText("warnFetchPAMasterData"), oErrPA);
                 }
 
                 // filtro com apenas MP
@@ -151,7 +156,7 @@ sap.ui.define([
                     const oMat = mMapMateriais[oBomItem.Codigomp] || {};
                     return {
                         Codigomp: oBomItem.Codigomp,
-                        Descricaocm: oMat.Descricaocm || "NULL (problemas no cadastro)",
+                        Descricaocm: oMat.Descricaocm || this._getText("cadastroNullDesc"),
                         Quantidademp: fnParseNumber(oBomItem.Quantidademp),
                         UnidadeMedidacm: oMat.UnidadeMedidacm || ""
                     };
@@ -161,13 +166,13 @@ sap.ui.define([
                 oView.getModel("bomModel").setData(aItemsEnriched);
 
                 // atualiza o texto do titulo do painel
-                oTxtNomeProduto.setText("Produto acabado: " + sDescricaoPA);
+                oTxtNomeProduto.setText(this._getText("titleProdutoAcabado", [sDescricaoPA]));
 
                 oPanelResultado.setVisible(true);
 
             } catch (oError) {
                 oPanelResultado.setVisible(false);
-                this._tratarErro(oError, "Erro ao buscar componentes no Gateway.");
+                this._tratarErro(oError, this._getText("errorFetchComponentsGateway"));
             } finally {
                 oView.setBusy(false);
             }
@@ -177,14 +182,14 @@ sap.ui.define([
             const sMaterial = this.byId("inputMaterial").getValue().trim();
 
             if (!sMaterial) {
-                MessageToast.show("Nenhum material selecionado.");
+                MessageToast.show(this._getText("msgMaterialNulo"));
                 return;
             }
 
             const sNomeProduto = this._sDescricaoPA || "NULL";
 
-            MessageBox.confirm(`Deseja confirmar a execução de produção para ${sNomeProduto}?`, {
-                title: "Confirmar Execução",
+            MessageBox.confirm(this._getText("msgConfirmExecution", [sNomeProduto]), {
+                title: this._getText("titleConfirmExecution"),
                 onClose: async (sAction) => {
                     if (sAction !== MessageBox.Action.OK) {
                         return;
@@ -200,7 +205,7 @@ sap.ui.define([
                             Quantidade: 1
                         }, "POST");
 
-                        MessageBox.success(`Produção do material ${sMaterial} executada com sucesso! Baixa em estoque realizada.`, {
+                        MessageBox.success(this._getText("msgSuccessExecution", [sMaterial]), {
                             onClose: () => {
                                 this.byId("inputMaterial").setValue("");
                                 oPanelResultado.setVisible(false);
@@ -217,8 +222,8 @@ sap.ui.define([
 
                         if (bErroEstoqueBOM) {
                             const sMaterialPA = this.byId("inputMaterial").getValue().trim();
-                            MessageBox.warning("Não há matérias-primas suficientes ou válidas na BOM para executar esta produção.\n\nDeseja ir para a Central de Compras?", {
-                                title: "Insumos Insuficientes",
+                            MessageBox.warning(this._getText("msgWarningInsufficientInsumos"), {
+                                title: this._getText("titleInsufficientInsumos"),
                                 actions: [MessageBox.Action.YES, MessageBox.Action.NO],
                                 onClose: (sDialogAction) => {
                                     if (sDialogAction === MessageBox.Action.YES) {
@@ -232,7 +237,7 @@ sap.ui.define([
                                 }
                             });
                         } else {
-                            this._tratarErro(oError, "Erro ao executar o processo de produção.");
+                            this._tratarErro(oError, this._getText("errorExecuteProductionProcess"));
                         }
                     } finally {
                         oView.setBusy(false);
@@ -322,7 +327,7 @@ sap.ui.define([
                 const oModel = this.getView().getModel();
 
                 if (!oModel) {
-                    reject(new Error("Modelo OData não encontrado."));
+                    reject(new Error(this._getText("errorODataModelNotFound")));
                     return;
                 }
 
@@ -339,7 +344,7 @@ sap.ui.define([
                 const oModel = this.getView().getModel();
 
                 if (!oModel) {
-                    reject(new Error("Modelo OData não encontrado."));
+                    reject(new Error(this._getText("errorODataModelNotFound")));
                     return;
                 }
 
@@ -351,7 +356,7 @@ sap.ui.define([
                 });
             });
         },
-
+        
         _extrairDetalhesErro(oError) {
             let sMensagem = "";
             let aDetails = [];
