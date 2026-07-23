@@ -53,7 +53,7 @@
                             <ColumnListItem>
                                 <cells>
                                     <Text text="{Codigomp}" />
-                                    <Text text="{Descricaom}" />
+                                    <Text text="{Descricaocm}" />
                                     <ObjectNumber number="{Quantidademp}" />
                                 </cells>
                             </ColumnListItem>

@@ -21,7 +21,7 @@
                             type="Number"
                             placeholder="Digite o código..."
                             showValueHelp="true"
-                            valueHelpRequest=".onValueHelpProduto"
+                            valueHelpRequest=".onValueHelpMaterial"
                             liveChange=".onInputLiveChange"
                             class="sapUiTinyMarginEnd" />
                         <Button id="btnBuscar"

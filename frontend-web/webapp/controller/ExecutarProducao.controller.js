@@ -8,8 +8,9 @@ sap.ui.define([
     "sap/m/ColumnListItem",
     "sap/m/Text",
     "sap/m/ObjectNumber",
-    "sap/ui/model/json/JSONModel"
-], (Controller, UIComponent, MessageToast, MessageBox, Filter, FilterOperator, ColumnListItem, Text, ObjectNumber, JSONModel) => {
+    "sap/ui/model/json/JSONModel",
+    "sap/ui/core/Fragment"
+], (Controller, UIComponent, MessageToast, MessageBox, Filter, FilterOperator, ColumnListItem, Text, ObjectNumber, JSONModel, Fragment) => {
     "use strict";
 
     return Controller.extend("zpeweb.controller.ExecutarProducao", {
@@ -108,7 +109,7 @@ sap.ui.define([
                     if (sDesc && sDesc.trim() !== "") {
                         sDescricaoPA = `${sMaterial} - ${sDesc}`;
                         bProblemaCadastro = false;
-                        
+
                         this._sDescricaoPA = sDesc;
                     } else {
                         sDescricaoPA = `${sMaterial} - NULL (problemas no cadastro)`;
@@ -240,8 +241,59 @@ sap.ui.define([
             });
         },
 
-        onValueHelpMaterial() {
-            MessageToast.show("Matchcode (F4) em desenvolvimento.");
+        // popup search help vindo do ambiente ECC
+        async onValueHelpMaterial() {
+            const oView = this.getView();
+
+            if (!this._pDialogMaterial) {
+                this._pDialogMaterial = Fragment.load({
+                    id: oView.getId(),
+                    name: "zpeweb.view.fragments.ValueHelpMaterial",
+                    controller: this
+                }).then((oDialog) => {
+                    oView.addDependent(oDialog);
+                    return oDialog;
+                });
+            }
+
+            const oDialog = await this._pDialogMaterial;
+            oDialog.getBinding("items").filter([]);
+            oDialog.open();
+        },
+
+        onValueHelpSearch(oEvent) {
+            const sValue = oEvent.getParameter("value").trim();
+            const aFilters = [];
+
+            if (sValue) {
+                aFilters.push(new Filter({
+                    filters: [
+                        new Filter("Codigocm", FilterOperator.Contains, sValue),
+                        new Filter("Descricaocm", FilterOperator.Contains, sValue)
+                    ],
+                    and: false
+                }));
+            }
+
+            const oBinding = oEvent.getSource().getBinding("items");
+            oBinding.filter(aFilters);
+        },
+
+        // ao selecionar a pesquisa
+        onValueHelpClose(oEvent) {
+            const oSelectedItem = oEvent.getParameter("selectedItem");
+
+            if (oSelectedItem) {
+                const sSelectedCode = oSelectedItem.getTitle();
+
+                // seta o valor no input
+                this.byId("inputMaterial").setValue(sSelectedCode);
+
+                // ja busca automaticamente
+                this.onBuscar();
+            }
+
+            oEvent.getSource().getBinding("items").filter([]);
         },
 
         _readCollection(sPath, aFilters) {

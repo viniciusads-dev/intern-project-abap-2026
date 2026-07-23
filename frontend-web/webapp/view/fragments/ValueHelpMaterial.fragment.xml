@@ -1,0 +1,15 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <SelectDialog
+        id="dlgValueHelpMaterial"
+        title="Selecionar Produto Acabado"
+        search=".onValueHelpSearch"
+        confirm=".onValueHelpClose"
+        cancel=".onValueHelpClose"
+        items="{/ZshPeProdutoAcabadoSet}">
+        <StandardListItem
+            title="{Codigocm}"
+            description="{Descricaocm}" />
+    </SelectDialog>
+</core:FragmentDefinition>

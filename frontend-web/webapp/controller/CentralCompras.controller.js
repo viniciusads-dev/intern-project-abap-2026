@@ -5,8 +5,9 @@ sap.ui.define([
     "sap/m/MessageBox",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
-    "sap/ui/model/json/JSONModel"
-], (Controller, UIComponent, MessageToast, MessageBox, Filter, FilterOperator, JSONModel) => {
+    "sap/ui/model/json/JSONModel",
+    "sap/ui/core/Fragment"
+], (Controller, UIComponent, MessageToast, MessageBox, Filter, FilterOperator, JSONModel, Fragment) => {
     "use strict";
 
     return Controller.extend("zpeweb.controller.CentralCompras", {
@@ -277,8 +278,59 @@ sap.ui.define([
             });
         },
 
-        onValueHelpProduto() {
-            MessageToast.show("Matchcode (F4) em desenvolvimento.");
+        // popup search help vindo do ambiente ECC
+        async onValueHelpMaterial() {
+            const oView = this.getView();
+
+            if (!this._pDialogMaterial) {
+                this._pDialogMaterial = Fragment.load({
+                    id: oView.getId(),
+                    name: "zpeweb.view.fragments.ValueHelpMaterial",
+                    controller: this
+                }).then((oDialog) => {
+                    oView.addDependent(oDialog);
+                    return oDialog;
+                });
+            }
+
+            const oDialog = await this._pDialogMaterial;
+            oDialog.getBinding("items").filter([]);
+            oDialog.open();
+        },
+
+        onValueHelpSearch(oEvent) {
+            const sValue = oEvent.getParameter("value").trim();
+            const aFilters = [];
+
+            if (sValue) {
+                aFilters.push(new Filter({
+                    filters: [
+                        new Filter("Codigocm", FilterOperator.Contains, sValue),
+                        new Filter("Descricaocm", FilterOperator.Contains, sValue)
+                    ],
+                    and: false
+                }));
+            }
+
+            const oBinding = oEvent.getSource().getBinding("items");
+            oBinding.filter(aFilters);
+        },
+
+        // ao selecionar a pesquisa
+        onValueHelpClose(oEvent) {
+            const oSelectedItem = oEvent.getParameter("selectedItem");
+
+            if (oSelectedItem) {
+                const sSelectedCode = oSelectedItem.getTitle();
+
+                // seta o valor no input
+                this.byId("inputProdutoAcabado").setValue(sSelectedCode);
+
+                // ja busca automaticamente
+                this.onBuscar();
+            }
+
+            oEvent.getSource().getBinding("items").filter([]);
         },
 
         // Helper para GET no OData
