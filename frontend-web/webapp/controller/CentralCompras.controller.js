@@ -299,20 +299,41 @@ sap.ui.define([
         },
 
         onValueHelpSearch(oEvent) {
-            const sValue = oEvent.getParameter("value").trim();
-            const aFilters = [];
-
-            if (sValue) {
-                aFilters.push(new Filter({
-                    filters: [
-                        new Filter("Codigocm", FilterOperator.Contains, sValue),
-                        new Filter("Descricaocm", FilterOperator.Contains, sValue)
-                    ],
-                    and: false
-                }));
-            }
+            // converte o input pra maisuculo
+            const sRawValue = oEvent.getParameter("value") || "";
+            const sValue = sRawValue.trim().toUpperCase();
 
             const oBinding = oEvent.getSource().getBinding("items");
+            if (!oBinding) {
+                return;
+            }
+
+            if (!sValue) {
+                oBinding.filter([]);
+                return;
+            }
+
+            // filtro ignorando case sensitive
+            const aFilters = [
+                new Filter({
+                    filters: [
+                        new Filter({
+                            path: "Codigocm",
+                            operator: FilterOperator.Contains,
+                            value1: sValue,
+                            caseSensitive: false
+                        }),
+                        new Filter({
+                            path: "Descricaocm",
+                            operator: FilterOperator.Contains,
+                            value1: sValue,
+                            caseSensitive: false
+                        })
+                    ],
+                    and: false
+                })
+            ];
+
             oBinding.filter(aFilters);
         },
 

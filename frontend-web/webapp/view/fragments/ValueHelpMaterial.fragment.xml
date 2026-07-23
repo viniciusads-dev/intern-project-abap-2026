@@ -5,9 +5,15 @@
         id="dlgValueHelpMaterial"
         title="Selecionar Produto Acabado"
         search=".onValueHelpSearch"
+        liveChange=".onValueHelpSearch"
         confirm=".onValueHelpClose"
         cancel=".onValueHelpClose"
-        items="{/ZshPeProdutoAcabadoSet}">
+        items="{
+            path: '/ZshPeProdutoAcabadoSet',
+            parameters: {
+                operationMode: 'Client'
+            }
+        }">
         <StandardListItem
             title="{Codigocm}"
             description="{Descricaocm}" />
