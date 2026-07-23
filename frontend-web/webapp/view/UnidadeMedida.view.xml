@@ -11,7 +11,7 @@
         enableScrolling="true">
 
         <content>
-            <VBox width="75%" class="sapUiSmallMargin">
+            <VBox width="50%" class="sapUiSmallMargin">
                 <OverflowToolbar height="5rem" class="sapUiMediumMarginBottom">
                     <Title text="Cadastro de Unidade de Medida"/>
                     <ToolbarSpacer/>
@@ -26,10 +26,33 @@
                         icon="sap-icon://delete" 
                         type="Reject" 
                         press="onDeletarUnidade" />
-
                 </OverflowToolbar>
-                <Title text="Unidades Cadastradas"/>
+
                 <Table id="tableUnidades" items="{/ZTPE_UNMEDIDASet}" mode="MultiSelect" width="100%">
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <Title text="Unidades Cadastradas"/>
+                            <ToolbarSpacer />
+                            <Button 
+                                icon="sap-icon://edit" 
+                                text="Editar" 
+                                visible="{= !${viewModel>/modoEdicao}}"
+                                press=".onAlternarEdicao"/>
+
+                            <Button 
+                                icon="sap-icon://edit"
+                                text="Salvar"
+                                type="Accept"
+                                visible="{viewModel>/modoEdicao}"
+                                press=".onSalvarAlteracoes"/>
+                            <Button
+                                icon="sap-icon://decline"
+                                text="Cancelar"
+                                type="Reject"
+                                visible="{viewModel>/modoEdicao}"
+                                press=".onCancelarAlteracoes"/>
+                        </OverflowToolbar>
+                    </headerToolbar>
                     <columns>
                         <Column id="colSigla" width="100px" ><Text id="txtSigla" text="Sigla"/></Column>
                         <Column id="colNomeTecnico"><Text id="txtNomeTecnico" text="Descrição" /></Column>
@@ -38,10 +61,10 @@
                         <ColumnListItem id="itemUnidade">
                             <cells>
                                 <Text text="{Codigounm}" />
-                                <Text text="{Descricaounm}" />
+                                <Input value="{Descricaounm}" width="auto" maxLength="30" editable="{viewModel>/modoEdicao}" valueLiveUpdate="true"/>
                             </cells>
                         </ColumnListItem>
-                    </items>
+                    </items>            
                 </Table>
             </VBox>
         </content>
