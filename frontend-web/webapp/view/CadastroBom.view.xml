@@ -12,7 +12,7 @@
         <content>
             <!-- Barra inicial de Buscar PA -->
             <OverflowToolbar class="sapUiSmallMarginBottom">
-                    <Label text="Código do Produto Acabado:" labelFor="iptCodigoPA"/>
+                    <Label text="Insira o código do Produto Acabado:" labelFor="iptCodigoPA"/>
                     <Input id="iptCodigoPA" placeholder="0000" maxLength="4" width="8rem"/>
                     
                     <Button 
@@ -28,7 +28,7 @@
             
             <!-- Container para o cadastro do BOM -->
             <VBox id="containerCadastroBom" visible="{viewModel>/bMostrarCadastroBom}">
-                <Title text="BOM do Produto: 0018 - PORTA MÉDIA" 
+                <Title text="BOM do Produto: {viewModel>Codigopa} - " 
                     titleStyle="H3" 
                     class="sapUiSmallMarginBottom" />
 
@@ -70,7 +70,9 @@
                 </Panel>
 
                 <!-- Tabela da Lista BOM -->
-                <Table id="tableBomItems" items="{/ZTPE_BOMSet}" alternateRowColors="true">
+                <Table 
+                    id="tableBomItems" items="{viewModel>/itensBOM}" alternateRowColors="true">
+
                     <headerToolbar>
                         <OverflowToolbar>
                             <Title text="Matérias-Primas do Produto" level="H4"/>
@@ -88,11 +90,11 @@
                     <items>
                         <ColumnListItem>
                             <cells>
-                                <Text text="{CODIGOPA}" />
-                                <Text text="{NomeProdutoFinal}" />
-                                <Text text="{CODIGOMP}" />
-                                <Text text="{NomeMateriaPrima}" />
-                                <Text text="{QUANTIDADEMP}" />
+                                <Text text="{viewModel>Codigopa}" />
+                                <Text text="{viewModel>Descricaopa}" />
+                                <Text text="{viewModel>Codigomp}" />
+                                <Text text="{viewModel>Descricaomp}" />
+                                <Text text="{viewModel>Quantidademp}" />
                             </cells>
                         </ColumnListItem>
                     </items>
