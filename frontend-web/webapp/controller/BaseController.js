@@ -1,7 +1,11 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
-    "sap/ui/core/UIComponent"
-], function (Controller, UIComponent) {
+    "sap/ui/core/UIComponent",
+    "sap/ui/core/Fragment",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator",
+    "sap/m/MessageBox"
+], function (Controller, UIComponent, Fragment, Filter, FilterOperator, MessageBox) {
     "use strict";
 
     return Controller.extend("zpeweb.controller.BaseController", {
@@ -23,6 +27,127 @@ sap.ui.define([
             const sRoute = oContext.getProperty("route");
             
             this.getRouter().navTo(sRoute);
+        },
+
+        onNavBack() {
+            window.history.go(-1);
+        },
+
+        _getText(sKey, aArgs) {
+            return this.getView().getModel("i18n").getResourceBundle().getText(sKey, aArgs);
+        },
+
+        onInputLiveChange(oEvent) {
+            const oInput = oEvent.getSource();
+            const sValue = oEvent.getParameter("value");
+            const sOnlyNumbers = sValue.replace(/\D/g, "");
+
+            if (sValue !== sOnlyNumbers) {
+                oInput.setValue(sOnlyNumbers);
+            }
+        },
+
+        async onValueHelpMaterial() {
+            const oView = this.getView();
+
+            if (!this._pDialogMaterial) {
+                this._pDialogMaterial = Fragment.load({
+                    id: oView.getId(),
+                    name: "zpeweb.view.fragments.ValueHelpMaterial",
+                    controller: this
+                }).then((oDialog) => {
+                    oView.addDependent(oDialog);
+                    return oDialog;
+                });
+            }
+
+            const oDialog = await this._pDialogMaterial;
+            oDialog.getBinding("items").filter([]);
+            oDialog.open();
+        },
+
+        onValueHelpSearch(oEvent) {
+            const sRawValue = oEvent.getParameter("value") || "";
+            const sValue = sRawValue.trim().toUpperCase();
+
+            const oBinding = oEvent.getSource().getBinding("items");
+            if (!oBinding) {
+                return;
+            }
+
+            if (!sValue) {
+                oBinding.filter([]);
+                return;
+            }
+
+            const aFilters = [
+                new Filter({
+                    filters: [
+                        new Filter({ path: "Codigocm", operator: FilterOperator.Contains, value1: sValue, caseSensitive: false }),
+                        new Filter({ path: "Descricaocm", operator: FilterOperator.Contains, value1: sValue, caseSensitive: false })
+                    ],
+                    and: false
+                })
+            ];
+
+            oBinding.filter(aFilters);
+        },
+
+        onValueHelpClose(oEvent) {
+            const oSelectedItem = oEvent.getParameter("selectedItem");
+            if (oSelectedItem) {
+                const sSelectedCode = oSelectedItem.getTitle();
+                
+                const oInput = this.byId("inputProdutoAcabado") || this.byId("inputMaterial");
+                if (oInput) {
+                    oInput.setValue(sSelectedCode);
+                    if (typeof this.onBuscar === "function") {
+                        this.onBuscar();
+                    }
+                }
+            }
+            oEvent.getSource().getBinding("items").filter([]);
+        },
+
+        _readCollection(sPath, aFilters) {
+            return new Promise((resolve, reject) => {
+                const oModel = this.getView().getModel();
+                if (!oModel) {
+                    reject(new Error(this._getText("errorODataModelNotFound")));
+                    return;
+                }
+                oModel.read(sPath, {
+                    filters: aFilters || [],
+                    success: (oData) => resolve(Array.isArray(oData && oData.results) ? oData.results : []),
+                    error: (oError) => reject(oError)
+                });
+            });
+        },
+
+        _extrairDetalhesErro(oError) {
+            let sMensagem = "";
+            let aDetails = [];
+
+            try {
+                const oResponseBody = JSON.parse(oError.responseText);
+                aDetails = oResponseBody?.error?.innererror?.errordetails || [];
+                sMensagem = oResponseBody?.error?.message?.value || "";
+
+                if (!sMensagem && aDetails.length > 0) {
+                    const oDetailValido = aDetails.find(d => d.message && d.code !== "/IWBEP/CX_MGW_BUSI_EXCEPTION");
+                    sMensagem = oDetailValido ? oDetailValido.message : aDetails[0].message;
+                }
+            } catch (e) {
+                sMensagem = (oError && oError.message) ? oError.message : "";
+            }
+
+            return { sMensagem: sMensagem, aDetails: aDetails };
+        },
+
+        _tratarErro(oError, sMensagemPadrao) {
+            const oErroInfo = this._extrairDetalhesErro(oError);
+            const sErrorDetails = oErroInfo.sMensagem || sMensagemPadrao;
+            MessageBox.error(sErrorDetails);
         }
     });
 });

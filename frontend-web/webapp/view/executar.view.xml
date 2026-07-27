@@ -11,7 +11,6 @@
         <content>
             <VBox class="sapUiSmallMargin">
                 
-                <!-- campo de busca -->
                 <HBox alignItems="Center" class="sapUiSmallMarginBottom">
                     <Label text="{i18n>inputPA}" labelFor="inputMaterial" class="sapUiTinyMarginEnd" />
                     <Input id="inputMaterial"
@@ -29,10 +28,8 @@
                         press=".onBuscar" />
                 </HBox>
 
-                <!-- container resultado -->
                 <VBox id="panelResultado" class="sapUiSmallMarginTop" visible="true">
                     
-                    <!-- barra nome e botão processar -->
                     <FlexBox alignItems="Center" justifyContent="SpaceBetween" class="sapUiSmallMarginBottom">
                         <Title id="txtNomeProduto" text="" level="H2" />
                         <Button id="btnProcessar"
@@ -42,8 +39,7 @@
                             press=".onProcessar" />
                     </FlexBox>
 
-                    <!-- tabela com componentes da BOM -->
-                    <Table id="tblMateriasPrima" inset="false">
+                    <Table id="tblMateriasPrima" inset="false" items="{bomModel>/}">
                         <columns>
                             <Column width="25%"><Text text="{i18n>codMP}" /></Column>
                             <Column width="50%"><Text text="{i18n>descricaoProd}" /></Column>
@@ -52,16 +48,24 @@
                         <items>
                             <ColumnListItem>
                                 <cells>
-                                    <Text text="{Codigomp}" />
-                                    <Text text="{Descricaocm}" />
-                                    <ObjectNumber number="{Quantidademp}" />
+                                    <Text text="{bomModel>Codigomp}" />
+                                    <Text text="{bomModel>Descricaocm}" />
+                                    <ObjectNumber 
+                                        number="{
+                                            path: 'bomModel>Quantidademp',
+                                            type: 'sap.ui.model.type.Float',
+                                            formatOptions: {
+                                                minFractionDigits: 0,
+                                                maxFractionDigits: 3
+                                            }
+                                        }" 
+                                        unit="{bomModel>UnidadeMedidacm}"/>
                                 </cells>
                             </ColumnListItem>
                         </items>
                     </Table>
 
                 </VBox>
-
             </VBox>
         </content>
     </Page>

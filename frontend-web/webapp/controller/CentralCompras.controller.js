@@ -1,68 +1,39 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
-    "sap/ui/core/UIComponent",
+    "zpeweb/controller/BaseController",
     "sap/m/MessageToast",
     "sap/m/MessageBox",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
-    "sap/ui/model/json/JSONModel",
-    "sap/ui/core/Fragment"
-], (Controller, UIComponent, MessageToast, MessageBox, Filter, FilterOperator, JSONModel, Fragment) => {
+    "sap/ui/model/json/JSONModel"
+], (BaseController, MessageToast, MessageBox, Filter, FilterOperator, JSONModel) => {
     "use strict";
 
-    return Controller.extend("zpeweb.controller.CentralCompras", {
-
-        // Helper para tradução centralizada
-        _getText(sKey, aArgs) {
-            return this.getView().getModel("i18n").getResourceBundle().getText(sKey, aArgs);
-        },
+    return BaseController.extend("zpeweb.controller.CentralCompras", {
 
         onInit() {
-            // modelo local p tabela
             const oComprasModel = new JSONModel([]);
             this.getView().setModel(oComprasModel, "comprasModel");
 
-            const oRouter = UIComponent.getRouterFor(this);
-            oRouter.getRoute("RouteCentralCompras").attachPatternMatched(this._onRouteMatched, this);
+            this.getRouter().getRoute("RouteCentralCompras").attachPatternMatched(this._onRouteMatched, this);
         },
 
         _onRouteMatched(oEvent) {
             const oArgs = oEvent.getParameter("arguments");
             const sMaterialPA = oArgs.materialPA;
-
             const oInput = this.byId("inputProdutoAcabado");
 
             if (sMaterialPA) {
-                // preenche o input e ja dispara a busca caso venha da tela de prod
                 oInput.setValue(sMaterialPA);
                 this.onBuscar();
             } else {
-                // se abriu a tela pelo menu, limpa a busca anterior
                 oInput.setValue("");
                 this.getView().getModel("comprasModel").setData([]);
                 this.byId("panelResultadoCompras").setVisible(false);
             }
         },
 
-        onNavBack() {
-            window.history.go(-1);
-        },
-
-        // validação no input para aceitar somente numeros
-        onInputLiveChange(oEvent) {
-            const oInput = oEvent.getSource();
-            const sValue = oEvent.getParameter("value");
-            const sOnlyNumbers = sValue.replace(/\D/g, "");
-
-            if (sValue !== sOnlyNumbers) {
-                oInput.setValue(sOnlyNumbers);
-            }
-        },
-
-        // busca INDIVIDUAL
         async onBuscar() {
             const sMaterialPA = this.byId("inputProdutoAcabado").getValue().trim();
-
             if (!sMaterialPA) {
                 MessageToast.show(this._getText("reportInputPA"));
                 return;
@@ -70,7 +41,6 @@ sap.ui.define([
 
             const oView = this.getView();
             const oPanelResultado = this.byId("panelResultadoCompras");
-
             oView.setBusy(true);
 
             try {
@@ -79,14 +49,11 @@ sap.ui.define([
                 ]);
 
                 if (!aBomRows || aBomRows.length === 0) {
-                    // Reaproveita reportBOMnull do i18n compartilhado
                     MessageToast.show(this._getText("reportBOMnull"));
                     oPanelResultado.setVisible(false);
                     return;
                 }
-
                 await this._processarEExibirBOMs(aBomRows);
-
             } catch (oError) {
                 oPanelResultado.setVisible(false);
                 this._tratarErro(oError, this._getText("errorFetchComprasData"));
@@ -95,27 +62,20 @@ sap.ui.define([
             }
         },
 
-        // busca GERAL
         async onBuscarTodos() {
             const oView = this.getView();
             const oPanelResultado = this.byId("panelResultadoCompras");
-
-            // limpa o campo de busca unica
             this.byId("inputProdutoAcabado").setValue("");
-
             oView.setBusy(true);
 
             try {
                 const aBomRows = await this._readCollection("/ZTPE_BOMSet");
-
                 if (!aBomRows || aBomRows.length === 0) {
                     MessageToast.show(this._getText("reportNoBOMsInSystem"));
                     oPanelResultado.setVisible(false);
                     return;
                 }
-
                 await this._processarEExibirBOMs(aBomRows);
-
             } catch (oError) {
                 oPanelResultado.setVisible(false);
                 this._tratarErro(oError, this._getText("errorFetchAllBOMs"));
@@ -124,14 +84,9 @@ sap.ui.define([
             }
         },
 
-        // metodo auxiliar para cruzar dados de BOM + Cadastro de Materiais + Estoque Real
         async _processarEExibirBOMs(aBomRows) {
             const oPanelResultado = this.byId("panelResultadoCompras");
-
-            // normaliza chaves removendo zero a esquerda
             const fnNormalizeKey = (sVal) => String(sVal || "").trim().replace(/^0+/, "");
-
-            // converte numeros 
             const fnParseNumber = (vVal) => {
                 if (vVal === null || vVal === undefined || vVal === "") return 0;
                 const nParsed = parseFloat(String(vVal).replace(",", "."));
@@ -143,52 +98,41 @@ sap.ui.define([
                 ...aBomRows.map(b => b.Codigomp)
             ])].filter(Boolean);
 
-            // busca no cadastro de material
             let aMaterialRows = [];
+            let aEstoqueRows = [];
+
+            // Disparos em paralelo para máxima performance
+            const aPromises = [];
+
             if (aCodigosUnicos.length > 0) {
                 const aMatFilters = aCodigosUnicos.map(sCod => new Filter("Codigocm", FilterOperator.EQ, sCod));
-                const oCombinedMatFilter = new Filter({
-                    filters: aMatFilters,
-                    and: false
-                });
-                aMaterialRows = await this._readCollection("/ZTPE_MATERIALSet", [oCombinedMatFilter]);
+                const oCombinedMatFilter = new Filter({ filters: aMatFilters, and: false });
+                aPromises.push(this._readCollection("/ZTPE_MATERIALSet", [oCombinedMatFilter]).then(res => aMaterialRows = res));
             }
 
-            // busca estoque
-            let aEstoqueRows = [];
-            try {
-                aEstoqueRows = await this._readCollection("/ZSTR_ESTOQUE_ODATASet");
-            } catch (oErrEst) {
+            aPromises.push(this._readCollection("/ZSTR_ESTOQUE_ODATASet").then(res => aEstoqueRows = res).catch(oErrEst => {
                 console.warn(this._getText("warnFetchEstoque"), oErrEst);
-            }
+            }));
 
-            // Mapa do Cadastro de Materiais (Chave: Codigocm)
+            await Promise.all(aPromises);
+
             const mMapMateriais = aMaterialRows.reduce((mAcc, oMat) => {
-                const sKey = fnNormalizeKey(oMat.Codigocm);
-                mAcc[sKey] = oMat;
+                mAcc[fnNormalizeKey(oMat.Codigocm)] = oMat;
                 return mAcc;
             }, {});
 
-            // Mapa do Estoque Real com base no retorno XML (Chave: Codigom | Valor: Quantidadem)
             const mMapEstoque = aEstoqueRows.reduce((mAcc, oEst) => {
-                const sKey = fnNormalizeKey(oEst.Codigom);
-                mAcc[sKey] = fnParseNumber(oEst.Quantidadem);
+                mAcc[fnNormalizeKey(oEst.Codigom)] = fnParseNumber(oEst.Quantidadem);
                 return mAcc;
             }, {});
 
-            // monta tabela e calcula necessidade
             const aItemsCalculados = aBomRows.map((oBomItem) => {
                 const sKeyPA = fnNormalizeKey(oBomItem.Codigopa);
                 const sKeyMP = fnNormalizeKey(oBomItem.Codigomp);
-
                 const oMatPA = mMapMateriais[sKeyPA] || {};
                 const oMatMP = mMapMateriais[sKeyMP] || {};
-
                 const nQtdNecessaria = fnParseNumber(oBomItem.Quantidademp);
-
-                // busca quantidade no estoque
                 const nQtdEstoque = mMapEstoque[sKeyMP] ?? 0;
-
                 const nQtdComprar = Math.max(0, nQtdNecessaria - nQtdEstoque);
 
                 return {
@@ -207,7 +151,6 @@ sap.ui.define([
             oPanelResultado.setVisible(true);
         },
 
-        // gera pedido
         async onGerarPedido() {
             const oTable = this.byId("tblPedidoCompra");
             const aSelectedContexts = oTable.getSelectedContexts();
@@ -225,7 +168,6 @@ sap.ui.define([
                 return;
             }
 
-            // Monta o resumo formatado via i18n
             let sResumo = aItensComprar.map(i =>
                 this._getText("msgPOItemLine", [i.Codigomp, i.Descricaomp, i.QtdComprar, i.UnidadeMedida])
             ).join("\n");
@@ -233,51 +175,37 @@ sap.ui.define([
             MessageBox.confirm(this._getText("msgConfirmCreatePO", [sResumo]), {
                 title: this._getText("titleCreatePO"),
                 onClose: async (sAction) => {
-                    if (sAction !== MessageBox.Action.OK) {
-                        return;
-                    }
+                    if (sAction !== MessageBox.Action.OK) return;
 
                     const oView = this.getView();
                     oView.setBusy(true);
 
-                    // monta lista
                     const aItensPayload = aItensComprar.map(item => ({
                         Numeropedido: "0000",
                         Codigomp: item.Codigomp,
                         Quantidademp: String(item.QtdComprar)
                     }));
 
-                    // envia estrutura p back end
                     const oPayload = {
                         Numeropedido: "0000",
-                        Datap: "2026-06-23T00:00:00",
+                        Datap: "2026-06-23T00:00:00", // Payload mantido conforme regra do backend
                         ZTPE_PED_ITEMSet: aItensPayload
                     };
 
                     try {
-                        // chama serviço POST
                         const oResult = await this._createEntity("/ZTPE_PED_CABSet", oPayload);
                         const sNumPedido = oResult?.Numeropedido ? oResult.Numeropedido : "";
-
                         const sMsgSucesso = (sNumPedido && sNumPedido !== "0000")
                             ? this._getText("msgPOSuccessWithNum", [sNumPedido])
                             : this._getText("msgPOSuccess");
 
                         MessageBox.success(sMsgSucesso, {
                             onClose: () => {
-                                // limpa seleção da tabela
                                 oTable.removeSelections(true);
-
-                                // atualiza a tabela
                                 const sInputVal = this.byId("inputProdutoAcabado").getValue().trim();
-                                if (sInputVal) {
-                                    this.onBuscar();
-                                } else {
-                                    this.onBuscarTodos();
-                                }
+                                sInputVal ? this.onBuscar() : this.onBuscarTodos();
                             }
                         });
-
                     } catch (oError) {
                         this._tratarErro(oError, this._getText("errorCreatePO"));
                     } finally {
@@ -287,126 +215,18 @@ sap.ui.define([
             });
         },
 
-        // popup search help vindo do ambiente ECC
-        async onValueHelpMaterial() {
-            const oView = this.getView();
-
-            if (!this._pDialogMaterial) {
-                this._pDialogMaterial = Fragment.load({
-                    id: oView.getId(),
-                    name: "zpeweb.view.fragments.ValueHelpMaterial",
-                    controller: this
-                }).then((oDialog) => {
-                    oView.addDependent(oDialog);
-                    return oDialog;
-                });
-            }
-
-            const oDialog = await this._pDialogMaterial;
-            oDialog.getBinding("items").filter([]);
-            oDialog.open();
-        },
-
-        onValueHelpSearch(oEvent) {
-            // converte o input pra maisuculo
-            const sRawValue = oEvent.getParameter("value") || "";
-            const sValue = sRawValue.trim().toUpperCase();
-
-            const oBinding = oEvent.getSource().getBinding("items");
-            if (!oBinding) {
-                return;
-            }
-
-            if (!sValue) {
-                oBinding.filter([]);
-                return;
-            }
-
-            // filtro ignorando case sensitive
-            const aFilters = [
-                new Filter({
-                    filters: [
-                        new Filter({
-                            path: "Codigocm",
-                            operator: FilterOperator.Contains,
-                            value1: sValue,
-                            caseSensitive: false
-                        }),
-                        new Filter({
-                            path: "Descricaocm",
-                            operator: FilterOperator.Contains,
-                            value1: sValue,
-                            caseSensitive: false
-                        })
-                    ],
-                    and: false
-                })
-            ];
-
-            oBinding.filter(aFilters);
-        },
-
-        // ao selecionar a pesquisa
-        onValueHelpClose(oEvent) {
-            const oSelectedItem = oEvent.getParameter("selectedItem");
-
-            if (oSelectedItem) {
-                const sSelectedCode = oSelectedItem.getTitle();
-
-                // seta o valor no input
-                this.byId("inputProdutoAcabado").setValue(sSelectedCode);
-
-                // ja busca automaticamente
-                this.onBuscar();
-            }
-
-            oEvent.getSource().getBinding("items").filter([]);
-        },
-
-        // Helper para GET no OData
-        _readCollection(sPath, aFilters) {
-            return new Promise((resolve, reject) => {
-                const oModel = this.getView().getModel();
-
-                if (!oModel) {
-                    reject(new Error(this._getText("errorODataModelNotFound")));
-                    return;
-                }
-
-                oModel.read(sPath, {
-                    filters: aFilters || [],
-                    success: (oData) => resolve(Array.isArray(oData && oData.results) ? oData.results : []),
-                    error: (oError) => reject(oError)
-                });
-            });
-        },
-
-        // Helper para POST no OData (Deep Insert)
         _createEntity(sPath, oPayload) {
             return new Promise((resolve, reject) => {
                 const oModel = this.getView().getModel();
-
                 if (!oModel) {
                     reject(new Error(this._getText("errorODataModelNotFound")));
                     return;
                 }
-
                 oModel.create(sPath, oPayload, {
                     success: (oData) => resolve(oData),
                     error: (oError) => reject(oError)
                 });
             });
-        },
-
-        _tratarErro(oError, sMensagemPadrao) {
-            let sMensagem = "";
-            try {
-                const oResponseBody = JSON.parse(oError.responseText);
-                sMensagem = oResponseBody?.error?.message?.value;
-            } catch (e) {
-                sMensagem = oError?.message;
-            }
-            MessageBox.error(sMensagem || sMensagemPadrao);
         }
     });
 });
