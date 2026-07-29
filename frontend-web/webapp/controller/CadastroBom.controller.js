@@ -4,14 +4,17 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "sap/m/MessageToast",
     "sap/m/MessageBox",
-], (Controller, UIComponent, JSONModel, MessageToast, MessageBox) => {
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator"
+], (Controller, UIComponent, JSONModel, MessageToast, MessageBox, Filter, FilterOperator) => {
     "use strict";
 
     return Controller.extend("zpeweb.controller.CadastroBom", {
         onInit: function () {
             var oViewModel = new JSONModel({
                 bMostrarCadastroBom: false,
-                tituloProduto: ""
+                tituloProduto: "",
+                itensBOM: []
             });
             this.getView().setModel(oViewModel, "viewModel");
         },
@@ -20,7 +23,54 @@ sap.ui.define([
             var oRouter = this.getOwnerComponent().getRouter();
             oRouter.navTo("RouteCockpit");
         },
+        
+        // Tratador de erros do OData (Lê o Message do SEGW)
+        _tratarErro: function () {
+            var sMensagem = "Erro ao solicitar serviço no servidor";
 
+            try {
+                var oResponseBody = JSON.parse(oError.responseText);
+                var aDetalhes = oResponseBody.error?.innererror?.errordetails;
+
+                if (aDetalhes && aDetalhes.length > 0) {
+                    var oDetail = aDetalhes.find(function (item) { 
+                        return item.message && item.message !== ""; 
+                    });
+
+                    if (oDetail) {
+                        sMensagem = oDetail.message;
+                    }
+                }
+
+                if (sMensagem === "Erro ao processar a solicitação no servidor." && 
+                  oResponseBody.erro?.message?.value) {
+                    sMensagem = oResponseBody.error.message.value;
+                }
+
+            } catch (e) {
+                if (oError.message) {
+                    sMensagem = oError.message;
+                }
+            }
+            MessageBox.error(sMensagem);
+        },
+
+        // Método para adicionar zeros à esquerda, ex: "0000"
+        _padZero: function (sValue, iCodlength) {
+            if (!sValue) {
+                return "";
+            }
+
+            var iCodLength = iCodlength || 4;
+            var sClean = String(sValue).trim();
+
+            while (sClean.length < iCodlength) {
+                sClean = "0" + sClean;
+            }
+            return sClean;
+        },
+
+        // Busca a lista BOM existente para o PA informado
         onBuscarProduto: function () {
             var sCodigoPA = this.byId("iptCodigoPA").getValue();
             var oModel = this.getView().getModel();
@@ -31,52 +81,153 @@ sap.ui.define([
                 return;
             }
 
+            // Tratando o código com zeros à esqueda
+            sCodigoPA = this._padZero(sCodigoPA, 4);
+            
+            this.getView().setBusy(true);
+
             oModel.read("/ZTPE_BOMSet", {
                 filters: [
-                    new sap.ui.model.Filter("Codigopa", sap.ui.model.FilterOperator.EQ, sCodigoPA)
+                    new Filter("Codigopa", FilterOperator.EQ, sCodigoPA)
                 ],
                 success: function (oDataBOM) {
+                    this.getView().setBusy(false);
 
-                    oModel.read("/ZTPE_MATERIALSet", {
-                        success: function (oDataMateriais) {
+                    if (!oDataBOM.results || oDataBOM.results.length === 0) {
+                        MessageToast.show("Nenhuma estrutura encontrada para o código informado")
+                        oViewModel.setProperty("/itensBOM", []);
+                        oViewModel.setProperty("/bMostrarCadastroBom", false);
+                        return;
+                    }
 
-                            var mMateriais = {};
-                            oDataMateriais.results.forEach(function (mat) {
-                                var sCodigo = mat.Codigocm;
-                                var sDescricao = mat.Descricaocm;
+                    oViewModel.setProperty("/itensBOM", oDataBOM.results);
+                    oViewModel.setProperty("/bMostrarCadastroBom", true);
 
-                                if (sCodigo) {
-                                    var sCodClean = String(sCodigo || "").trim().replace(/^0+/, '');
-                                    mMateriais[sCodClean] = sDescricao;
-                                }
-                            });
+                    
+                    var oPrimeiroItem = oDataBOM.results[0];
+                    var sCodPA = this._padZero(oPrimeiroItem.Codigopa, 4);
+                    var sDescPA = oPrimeiroItem.Descricaopa || "";
 
-                            var aItensCompletos = oDataBOM.results.map(function (itemBOM) {
-                                var sPaClean = String(itemBOM.Codigopa || "").replace(/^0+/, '').trim();
-                                var sMpClean = String(itemBOM.Codigomp || "").replace(/^0+/, '').trim();
+                    oViewModel.setProperty("/tituloProduto", sCodPA + " - " + sDescPA);
 
-                                return {
-                                    Codigopa: itemBOM.Codigopa,
-                                    Descricaopa: mMateriais[sPaClean] || "Não encontrado",
-                                    Codigomp: itemBOM.Codigomp,
-                                    Descricaomp: mMateriais[sMpClean] || "Não encontrado",
-                                    Quantidademp: itemBOM.Quantidademp
-                                };
-                            });
+                }.bind(this),
 
-                            oViewModel.setProperty("/itensBOM", aItensCompletos);
-                            oViewModel.setProperty("/bMostrarCadastroBom", true);
-                        },
-                        error: function () {
-                            sap.m.MessageToast.show("Erro ao carregar a tabela");
-                        }
-                    });
-
-                },
-                erro: function () {
-                    sap.m.MessageToast.show("Erro ao buscar a estrutura BOM.");
-                }
+                erro: function (oError) {
+                    this.getView().setBusy(false);
+                    this._tratarErro(oError);
+                }.bind(this)
             });
+        },
+
+        onAdicionarMp: function () {
+            var oViewModel = this.getView().getModel("viewModel");
+            var aItensAtuais = oViewModel.getProperty("/itensBOM") || [];
+
+            var sCodPA = this.byId("iptCodigoPA").getValue();
+            var sCodMP = this.byId("iptMateriaPrima").getValue();
+            var sQtdMP = this.byId("iptQuantidade").getValue(); 
+            
+            if (!sCodMP) {
+                MessageBox.warning("Informe o Código da Matéria-Prima ");
+                return;
+            }
+
+            if(!sQtdMP || parseFloat(sQtdMP) <= 0) {
+                MessageBox.warning("Quantidade tem que ser maior que 0 (Zero)")
+                return;
+            }
+
+            // If temporario
+            if(sQtdMP > 0 && sCodMP !== "") {
+                MessageBox.success("Em desenvolvimento");
+                return;
+            }
+
+            sCodPA = this._padZero(sCodPA, 4);
+            sCodMP = this._padZero(sCodMP, 4);
+
+            var bMPexiste = aItensAtuais.some( function (oItem) {
+                return oItem.Codigopa === sCodPA && oItem.Codigomp === sCodMP;
+            });
+            if (bMPexiste) {
+                MessageBox.error("Esta Matéria-Prima já foi adicionada");
+                return;
+            }
+
+            this._validarEBuscarMP(sCodPA, sCodMP, sQtdMP);
+        },
+
+        //     sCodPA = this._padZero(sCodPA, 4);
+        //     sCodMP = this._padZero(sCodMP, 4);
+        //     sQtdMP = this._padZero(sQtdMP, 4);
+
+        //     var sDescPA = aItensAtuais.length > 0 ? aItensAtuais[0].Descricaopa : "";
+
+        //     this.getView().setBusy(true);
+
+        //     var sPathMaterial = oModel.createKey("/ZTPE_MATERIALSet", {
+        //         Codigocm: sCodMP
+        //     });
+
+        //     oModel.read(sPathMaterial, {
+        //         success: function (oDataMaterial) {
+        //             this.getView().setBusy(false);
+
+        //             var sDescMP = oDataMaterial ? oDataMaterial.Descricaocm : "Descrição não encontrada";
+
+        //             aItensAtuais.push({
+        //                 Codigopa: sCodPA,
+        //                 Descricaopa: sDescPA,
+        //                 Codigomp: sCodMP,
+        //                 Descricaomp: sDescMP,
+        //                 Quantidademp: sQtdMP,
+        //                 isNovo: true
+        //             });
+
+        //             oViewModel.setProperty("/itensBOM", aItensAtuais);
+
+        //             this.byId("iptMateriaPrima").setValue("");
+        //             this.byId("iptQuantidade").setValue("");
+
+        //             MessageToast.show("Itens adicionado à lista total.")
+        //         }.bind(this),
+        //         error: function () {
+        //             this.getView().setBusy(false);
+
+        //             this.byId("iptMateriaPrima").setValue("");
+        //             this.byId("iptQuantidade").setValue("");
+        //         }
+        //     })
+        // },
+
+        _validarEBuscarMP: function (sCodPA, sCodMP, sQtdMP) {
+            var oModel = this.getView().getModel();
+            var oViewModel = this.getView().getModel("viewModel");
+            var aItensAtuais = oViewModel.getProperty("/itensBOM") || [];
+
+            this.getView().setBusy(true);
+
+            var sPathMaterial = oModel.createKey("/ZTPE_BOMSet", {
+                Codigopa: sCodPA,
+                Codigomp: sCodMP
+            });
+
+            oModel.read(sPathMaterial, {
+                success: function (oData) {
+                    oView.setBusy(false);
+                    MessageBox.error("Esta combinação de PA e MP já existe.")
+                },
+                error: function (oError) {
+                    oView.setBusy(false);
+
+                    if (oError.statusCode === "404" || oError.statusCode === 404) {
+                        MessageBox.success("Inserindo")
+                    } else {
+                        this._tratarErro();
+                    }
+                }
+            })
         }
+
     });
 });

@@ -28,7 +28,7 @@
             
             <!-- Container para o cadastro do BOM -->
             <VBox id="containerCadastroBom" visible="{viewModel>/bMostrarCadastroBom}">
-                <Title text="BOM do Produto: {viewModel>Codigopa} - " 
+                <Title text="BOM do Produto: {viewModel>/tituloProduto} " 
                     titleStyle="H3" 
                     class="sapUiSmallMarginBottom" />
 
@@ -43,11 +43,11 @@
                         columnsXL="1" columnsL="1" columnsM="1">
                         <f:content>
                             
-                            <Label text="Código da matéria-prima:" labelFor="inputMateriaPrima"/>
-                            <Input id="inputMateriaPrima" placeholder="" maxLength="4" width="10rem" showValueHelp="true" valueHelpRequest=".onSelecionar"/>
+                            <Label text="Código da matéria-prima:" labelFor="iptMateriaPrima"/>
+                            <Input id="iptMateriaPrima" placeholder="0000" maxLength="4" width="10rem" showValueHelp="true" valueHelpRequest=".onSelecionar"/>
 
-                            <Label text="Quantidade do material:" labelFor="inputQtdMaterial"/>
-                            <Input id="inputQtdMaterial" type="Number" maxLength="4" width="10rem"/>
+                            <Label text="Quantidade do material:" labelFor="iptQuantidade"/>
+                            <Input id="iptQuantidade" type="Tel" maxLength="4" width="10rem"/>
 
                         </f:content>
                     </f:SimpleForm>
@@ -58,7 +58,7 @@
                             text="Adicionar" 
                             icon="sap-icon://add" 
                             type="Accept" 
-                            press=".onAdicionarItem" 
+                            press=".onAdicionarMp" 
                             class="sapUiTinyMarginEnd" />
                         
                         <Button 
