@@ -93,33 +93,13 @@ sap.ui.define([
                 return isNaN(nParsed) ? 0 : nParsed;
             };
 
-            const aCodigosUnicos = [...new Set([
-                ...aBomRows.map(b => b.Codigopa),
-                ...aBomRows.map(b => b.Codigomp)
-            ])].filter(Boolean);
-
-            let aMaterialRows = [];
+            // busca estoque
             let aEstoqueRows = [];
-
-            // Disparos em paralelo para máxima performance
-            const aPromises = [];
-
-            if (aCodigosUnicos.length > 0) {
-                const aMatFilters = aCodigosUnicos.map(sCod => new Filter("Codigocm", FilterOperator.EQ, sCod));
-                const oCombinedMatFilter = new Filter({ filters: aMatFilters, and: false });
-                aPromises.push(this._readCollection("/ZTPE_MATERIALSet", [oCombinedMatFilter]).then(res => aMaterialRows = res));
-            }
-
-            aPromises.push(this._readCollection("/ZSTR_ESTOQUE_ODATASet").then(res => aEstoqueRows = res).catch(oErrEst => {
+            try {
+                aEstoqueRows = await this._readCollection("/ZSTR_ESTOQUE_ODATASet");
+            } catch (oErrEst) {
                 console.warn(this._getText("warnFetchEstoque"), oErrEst);
-            }));
-
-            await Promise.all(aPromises);
-
-            const mMapMateriais = aMaterialRows.reduce((mAcc, oMat) => {
-                mAcc[fnNormalizeKey(oMat.Codigocm)] = oMat;
-                return mAcc;
-            }, {});
+            }
 
             const mMapEstoque = aEstoqueRows.reduce((mAcc, oEst) => {
                 mAcc[fnNormalizeKey(oEst.Codigom)] = fnParseNumber(oEst.Quantidadem);
@@ -127,20 +107,17 @@ sap.ui.define([
             }, {});
 
             const aItemsCalculados = aBomRows.map((oBomItem) => {
-                const sKeyPA = fnNormalizeKey(oBomItem.Codigopa);
                 const sKeyMP = fnNormalizeKey(oBomItem.Codigomp);
-                const oMatPA = mMapMateriais[sKeyPA] || {};
-                const oMatMP = mMapMateriais[sKeyMP] || {};
                 const nQtdNecessaria = fnParseNumber(oBomItem.Quantidademp);
                 const nQtdEstoque = mMapEstoque[sKeyMP] ?? 0;
                 const nQtdComprar = Math.max(0, nQtdNecessaria - nQtdEstoque);
 
                 return {
                     Codigopa: oBomItem.Codigopa,
-                    Descricaopa: oMatPA.Descricaocm || this._getText("cadastroNullDesc"),
+                    Descricaopa: oBomItem.Descricaopa || this._getText("cadastroNullDesc"),
                     Codigomp: oBomItem.Codigomp,
-                    Descricaomp: oMatMP.Descricaocm || this._getText("cadastroNullDesc"),
-                    UnidadeMedida: oMatMP.UnidadeMedidacm || "UN",
+                    Descricaomp: oBomItem.Descricaomp || this._getText("cadastroNullDesc"),
+                    UnidadeMedida: oBomItem.UnidadeMedidacm || "UN",
                     QtdNecessaria: nQtdNecessaria,
                     QtdEstoque: nQtdEstoque,
                     QtdComprar: nQtdComprar
@@ -188,7 +165,7 @@ sap.ui.define([
 
                     const oPayload = {
                         Numeropedido: "0000",
-                        Datap: "2026-06-23T00:00:00", // Payload mantido conforme regra do backend
+                        Datap: "2026-06-23T00:00:00",
                         ZTPE_PED_ITEMSet: aItensPayload
                     };
 

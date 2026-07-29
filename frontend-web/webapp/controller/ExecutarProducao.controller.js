@@ -29,6 +29,7 @@ sap.ui.define([
             oView.setBusy(true);
 
             try {
+                // busca componentes BOM, que agora trazem a decricao
                 const aBomRows = await this._readCollection("/ZTPE_BOMSet", [
                     new Filter("Codigopa", FilterOperator.EQ, sMaterial)
                 ]);
@@ -39,33 +40,11 @@ sap.ui.define([
                     return;
                 }
 
-                let sDescricaoPA = "";
-                try {
-                    const aPaRows = await this._readCollection("/ZTPE_MATERIALSet", [
-                        new Filter("Codigocm", FilterOperator.EQ, sMaterial)
-                    ]);
-                    const sDesc = aPaRows && aPaRows[0] ? aPaRows[0].Descricaocm : null;
-                    if (sDesc && sDesc.trim() !== "") {
-                        sDescricaoPA = `${sMaterial} - ${sDesc}`;
-                        this._sDescricaoPA = sDesc;
-                    } else {
-                        sDescricaoPA = this._getText("cadastroNull", [sMaterial]);
-                        this._sDescricaoPA = "";
-                    }
-                } catch (oErrPA) {
-                    sDescricaoPA = this._getText("cadastroNull", [sMaterial]);
-                    this._sDescricaoPA = "";
-                }
-
-                const aMatFilters = aBomRows.map(oItem => new Filter("Codigocm", FilterOperator.EQ, oItem.Codigomp));
-                const aMaterialRows = await this._readCollection("/ZTPE_MATERIALSet", [
-                    new Filter({ filters: aMatFilters, and: false })
-                ]);
-
-                const mMapMateriais = aMaterialRows.reduce((mAcc, oMat) => {
-                    mAcc[oMat.Codigocm] = oMat;
-                    return mAcc;
-                }, {});
+                // descricao do PA
+                const sDescPA = aBomRows[0].Descricaopa || "";
+                this._sDescricaoPA = sDescPA;
+                
+                const sTextoHeader = sDescPA ? `${sMaterial} - ${sDescPA}` : this._getText("cadastroNull", [sMaterial]);
 
                 const fnParseNumber = (vVal) => {
                     if (vVal === null || vVal === undefined || vVal === "") return 0;
@@ -73,18 +52,16 @@ sap.ui.define([
                     return isNaN(nParsed) ? 0 : nParsed;
                 };
 
-                const aItemsEnriched = aBomRows.map((oBomItem) => {
-                    const oMat = mMapMateriais[oBomItem.Codigomp] || {};
-                    return {
-                        Codigomp: oBomItem.Codigomp,
-                        Descricaocm: oMat.Descricaocm || this._getText("cadastroNullDesc"),
-                        Quantidademp: fnParseNumber(oBomItem.Quantidademp),
-                        UnidadeMedidacm: oMat.UnidadeMedidacm || ""
-                    };
-                });
+                // mapeia os materiais usando mp do gateway
+                const aItemsEnriched = aBomRows.map((oBomItem) => ({
+                    Codigomp: oBomItem.Codigomp,
+                    Descricaocm: oBomItem.Descricaomp || this._getText("cadastroNullDesc"),
+                    Quantidademp: fnParseNumber(oBomItem.Quantidademp),
+                    UnidadeMedidacm: oBomItem.UnidadeMedidacm || "UN"
+                }));
 
                 oView.getModel("bomModel").setData(aItemsEnriched);
-                oTxtNomeProduto.setText(this._getText("titleProdutoAcabado", [sDescricaoPA]));
+                oTxtNomeProduto.setText(this._getText("titleProdutoAcabado", [sTextoHeader]));
                 oPanelResultado.setVisible(true);
 
             } catch (oError) {
@@ -139,7 +116,6 @@ sap.ui.define([
                                 actions: [MessageBox.Action.YES, MessageBox.Action.NO],
                                 onClose: (sDialogAction) => {
                                     if (sDialogAction === MessageBox.Action.YES) {
-                                        // Navegação simplificada herdada do BaseController
                                         this.getRouter().navTo("RouteCentralCompras", {
                                             materialPA: sMaterial
                                         });
