@@ -71,7 +71,7 @@
 
                 <!-- Tabela da Lista BOM -->
                 <Table 
-                    id="tableBomItems" items="{viewModel>/itensBOM}" alternateRowColors="true">
+                    id="tableBomItems" items="{/ZTPE_BOMSet}" alternateRowColors="true">
 
                     <headerToolbar>
                         <OverflowToolbar>
@@ -80,21 +80,21 @@
                     </headerToolbar>
                     
                     <columns>
-                        <Column width="15%"><Text text="Cod. Prod. Fin..." /></Column>
-                        <Column width="25%"><Text text="Produto Final" /></Column>
-                        <Column width="15%"><Text text="Cod. Mat. Pri..." /></Column>
+                        <Column width="15%"><Text text="Cod. Produto Acabado" /></Column>
+                        <Column width="25%"><Text text="Produto Acabado" /></Column>
+                        <Column width="15%"><Text text="Cod. Matéria-Prima" /></Column>
                         <Column width="30%"><Text text="Matéria-Prima" /></Column>
-                        <Column width="15%" hAlign="End"><Text text="Qtd. Mat. Prima Usa..." /></Column>
+                        <Column width="15%" hAlign="End"><Text text="Quantidade de Matéria-Prima" /></Column>
                     </columns>
 
                     <items>
                         <ColumnListItem>
                             <cells>
-                                <Text text="{viewModel>Codigopa}" />
-                                <Text text="{viewModel>Descricaopa}" />
-                                <Text text="{viewModel>Codigomp}" />
-                                <Text text="{viewModel>Descricaomp}" />
-                                <Text text="{viewModel>Quantidademp}" />
+                                <Text text="{Codigopa}" />
+                                <Text text="{Descricaopa}" />
+                                <Text text="{Codigomp}" />
+                                <Text text="{Descricaomp}" />
+                                <Text text="{Quantidademp}" />
                             </cells>
                         </ColumnListItem>
                     </items>

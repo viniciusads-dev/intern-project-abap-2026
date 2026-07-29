@@ -25,7 +25,7 @@ sap.ui.define([
         },
         
         // Tratador de erros do OData (Lê o Message do SEGW)
-        _tratarErro: function () {
+        _tratarErro: function (oError) {
             var sMensagem = "Erro ao solicitar serviço no servidor";
 
             try {
@@ -70,7 +70,21 @@ sap.ui.define([
             return sClean;
         },
 
-        // Busca a lista BOM existente para o PA informado
+        // Método para filtrar o PA digitado no início
+        _filtrarPorPA: function (sCodigoPA) {
+            var oTable = this.byId("tableBomItems");
+            var oBinding = oTable.getBinding("items");
+
+            if (oBinding && sCodigoPA) {
+                var oFiltro = new Filter(
+                    "Codigopa", FilterOperator.EQ, sCodigoPA
+                );
+            
+                oBinding.filter([oFiltro]);
+            }
+        },
+
+        // Busca a lista BOM do PA digitado
         onBuscarProduto: function () {
             var sCodigoPA = this.byId("iptCodigoPA").getValue();
             var oModel = this.getView().getModel();
@@ -80,6 +94,8 @@ sap.ui.define([
                 MessageBox.error("Digite um código de produto acabado para buscar.");
                 return;
             }
+
+            this._filtrarPorPA(sCodigoPA);
 
             // Tratando o código com zeros à esqueda
             sCodigoPA = this._padZero(sCodigoPA, 4);
@@ -119,115 +135,58 @@ sap.ui.define([
             });
         },
 
+        // Create BOM
         onAdicionarMp: function () {
-            var oViewModel = this.getView().getModel("viewModel");
-            var aItensAtuais = oViewModel.getProperty("/itensBOM") || [];
+            var oModel = this.getView().getModel();
 
             var sCodPA = this.byId("iptCodigoPA").getValue();
             var sCodMP = this.byId("iptMateriaPrima").getValue();
             var sQtdMP = this.byId("iptQuantidade").getValue(); 
             
-            if (!sCodMP) {
-                MessageBox.warning("Informe o Código da Matéria-Prima ");
+            if (!sCodMP || !sQtdMP) {
+                MessageBox.warning("Preencha todos os campos.");
                 return;
             }
 
-            if(!sQtdMP || parseFloat(sQtdMP) <= 0) {
-                MessageBox.warning("Quantidade tem que ser maior que 0 (Zero)")
+            var fQtd = parseFloat(sQtdMP.replace(",", "."));
+            if(isNaN(fQtd) || fQtd <= 0) {
+                MessageBox.warning("Quantidade dever ser maior que Zero.")
                 return;
             }
 
-            // If temporario
-            if(sQtdMP > 0 && sCodMP !== "") {
-                MessageBox.success("Em desenvolvimento");
-                return;
-            }
-
+            // Formantando inputs recebidos (ex: '0001')
             sCodPA = this._padZero(sCodPA, 4);
             sCodMP = this._padZero(sCodMP, 4);
+            sQtdMP = this._padZero(sQtdMP, 4);
 
-            var bMPexiste = aItensAtuais.some( function (oItem) {
-                return oItem.Codigopa === sCodPA && oItem.Codigomp === sCodMP;
-            });
-            if (bMPexiste) {
-                MessageBox.error("Esta Matéria-Prima já foi adicionada");
-                return;
-            }
-
-            this._validarEBuscarMP(sCodPA, sCodMP, sQtdMP);
-        },
-
-        //     sCodPA = this._padZero(sCodPA, 4);
-        //     sCodMP = this._padZero(sCodMP, 4);
-        //     sQtdMP = this._padZero(sQtdMP, 4);
-
-        //     var sDescPA = aItensAtuais.length > 0 ? aItensAtuais[0].Descricaopa : "";
-
-        //     this.getView().setBusy(true);
-
-        //     var sPathMaterial = oModel.createKey("/ZTPE_MATERIALSet", {
-        //         Codigocm: sCodMP
-        //     });
-
-        //     oModel.read(sPathMaterial, {
-        //         success: function (oDataMaterial) {
-        //             this.getView().setBusy(false);
-
-        //             var sDescMP = oDataMaterial ? oDataMaterial.Descricaocm : "Descrição não encontrada";
-
-        //             aItensAtuais.push({
-        //                 Codigopa: sCodPA,
-        //                 Descricaopa: sDescPA,
-        //                 Codigomp: sCodMP,
-        //                 Descricaomp: sDescMP,
-        //                 Quantidademp: sQtdMP,
-        //                 isNovo: true
-        //             });
-
-        //             oViewModel.setProperty("/itensBOM", aItensAtuais);
-
-        //             this.byId("iptMateriaPrima").setValue("");
-        //             this.byId("iptQuantidade").setValue("");
-
-        //             MessageToast.show("Itens adicionado à lista total.")
-        //         }.bind(this),
-        //         error: function () {
-        //             this.getView().setBusy(false);
-
-        //             this.byId("iptMateriaPrima").setValue("");
-        //             this.byId("iptQuantidade").setValue("");
-        //         }
-        //     })
-        // },
-
-        _validarEBuscarMP: function (sCodPA, sCodMP, sQtdMP) {
-            var oModel = this.getView().getModel();
-            var oViewModel = this.getView().getModel("viewModel");
-            var aItensAtuais = oViewModel.getProperty("/itensBOM") || [];
+            var oPayLoad = {
+                Codigopa: sCodPA,
+                Codigomp: sCodMP,
+                Quantidademp: sQtdMP
+            };
 
             this.getView().setBusy(true);
 
-            var sPathMaterial = oModel.createKey("/ZTPE_BOMSet", {
-                Codigopa: sCodPA,
-                Codigomp: sCodMP
-            });
-
-            oModel.read(sPathMaterial, {
+            oModel.create("/ZTPE_BOMSet", oPayLoad, {
                 success: function (oData) {
-                    oView.setBusy(false);
-                    MessageBox.error("Esta combinação de PA e MP já existe.")
-                },
-                error: function (oError) {
-                    oView.setBusy(false);
+                    this.getView().setBusy(false);
+                    MessageToast.show("Material adicionado com sucesso.");
 
-                    if (oError.statusCode === "404" || oError.statusCode === 404) {
-                        MessageBox.success("Inserindo")
-                    } else {
-                        this._tratarErro();
+                    this.byId("iptMateriaPrima").setValue("");
+                    this.byId("iptQuantidade").setValue("");
+
+                    var oBinding = this.byId("tableBomItems").getBinding("items");
+                    if(oBinding) {
+                        oBinding.refresh();
                     }
-                }
-            })
-        }
+
+                }.bind(this),
+                error: function (oError) {
+                    this.getView().setBusy(false);
+                    this._tratarErro(oError);
+                }.bind(this)
+            });
+        },
 
     });
 });
