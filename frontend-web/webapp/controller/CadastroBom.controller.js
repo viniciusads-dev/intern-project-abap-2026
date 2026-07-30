@@ -188,5 +188,43 @@ sap.ui.define([
             });
         },
 
+        onDeletarItem: function (oEvent) {
+            var oModel = this.getView().getModel();
+
+            // Recupera contexto OData da linha onde o botão foi clicado
+            var oItemContext = oEvent.getSource().getBindingContext();
+            var sPath = oItemContext.getPath();
+            var oDadosLinha = oItemContext.getObject();
+
+            MessageBox.confirm(
+                "Deseja realmente remover a Matéria-Prima " + oDadosLinha.Codigomp + "?", 
+                {
+                    title: "Confirmar Exclusão",
+                    onClose: function (oAction) {
+                        if (oAction === MessageBox.Action.OK) {
+                            this.getView().setBusy(true);
+
+                            oModel.remove(sPath, {
+                                success: function() {
+                                    this.getView().setBusy(false);
+                                    MessageToast.show("Item removido com sucesso.");
+
+                                    var oBinding = this.byId("tableBomItems").getBinding("items");
+                                    if (oBinding) {
+                                        oBinding.refresh();
+                                    }
+                                }.bind(this),
+
+                                error: function (oError) {
+                                    this.getView().setBusy(false);
+                                    this._tratarErro(oError);
+                                }.bind(this)
+                            });
+                        }
+                    }.bind(this)
+                }
+            );
+        }
+
     });
 });

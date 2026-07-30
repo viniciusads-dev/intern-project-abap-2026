@@ -83,8 +83,9 @@
                         <Column width="15%"><Text text="Cod. Produto Acabado" /></Column>
                         <Column width="25%"><Text text="Produto Acabado" /></Column>
                         <Column width="15%"><Text text="Cod. Matéria-Prima" /></Column>
-                        <Column width="30%"><Text text="Matéria-Prima" /></Column>
+                        <Column width="25%"><Text text="Matéria-Prima" /></Column>
                         <Column width="15%" hAlign="End"><Text text="Quantidade de Matéria-Prima" /></Column>
+                        <Column width="5%" hAlign="Center"><Text text=""/></Column>
                     </columns>
 
                     <items>
@@ -95,6 +96,12 @@
                                 <Text text="{Codigomp}" />
                                 <Text text="{Descricaomp}" />
                                 <Text text="{Quantidademp}" />
+
+                                <Button 
+                                    icon="sap-icon://delete"
+                                    type="Transparent"
+                                    press="onDeletarItem"
+                                    tooltip="Excluir registro"/>
                             </cells>
                         </ColumnListItem>
                     </items>
