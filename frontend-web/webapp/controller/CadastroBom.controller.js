@@ -1,4 +1,5 @@
 sap.ui.define([
+    "zpeweb/controller/BaseController",
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/UIComponent",
     "sap/ui/model/json/JSONModel",
@@ -6,22 +7,54 @@ sap.ui.define([
     "sap/m/MessageBox",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator"
-], (Controller, UIComponent, JSONModel, MessageToast, MessageBox, Filter, FilterOperator) => {
+], (BaseController ,Controller, UIComponent, JSONModel, MessageToast, MessageBox, Filter, FilterOperator) => {
     "use strict";
 
-    return Controller.extend("zpeweb.controller.CadastroBom", {
+    return BaseController.extend("zpeweb.controller.CadastroBom", {
         onInit: function () {
             var oViewModel = new JSONModel({
                 bMostrarCadastroBom: false,
                 tituloProduto: "",
-                itensBOM: []
+                itensBOM: [],
+                modoEdicao: false
             });
             this.getView().setModel(oViewModel, "viewModel");
+
+            var oRouter = this.getOwnerComponent().getRouter();
+            oRouter.getRoute("RouteCadastroBom").attachPatternMatched(this._onRouteMatched, this);
         },
 
         onNavBack: function () {
             var oRouter = this.getOwnerComponent().getRouter();
             oRouter.navTo("RouteCockpit");
+        },
+
+        _onRouteMatched: function () {
+            var oViewModel = this.getView().getModel("viewModel");
+            if (oViewModel) {
+                oViewModel.setProperty("/bMostrarCadastroBom", false);
+                oViewModel.setProperty("/tituloProduto", "");
+                oViewModel.setProperty("/itensBOM", []);
+                oViewModel.setProperty("/modoEdicao", false);
+            }
+
+            var oModel = this.getView().getModel();
+            if (oModel && oModel.hasPendingChanges()) {
+                oModel.resetChanges();
+            }
+
+            var oInputPA = this.byId("iptCodigoPA");
+            if (oInputPA) {
+                oInputPA.setValue("");
+            }
+
+            var oTable = this.byId("tableBomItems");
+            if (oTable) {
+                var oBinding = oTable.getBinding("items");
+                if (oBinding) {
+                    oBinding.filter([new Filter("Codigopa", FilterOperator.EQ, "___LIMPAR___")])
+                }
+            }
         },
         
         // Tratador de erros do OData (Lê o Message do SEGW)
@@ -128,7 +161,7 @@ sap.ui.define([
 
                 }.bind(this),
 
-                erro: function (oError) {
+                error: function (oError) {
                     this.getView().setBusy(false);
                     this._tratarErro(oError);
                 }.bind(this)
@@ -224,7 +257,50 @@ sap.ui.define([
                     }.bind(this)
                 }
             );
+        },
+
+        onAlternarEdicao: function () {
+            var oViewModel = this.getView().getModel("viewModel");
+            oViewModel.setProperty("/modoEdicao", true);
+        },
+
+        onCancelarAlteracoes: function () {
+            var oModel = this.getView().getModel();
+
+            if (oModel.hasPendingChanges()) {
+                oModel.resetChanges();
+            }
+
+            var oViewModel = this.getView().getModel("viewModel");
+            oViewModel.setProperty("/modoEdicao", false);
+        },
+
+        onSalvarAlteracoes: function () {
+            if(document.activeElement && document.activeElement.blur) {
+                document.activeElement.blur();
+            }
+
+            var oModel = this.getView().getModel();
+            var oViewModel = this.getView().getModel("viewModel");
+
+            if (!oModel.hasPendingChanges()) {
+                MessageToast.show("Nenhuma alteração foi realizado.")
+                oViewModel.setProperty("/modoEdicao", false);
+                return;
+            }
+
+            oModel.submitChanges({
+                success: function (oData) {
+                    MessageToast.show("Alterações salvas com sucesso.")
+                    oViewModel.setProperty("/modoEdicao", false);
+                }.bind(this),
+                error: function (oError) {
+                    MessageBox.error("Erro ao conectar com o servidor.");
+                }
+            })
         }
+
+
 
     });
 });

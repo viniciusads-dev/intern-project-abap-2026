@@ -12,19 +12,20 @@
         <content>
             <!-- Barra inicial de Buscar PA -->
             <OverflowToolbar class="sapUiSmallMarginBottom">
-                    <Label text="Insira o código do Produto Acabado:" labelFor="iptCodigoPA"/>
-                    <Input id="iptCodigoPA" placeholder="0000" maxLength="4" width="8rem"/>
+                <Label text="Insira o código do Produto Acabado:" labelFor="iptCodigoPA"/>
+                <Input id="iptCodigoPA" placeholder="0000"  type="Number" liveChange=".onInputLiveChange" maxLength="4" width="8rem"/>
                     
-                    <Button 
-                        icon="sap-icon://search" 
-                        text="Buscar" 
-                        type="Emphasized" 
-                        press=".onBuscarProduto"/>
-                    <Button 
-                        icon="sap-icon://value-help"
-                        text="Selecionar..."
-                        press=".onSelecionar"/>
-                </OverflowToolbar>
+                <Button 
+                    icon="sap-icon://search" 
+                    text="Buscar" 
+                    type="Emphasized" 
+                    press=".onBuscarProduto"/>
+                <Button 
+                    icon="sap-icon://value-help"
+                    text="Selecionar..."
+                    press=".onValueHelpMaterial"
+                    tooltip="Selecionar Produto Acabado"/>
+            </OverflowToolbar>
             
             <!-- Container para o cadastro do BOM -->
             <VBox id="containerCadastroBom" visible="{viewModel>/bMostrarCadastroBom}">
@@ -44,7 +45,7 @@
                         <f:content>
                             
                             <Label text="Código da matéria-prima:" labelFor="iptMateriaPrima"/>
-                            <Input id="iptMateriaPrima" placeholder="0000" maxLength="4" width="10rem" showValueHelp="true" valueHelpRequest=".onSelecionar"/>
+                            <Input id="iptMateriaPrima" placeholder="0000" type="Number" liveChange=".onInputLiveChange" maxLength="4" width="10rem" showValueHelp="true" valueHelpRequest=".onSelecionarMP" tooltip="Selecionar Matéria-Prima"/>
 
                             <Label text="Quantidade do material:" labelFor="iptQuantidade"/>
                             <Input id="iptQuantidade" type="Tel" maxLength="4" width="10rem"/>
@@ -55,17 +56,12 @@
                     <!-- Botões de ação -->
                     <HBox class="sapUiLargeMarginBegin sapUiSmallMarginTopBottom">
                         <Button 
-                            text="Adicionar" 
+                            text="Cadastrar" 
                             icon="sap-icon://add" 
-                            type="Accept" 
+                            type="Emphasized"
                             press=".onAdicionarMp" 
                             class="sapUiTinyMarginEnd" />
                         
-                        <Button 
-                            text="Concluir" 
-                            icon="sap-icon://accept" 
-                            type="Emphasized" 
-                            press=".onConcluir" />
                     </HBox>
                 </Panel>
 
@@ -76,6 +72,26 @@
                     <headerToolbar>
                         <OverflowToolbar>
                             <Title text="Matérias-Primas do Produto" level="H4"/>
+                            <ToolbarSpacer/>
+                            <Button 
+                                icon="sap-icon://edit" 
+                                text="Editar" 
+                                visible="{= !${viewModel>/modoEdicao}}"
+                                press=".onAlternarEdicao"/>
+
+                            <Button 
+                                icon="sap-icon://edit"
+                                text="Salvar"
+                                type="Accept"
+                                visible="{= ${viewModel>/modoEdicao} === true}"
+                                press=".onSalvarAlteracoes"/>
+
+                            <Button
+                                icon="sap-icon://decline"
+                                text="Cancelar"
+                                type="Reject"
+                                visible="{= ${viewModel>/modoEdicao} === true}"
+                                press=".onCancelarAlteracoes"/>
                         </OverflowToolbar>
                     </headerToolbar>
                     
@@ -95,7 +111,7 @@
                                 <Text text="{Descricaopa}" />
                                 <Text text="{Codigomp}" />
                                 <Text text="{Descricaomp}" />
-                                <Text text="{Quantidademp}" />
+                                <Input value="{Quantidademp}" width="auto" maxLength="4" editable="{viewModel>/modoEdicao}" valueLiveUpdate="true"/>
 
                                 <Button 
                                     icon="sap-icon://delete"
