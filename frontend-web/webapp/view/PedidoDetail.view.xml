@@ -1,0 +1,78 @@
+<mvc:View
+    controllerName="zpeweb.controller.PedidoDetail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <Page title="{i18n>titlePedidoDetail}" showNavButton="true" navButtonPress=".onNavBack">
+        <content>
+            
+            <Panel class="sapUiResponsiveMargin" width="auto">
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title text="{i18n>objHeaderIntro}" level="H3"/>
+                    </OverflowToolbar>
+                </headerToolbar>
+                
+                <content>
+                    <!-- CABEÇALHO DO PEDIDO -->
+                    <ObjectHeader 
+                        title="Pedido: {view>/pedidoId}" 
+                        icon="sap-icon://sales-order"
+                        iconActive="false"
+                        class="sapUiNoMarginBottom">
+                        <attributes>
+                            <ObjectAttribute title="Data" text="{view>/pedidoDateText}" />
+                        </attributes>
+                    </ObjectHeader>
+                </content>
+            </Panel>
+
+            <Panel class="sapUiResponsiveMargin" width="auto">
+                <content>
+                    <Table 
+                        id="tblItens" 
+                        items="{view>/tableItems}" 
+                        noDataText="{i18n>noDataItens}">
+                        
+                        <headerToolbar>
+                            <OverflowToolbar>
+                                <Title text="Itens do Pedido" level="H2"/>
+                                <ToolbarSpacer />
+                                <MenuButton text="Exportar">
+                                    <menu>
+                                        <Menu itemSelected=".onExport">
+                                            <MenuItem text="Exportar como PDF" key="PDF" icon="sap-icon://pdf-attachment" />
+                                            <MenuItem text="Exportar como CSV" key="CSV" icon="sap-icon://excel-attachment" />
+                                        </Menu>
+                                    </menu>
+                                </MenuButton>
+                            </OverflowToolbar>
+                        </headerToolbar>
+
+                        <columns>
+                            <Column width="15%"><Text text="{i18n>colPedNumDetail}" /></Column>
+                            <Column width="20%"><Text text="{i18n>colPedDateDetail}" /></Column>
+                            <Column width="15%"><Text text="{i18n>colMatCodeDetail}" /></Column>
+                            <Column width="35%"><Text text="{i18n>colMatDescDetail}" /></Column>
+                            <Column width="15%" hAlign="Right"><Text text="{i18n>colQtyDetail}" /></Column>
+                        </columns>
+                        
+                        <items>
+                            <ColumnListItem>
+                                <cells>
+                                    <Text text="{view>pedido}" />
+                                    <Text text="{view>dateText}" />
+                                    <Text text="{view>material}" />
+                                    <Text text="{view>description}" />
+                                    <ObjectNumber number="{view>quantity}" />
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </content>
+            </Panel>
+
+        </content>
+    </Page>
+</mvc:View>

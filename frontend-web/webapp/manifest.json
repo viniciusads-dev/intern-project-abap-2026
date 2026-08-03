@@ -150,7 +150,21 @@
           "target": [
             "TargetCadastroMaterial"
           ]
-        }
+        },
+        {
+          "name": "RouteReports",
+          "pattern": "reports",
+          "target": [
+            "TargetReports"
+          ]
+        },
+        {
+        "name": "RoutePedidoDetail",
+        "pattern": "pedido/{pedidoId}",
+        "target": [
+            "TargetPedidoDetail"
+        ]
+    }
           
       ],
       "targets": {
@@ -185,8 +199,18 @@
         "TargetCadastroMaterial": {
           "id": "CadastroMaterial",
           "name": "CadastroMaterial"
-        }
-
+        },
+        "TargetReports": {
+          "id": "Reports",
+          "name": "Reports"
+        },
+        "TargetPedidoDetail": {
+        "viewType": "XML",
+        "transition": "slide",
+        "clearControlAggregation": false,
+        "viewId": "PedidoDetail",
+        "viewName": "PedidoDetail"
+      }
       }
     },
     "rootView": {

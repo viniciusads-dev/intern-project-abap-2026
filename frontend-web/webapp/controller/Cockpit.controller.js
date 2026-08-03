@@ -28,7 +28,8 @@ sap.ui.define([
                 cadastrobom: "RouteCadastroBom",
                 centralcompras: "RouteCentralCompras",
                 unidademedida: "RouteUnidadeMedida",
-                cadastroMaterial: "RouteCadastroMaterial"
+                cadastroMaterial: "RouteCadastroMaterial",
+                reports: "RouteReports"
             };
             const sRouteName = mRouteMap[sRoute];
 
