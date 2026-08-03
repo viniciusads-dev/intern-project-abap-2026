@@ -98,7 +98,7 @@ sap.ui.define([
             if (oSelectedItem) {
                 const sSelectedCode = oSelectedItem.getTitle();
                 
-                const oInput = this.byId("inputProdutoAcabado") || this.byId("inputMaterial");
+                const oInput = this.byId("inputProdutoAcabado") || this.byId("inputMaterial") || this.byId("iptCodigoPA");
                 if (oInput) {
                     oInput.setValue(sSelectedCode);
                     if (typeof this.onBuscar === "function") {

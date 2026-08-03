@@ -4,7 +4,7 @@
     xmlns="sap.m">
     
     <Page id="bomPage" 
-        title="Cadastro de Lista BOM" 
+        title="Estrutura de Produto (BOM)" 
         showNavButton="true"
         navButtonPress=".onNavBack"
         enableScrolling="true"
@@ -13,18 +13,14 @@
             <!-- Barra inicial de Buscar PA -->
             <OverflowToolbar class="sapUiSmallMarginBottom">
                 <Label text="Insira o código do Produto Acabado:" labelFor="iptCodigoPA"/>
-                <Input id="iptCodigoPA" placeholder="0000"  type="Number" liveChange=".onInputLiveChange" maxLength="4" width="8rem"/>
+                <Input id="iptCodigoPA" placeholder="0000"  type="Number" liveChange=".onInputLiveChange" showValueHelp="true" valueHelpRequest=".onValueHelpMaterial" maxLength="4" width="8rem"/>
                     
                 <Button 
                     icon="sap-icon://search" 
                     text="Buscar" 
                     type="Emphasized" 
                     press=".onBuscarProduto"/>
-                <Button 
-                    icon="sap-icon://value-help"
-                    text="Selecionar..."
-                    press=".onValueHelpMaterial"
-                    tooltip="Selecionar Produto Acabado"/>
+
             </OverflowToolbar>
             
             <!-- Container para o cadastro do BOM -->
@@ -96,11 +92,11 @@
                     </headerToolbar>
                     
                     <columns>
-                        <Column width="15%"><Text text="Cod. Produto Acabado" /></Column>
-                        <Column width="25%"><Text text="Produto Acabado" /></Column>
-                        <Column width="15%"><Text text="Cod. Matéria-Prima" /></Column>
-                        <Column width="25%"><Text text="Matéria-Prima" /></Column>
-                        <Column width="15%" hAlign="End"><Text text="Quantidade de Matéria-Prima" /></Column>
+                        <Column width="15%"><Text text="{i18n>colCodPA}" /></Column>
+                        <Column width="25%"><Text text="{i18n>colDescPA}" /></Column>
+                        <Column width="15%"><Text text="{i18n>colCodMP}" /></Column>
+                        <Column width="25%"><Text text="{i18n>colDescMP}" /></Column>
+                        <Column width="15%" hAlign="End"><Text text="{i18n>colQtdMP}" /></Column>
                         <Column width="5%" hAlign="Center"><Text text=""/></Column>
                     </columns>
 
