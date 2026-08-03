@@ -118,7 +118,7 @@ sap.ui.define([
         },
 
         // Busca a lista BOM do PA digitado
-        onBuscarProduto: function () {
+        onBuscar: function () {
             var sCodigoPA = this.byId("iptCodigoPA").getValue();
             var oModel = this.getView().getModel();
             var oViewModel = this.getView().getModel("viewModel");

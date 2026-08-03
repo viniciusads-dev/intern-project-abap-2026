@@ -1,6 +1,7 @@
 <mvc:View controllerName="zpeweb.controller.CadastroBom"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:f="sap.ui.layout.form"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
     xmlns="sap.m">
     
     <Page id="bomPage" 
@@ -13,13 +14,19 @@
             <!-- Barra inicial de Buscar PA -->
             <OverflowToolbar class="sapUiSmallMarginBottom">
                 <Label text="Insira o código do Produto Acabado:" labelFor="iptCodigoPA"/>
-                <Input id="iptCodigoPA" placeholder="0000"  type="Number" liveChange=".onInputLiveChange" showValueHelp="true" valueHelpRequest=".onValueHelpMaterial" maxLength="4" width="8rem"/>
+                <Input id="iptCodigoPA" 
+                placeholder="0000" 
+                type="Number" 
+                liveChange=".onInputLiveChange" 
+                showValueHelp="true" 
+                valueHelpRequest=".onValueHelpMaterial"  
+                width="8rem"/>
                     
                 <Button 
                     icon="sap-icon://search" 
                     text="Buscar" 
                     type="Emphasized" 
-                    press=".onBuscarProduto"/>
+                    press=".onBuscar"/>
 
             </OverflowToolbar>
             
@@ -41,7 +48,7 @@
                         <f:content>
                             
                             <Label text="Código da matéria-prima:" labelFor="iptMateriaPrima"/>
-                            <Input id="iptMateriaPrima" placeholder="0000" type="Number" liveChange=".onInputLiveChange" maxLength="4" width="10rem" showValueHelp="true" valueHelpRequest=".onSelecionarMP" tooltip="Selecionar Matéria-Prima"/>
+                            <Input id="iptMateriaPrima" placeholder="0000" type="Number" liveChange=".onInputLiveChange" maxLength="4" width="10rem" showValueHelp="true" valueHelpRequest=".onValueHelpMaterial" tooltip="Selecionar Matéria-Prima" app:entitySet="/ZshPeMateriaPrimaSet"/>
 
                             <Label text="Quantidade do material:" labelFor="iptQuantidade"/>
                             <Input id="iptQuantidade" type="Tel" maxLength="4" width="10rem"/>

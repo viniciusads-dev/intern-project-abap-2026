@@ -2,10 +2,11 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/UIComponent",
     "sap/ui/core/Fragment",
+    "sap/m/StandardListItem",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/m/MessageBox"
-], function (Controller, UIComponent, Fragment, Filter, FilterOperator, MessageBox) {
+], function (Controller, UIComponent, Fragment, StandardListItem, Filter, FilterOperator, MessageBox) {
     "use strict";
 
     return Controller.extend("zpeweb.controller.BaseController", {
@@ -47,8 +48,14 @@ sap.ui.define([
             }
         },
 
-        async onValueHelpMaterial() {
+        async onValueHelpMaterial(oEvent, sEntitySet) {
             const oView = this.getView();
+            // Pega qual input disparou o evento
+            const oInput = oEvent.getSource();
+            this._oInputOrigem = oInput;
+
+            // Lê a propriedade CustomData definida no XML, se não tiver assume como PA
+            const sPath = oInput.data("entitySet") || "/ZshPeProdutoAcabadoSet";
 
             if (!this._pDialogMaterial) {
                 this._pDialogMaterial = Fragment.load({
@@ -62,6 +69,17 @@ sap.ui.define([
             }
 
             const oDialog = await this._pDialogMaterial;
+            
+            //Faz o Binding dinâmico do SearchHelp de PA ou MP
+            oDialog.bindAggregation("items", {
+                path: sPath,
+                parameters: { operationMode: "Client" },
+                template: new StandardListItem({
+                    title: "{Codigocm}",
+                    description: "{Descricaocm}"
+                })
+            });
+
             oDialog.getBinding("items").filter([]);
             oDialog.open();
         },
@@ -98,15 +116,46 @@ sap.ui.define([
             if (oSelectedItem) {
                 const sSelectedCode = oSelectedItem.getTitle();
                 
-                const oInput = this.byId("inputProdutoAcabado") || this.byId("inputMaterial") || this.byId("iptCodigoPA");
+                // Input que disparou o Search Help
+                let oInput = this._oInputOrigem;
+
+                // Falback de segurança
+                if (!oInput) {
+                    oInput = this.byId("iptCodigoPA") ||
+                             this.byId("iptCodigoMP") ||
+                             this.byId("inputProdutoAcabado") ||
+                             this.byId("inputMaterial");
+                }
+
                 if (oInput) {
-                    oInput.setValue(sSelectedCode);
-                    if (typeof this.onBuscar === "function") {
+                    // Remove zeros à esquerda para evitar conflitos com HTML
+                    const sCleanValue = oInput.getType() === "Number" ? sSelectedCode.replace(/^0+/, "") : sSelectedCode;
+
+                    oInput.setValue(sCleanValue);
+                    oInput.fireChange({ value: sCleanValue });
+
+                    // Identifica se a seleção veio de um campo de PA
+                    const sInputId = oInput.getId();
+                    const bIsPA = sInputId.includes("CodigoPA") || 
+                                  sInputId.includes("ProdutoAcabado") || 
+                                  sInputId.includes("InputMaterial") || 
+                                  sInputId.includes("inputMaterial");
+
+                    // Executa se a busca for PA e se o método for onBuscar
+                    if (bIsPA && typeof this.onBuscar === "function") {
                         this.onBuscar();
                     }
                 }
             }
-            oEvent.getSource().getBinding("items").filter([]);
+
+            // Limpa os filtros de busca do Dialog
+            const oBinding = oEvent.getSource().getBinding("items");
+            if (oBinding) {
+                oBinding.filter([]);
+            }
+
+            // Reseta a referência na memória
+            this._oInputOrigem = null;
         },
 
         _readCollection(sPath, aFilters) {
