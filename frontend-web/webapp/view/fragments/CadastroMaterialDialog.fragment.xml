@@ -1,0 +1,49 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form">
+    
+    <Dialog 
+        id="dialogCadastro" 
+        title="{i18n>dialogNewMaterialTitle}" 
+        contentWidth="400px"
+        class="sapUiPopupWithPadding">
+        
+        <content>
+            <f:SimpleForm
+                editable="true"
+                layout="ResponsiveGridLayout"
+                labelSpanS="12"
+                emptySpanS="0"
+                columnsM="1">
+                <f:content>
+                    <Label text="{i18n>lblDesc}" required="true" />
+                    <Input value="{material>/Descricaocm}" maxLength="40" />
+
+                    <!-- AQUI: Trocamos o Input pelo ComboBox ligado ao OData -->
+                    <Label text="{i18n>lblUM}" required="true" />
+                    <ComboBox 
+                        selectedKey="{material>/UnidadeMedidacm}"
+                        items="{
+                            path: '/ZTPE_UNMEDIDASet',
+                            templateShareable: false
+                        }">
+                        <core:Item key="{Codigounm}" text="{Codigounm} - {Descricaounm}" />
+                    </ComboBox>
+
+                    <Label text="{i18n>lblType}" required="true" />
+                    <Select selectedKey="{material>/Tipocm}">
+                        <core:Item key="1" text="{i18n>typeRawMaterial}" />
+                        <core:Item key="2" text="{i18n>typeFinishedProduct}" />
+                    </Select>
+                </f:content>
+            </f:SimpleForm>
+        </content>
+        
+        <buttons>
+            <Button text="{i18n>btnSave}" type="Emphasized" press=".onSave" icon="sap-icon://save" />
+            <Button text="{i18n>btnCancel}" type="Transparent" press=".onCancel" />
+        </buttons>
+    </Dialog>
+    
+</core:FragmentDefinition>

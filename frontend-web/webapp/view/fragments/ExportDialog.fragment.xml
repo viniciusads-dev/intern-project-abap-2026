@@ -1,0 +1,58 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form">
+    
+    <Dialog 
+        id="dialogExport" 
+        title="Exportar Relatório" 
+        contentWidth="34rem"
+        class="sapUiPopupWithPadding">
+        
+        <content>
+            <f:SimpleForm
+                editable="true"
+                layout="ResponsiveGridLayout"
+                labelSpanS="12"
+                emptySpanS="0"
+                columnsM="1">
+                <f:content>
+                    <Label text="Formato de exportação" />
+                    <Select selectedKey="{export>/format}">
+                        <core:Item key="PDF" text="PDF" />
+                        <core:Item key="CSV" text="CSV" />
+                    </Select>
+
+                    <Label text="Código do material" />
+                    <Input value="{export>/Codigom}" placeholder="Ex.: 0024" maxLength="4" />
+
+                    <Label text="Tipo de movimentação" />
+                    <Select selectedKey="{export>/Tipol}">
+                        <core:Item key="" text="Todos" />
+                        <core:Item key="E" text="E - Entrada" />
+                        <core:Item key="S" text="S - Saída" />
+                        <core:Item key="I" text="I - Inventário" />
+                    </Select>
+
+                    <Label text="Data inicial" />
+                    <DatePicker 
+                        dateValue="{export>/dateFrom}" 
+                        displayFormat="dd/MM/yyyy" 
+                        valueFormat="yyyy-MM-dd" />
+
+                    <Label text="Data final" />
+                    <DatePicker 
+                        dateValue="{export>/dateTo}" 
+                        displayFormat="dd/MM/yyyy" 
+                        valueFormat="yyyy-MM-dd" />
+                </f:content>
+            </f:SimpleForm>
+        </content>
+        
+        <buttons>
+            <Button text="Exportar" type="Emphasized" press=".onConfirmExport" />
+            <Button text="Cancelar" type="Transparent" press=".onCancelExport" />
+        </buttons>
+    </Dialog>
+    
+</core:FragmentDefinition>

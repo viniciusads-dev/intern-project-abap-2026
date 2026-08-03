@@ -73,17 +73,6 @@
                     </GenericTile>
                     
                     <GenericTile 
-                        id="quickMovementTile"
-                        header="Nova Movimentação"
-                        subheader="Ação Rápida"
-                        frameType="OneByOne"
-                        press=".onPress">
-                        <TileContent id="quickMovementContent">
-                            <ImageContent id="quickMovementImage" src="sap-icon://add-product" />
-                        </TileContent>
-                    </GenericTile>
-                    
-                    <GenericTile 
                         id="executarProducao"
                         header="Executar Produção"
                         subheader="Gerar Produto Acabado"
@@ -139,6 +128,19 @@
                         </TileContent>
                     </GenericTile>
 
+                    <GenericTile 
+                        id="cadastroMaterial"
+                        header="Cadastro de Material"
+                        subheader="Cadastrar novo material"
+                        frameType="OneByOne"
+                        press=".onCardPress">
+                        <customData>
+                            <core:CustomData key="route" value="cadastroMaterial"/>
+                        </customData>
+                        <TileContent id="cadastroMaterialContent">
+                            <ImageContent id="cadastroMaterialIcon" src="sap-icon://add-product" />
+                        </TileContent>
+                    </GenericTile>
                 </grid:CSSGrid>
             </VBox>
         </content>
