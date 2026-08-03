@@ -24,7 +24,7 @@
                             valueHelpRequest=".onValueHelpMaterial"
                             liveChange=".onInputLiveChange"
                             class="sapUiTinyMarginEnd" />
-                        <Button id="btnBuscar"
+                        <Button
                             text="{i18n>btnBuscar}"
                             type="Emphasized"
                             icon="sap-icon://search"

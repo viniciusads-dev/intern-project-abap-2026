@@ -139,9 +139,16 @@
         },
         {
           "name": "RouteUnidadeMedida",
-          "pattern": "unidademedida",
+          "pattern": "unidadeMedida",
           "target": [
             "TargetUnidadeMedida"
+          ]
+        },
+        {
+          "name": "RouteCadastroMaterial",
+          "pattern": "cadastroMaterial",
+          "target": [
+            "TargetCadastroMaterial"
           ]
         }
           
@@ -174,6 +181,10 @@
         "TargetUnidadeMedida": {
           "id": "UnidadeMedida",
           "name": "UnidadeMedida"
+        },
+        "TargetCadastroMaterial": {
+          "id": "CadastroMaterial",
+          "name": "CadastroMaterial"
         }
 
       }
