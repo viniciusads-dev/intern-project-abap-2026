@@ -15,6 +15,20 @@ sap.ui.define([
             const oBomModel = new JSONModel([]);
             this.getView().setModel(oBomModel, "bomModel");
             this.applySavedTheme();
+            this.getRouter().getRoute("RouteExecutarProducao").attachPatternMatched(this._onRouteMatched, this);
+        },
+
+        _onRouteMatched(oEvent) {
+            const oArgs = oEvent.getParameter("arguments");
+            const sMaterialPA = oArgs?.materialPA;
+
+            if (sMaterialPA) {
+                const oInput = this.byId("inputMaterial");
+                if (oInput) {
+                    oInput.setValue(sMaterialPA);
+                    this.onBuscar();
+                }
+            }
         },
 
         async onBuscar() {
@@ -44,7 +58,7 @@ sap.ui.define([
                 // descricao do PA
                 const sDescPA = aBomRows[0].Descricaopa || "";
                 this._sDescricaoPA = sDescPA;
-                
+
                 const sTextoHeader = sDescPA ? `${sMaterial} - ${sDescPA}` : this._getText("cadastroNull", [sMaterial]);
 
                 const fnParseNumber = (vVal) => {

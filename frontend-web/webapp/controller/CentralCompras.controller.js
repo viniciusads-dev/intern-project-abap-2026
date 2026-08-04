@@ -176,13 +176,43 @@ sap.ui.define([
                             ? this._getText("msgPOSuccessWithNum", [sNumPedido])
                             : this._getText("msgPOSuccess");
 
-                        MessageBox.success(sMsgSucesso, {
-                            onClose: () => {
-                                oTable.removeSelections(true);
-                                const sInputVal = this.byId("inputProdutoAcabado").getValue().trim();
-                                sInputVal ? this.onBuscar() : this.onBuscarTodos();
-                            }
-                        });
+                        // identifica PAs unicos selecionados
+                        const aPAsUnicos = [...new Set(aItensComprar.map(item => item.Codigopa))];
+                        const bApenasUmPA = aPAsUnicos.length === 1;
+                        const sCodigoPA = bApenasUmPA ? aPAsUnicos[0] : null;
+
+                        // se houver apenas 1 PA, combina mensagem de sucesso + pergunta de navegacao
+                        if (bApenasUmPA) {
+                            MessageBox.success(
+                                this._getText("msgConfirmGoToProduction", [sMsgSucesso, sCodigoPA]),
+                                {
+                                    title: this._getText("msgPOSuccess"),
+                                    actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+                                    emphasizedAction: MessageBox.Action.YES,
+                                    onClose: (sAction) => {
+                                        oTable.removeSelections(true);
+                                        const sInputVal = this.byId("inputProdutoAcabado").getValue().trim();
+                                        sInputVal ? this.onBuscar() : this.onBuscarTodos();
+
+                                        if (sAction === MessageBox.Action.YES) {
+                                            this.getRouter().navTo("RouteExecutarProducao", {
+                                                materialPA: sCodigoPA
+                                            });
+                                        }
+                                    }
+                                }
+                            );
+                        } else {
+                            // se houver multiplos PAs, exibe apenas a confirmação de sucesso padrão
+                            MessageBox.success(sMsgSucesso, {
+                                onClose: () => {
+                                    oTable.removeSelections(true);
+                                    const sInputVal = this.byId("inputProdutoAcabado").getValue().trim();
+                                    sInputVal ? this.onBuscar() : this.onBuscarTodos();
+                                }
+                            });
+                        }
+
                     } catch (oError) {
                         this._tratarErro(oError, this._getText("errorCreatePO"));
                     } finally {

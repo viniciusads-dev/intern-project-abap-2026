@@ -14,7 +14,7 @@
             <Button 
                 icon="sap-icon://palette" 
                 type="Transparent"
-                tooltip="Alternar Tema Claro/Escuro" 
+                tooltip="{i18n>tooltipToggleTheme}"
                 press=".onToggleTheme" />
         </headerContent>
 

@@ -26,7 +26,10 @@
         }
       }
     },
-    "i18nLocales": ["en", "pt"],
+    "i18nLocales": [
+      "en",
+      "pt"
+    ],
     "defaultLanguage": "pt"
   },
   "sap.ui": {
@@ -67,13 +70,13 @@
         }
       },
       "": {
-          "type": "sap.ui.model.odata.v2.ODataModel",
+        "type": "sap.ui.model.odata.v2.ODataModel",
         "dataSource": "mainService",
         "preload": false,
-          "settings": {
-            "defaultBindingMode": "TwoWay",
-            "useBatch": true
-          }
+        "settings": {
+          "defaultBindingMode": "TwoWay",
+          "useBatch": true
+        }
       }
     },
     "resources": {
@@ -119,7 +122,7 @@
         },
         {
           "name": "RouteExecutarProducao",
-          "pattern": "executar",
+          "pattern": "ExecutarProducao/:materialPA:",
           "target": [
             "TargetExecutarProducao"
           ]
@@ -160,20 +163,19 @@
           ]
         },
         {
-        "name": "RoutePedidoDetail",
-        "pattern": "pedido/{pedidoId}",
-        "target": [
+          "name": "RoutePedidoDetail",
+          "pattern": "pedido/{pedidoId}",
+          "target": [
             "TargetPedidoDetail"
-        ]
+          ]
         },
         {
           "name": "RouteItemDetail",
           "pattern": "estoque/{materialCode}",
           "target": [
             "TargetItemDetail"
-        ]
+          ]
         }
-          
       ],
       "targets": {
         "TargetCockpit": {
@@ -189,8 +191,8 @@
           "name": "None"
         },
         "TargetExecutarProducao": {
-          "id": "Executar",
-          "name": "Executar"
+          "id": "ExecutarProducao",
+          "name": "ExecutarProducao"
         },
         "TargetCadastroBom": {
           "id": "CadastroBom",
@@ -213,11 +215,11 @@
           "name": "Reports"
         },
         "TargetPedidoDetail": {
-        "viewType": "XML",
-        "transition": "slide",
-        "clearControlAggregation": false,
-        "viewId": "PedidoDetail",
-        "viewName": "PedidoDetail"
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "PedidoDetail",
+          "viewName": "PedidoDetail"
         },
         "TargetItemDetail": {
           "viewType": "XML",
