@@ -10,6 +10,15 @@
         navButtonPress=".onNavBack"
         enableScrolling="true"
         class="sapUiContentPadding">
+
+        <headerContent>
+            <Button 
+                icon="sap-icon://palette" 
+                type="Transparent"
+                tooltip="Alternar Tema Claro/Escuro" 
+                press=".onToggleTheme" />
+        </headerContent>
+
         <content>
             <!-- Barra inicial de Buscar PA -->
             <OverflowToolbar class="sapUiSmallMarginBottom">

@@ -1,4 +1,5 @@
 sap.ui.define([
+    "zpeweb/controller/BaseController",
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/routing/History",
     "sap/ui/model/json/JSONModel",
@@ -8,10 +9,10 @@ sap.ui.define([
     "sap/m/MessageBox",
     "sap/ui/core/Fragment",
     "zpeweb/util/reportGenerator" // <-- 1. Importamos o cérebro exportador aqui!
-], function (Controller, History, JSONModel, Filter, FilterOperator, MessageToast, MessageBox, Fragment, ReportGenerator) {
+], function (BaseController, Controller, History, JSONModel, Filter, FilterOperator, MessageToast, MessageBox, Fragment, ReportGenerator) {
     "use strict";
 
-    return Controller.extend("zpeweb.controller.Reports", {
+    return BaseController.extend("zpeweb.controller.Reports", {
 
         onInit: function () {
             const oViewModel = new JSONModel({
@@ -25,6 +26,7 @@ sap.ui.define([
                 filterDateToPed: null
             });
             this.getView().setModel(oViewModel, "view");
+            this.applySavedTheme();
         },
 
         _getI18nText: function (sKey) {

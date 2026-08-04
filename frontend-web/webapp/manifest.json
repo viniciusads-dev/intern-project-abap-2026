@@ -51,7 +51,8 @@
       "minUI5Version": "1.120.0",
       "libs": {
         "sap.m": {},
-        "sap.ui.core": {}
+        "sap.ui.core": {},
+        "sap.suite.ui.microchart": {}
       }
     },
     "contentDensities": {
@@ -164,7 +165,14 @@
         "target": [
             "TargetPedidoDetail"
         ]
-    }
+        },
+        {
+          "name": "RouteItemDetail",
+          "pattern": "estoque/{materialCode}",
+          "target": [
+            "TargetItemDetail"
+        ]
+        }
           
       ],
       "targets": {
@@ -210,7 +218,14 @@
         "clearControlAggregation": false,
         "viewId": "PedidoDetail",
         "viewName": "PedidoDetail"
-      }
+        },
+        "TargetItemDetail": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "ItemDetail",
+          "viewName": "ItemDetail"
+        }
       }
     },
     "rootView": {

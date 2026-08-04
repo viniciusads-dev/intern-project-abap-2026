@@ -2,6 +2,7 @@
     controllerName="zpeweb.controller.Inventory"
     displayBlock="true"
     xmlns:mvc="sap.ui.core.mvc"
+    xmlns:microchart="sap.suite.ui.microchart"
     xmlns="sap.m">
     
     <Page 
@@ -10,8 +11,32 @@
         showNavButton="true"
         navButtonPress=".onNavBack"
         enableScrolling="true">
+
+        <headerContent>
+            <Button 
+                icon="sap-icon://palette" 
+                type="Transparent"
+                tooltip="Alternar Tema Claro/Escuro" 
+                press=".onToggleTheme" />
+        </headerContent>
         
         <content>
+            <Panel class="sapUiResponsiveMargin" width="auto" expandable="true" expanded="true" headerText="Visão Global de Movimentações (Últimos 1000 registros)">
+                <HBox wrap="Wrap" justifyContent="SpaceAround" alignItems="Center">
+                    
+                    <VBox alignItems="Center" width="20rem" class="sapUiSmallMargin">
+                        <Title text="Entradas Totais" level="H4" class="sapUiTinyMarginBottom" />
+                        <Text text="Total In: {view>/global/totalIn} | Total Out: {view>/global/totalOut}" class="sapUiSmallMargin" />
+                        <microchart:InteractiveDonutChart displayedSegments="3" selectionEnabled="false">
+                            <microchart:segments>
+                                <microchart:InteractiveDonutChartSegment label="Entradas (Qtd)" value="{path: 'view>/global/totalIn', type: 'sap.ui.model.type.Float'}" color="Good"/>
+                                <microchart:InteractiveDonutChartSegment label="Saídas (Qtd)" value="{path: 'view>/global/totalOut', type: 'sap.ui.model.type.Float'}" color="Error"/>
+                            </microchart:segments>
+                        </microchart:InteractiveDonutChart>
+                    </VBox>
+                    
+                </HBox>
+            </Panel>
             <Table 
                 id="inventoryTable"
                 autoPopinMode="true"
@@ -23,7 +48,7 @@
                 growing="true"
                 growingScrollToLoad="true"
                 growingThreshold="20"
-                mode="SingleSelectMaster"
+                mode="None"
                 class="sapUiResponsiveMargin">
                 
                 <headerToolbar>

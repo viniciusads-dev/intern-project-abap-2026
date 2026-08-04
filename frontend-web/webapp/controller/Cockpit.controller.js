@@ -1,18 +1,25 @@
 sap.ui.define([
+    "zpeweb/controller/BaseController",
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/UIComponent",
+<<<<<<< HEAD
     "sap/m/MessageBox",
     "sap/ui/model/json/JSONModel"
 ], (Controller, UIComponent, MessageBox, JSONModel) => {
+=======
+    "sap/m/MessageBox"
+], (BaseController, Controller, UIComponent, MessageBox) => {
+>>>>>>> dc95894cf2616d664b05c9c34c0026235f02cb98
     "use strict";
 
-    return Controller.extend("zpeweb.controller.Cockpit", {
+    return BaseController.extend("zpeweb.controller.Cockpit", {
         onInit() {
             const oViewModel = new JSONModel({
                 TotalEstoque: 0
             });
             this.getView().setModel(oViewModel, "viewModel");
             this.getRouter().attachRouteMatched(this.onRouteMatched, this);
+            this.applySavedTheme();
         },
 
         onRouteMatched(oEvent) {
@@ -35,7 +42,8 @@ sap.ui.define([
                 centralcompras: "RouteCentralCompras",
                 unidademedida: "RouteUnidadeMedida",
                 cadastroMaterial: "RouteCadastroMaterial",
-                reports: "RouteReports"
+                reports: "RouteReports",
+                itemDetail: "RouteItemDetail"
             };
             const sRouteName = mRouteMap[sRoute];
 

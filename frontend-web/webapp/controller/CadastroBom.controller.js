@@ -22,6 +22,7 @@ sap.ui.define([
 
             var oRouter = this.getOwnerComponent().getRouter();
             oRouter.getRoute("RouteCadastroBom").attachPatternMatched(this._onRouteMatched, this);
+            this.applySavedTheme();
         },
 
         onNavBack: function () {
