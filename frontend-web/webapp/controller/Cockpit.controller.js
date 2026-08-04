@@ -2,14 +2,9 @@ sap.ui.define([
     "zpeweb/controller/BaseController",
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/UIComponent",
-<<<<<<< HEAD
     "sap/m/MessageBox",
     "sap/ui/model/json/JSONModel"
-], (Controller, UIComponent, MessageBox, JSONModel) => {
-=======
-    "sap/m/MessageBox"
-], (BaseController, Controller, UIComponent, MessageBox) => {
->>>>>>> dc95894cf2616d664b05c9c34c0026235f02cb98
+], (BaseController, Controller, UIComponent, MessageBox, JSONModel) => {
     "use strict";
 
     return BaseController.extend("zpeweb.controller.Cockpit", {
