@@ -17,7 +17,9 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "zpeweb/util/reportGenerator",
     "sap/ui/core/format/DateFormat",
-    "sap/ui/core/Fragment"
+    "sap/ui/core/Fragment",
+    "sap/m/SelectDialog",
+    "sap/m/StandardListItem"
 ], function (
     BaseController, 
     UIComponent, 
@@ -37,7 +39,9 @@ sap.ui.define([
     JSONModel, 
     ReportGenerator,
     DateFormat,
-    Fragment 
+    Fragment,
+    SelectDialog,
+    StandardListItem
 ) {
     "use strict";
 
@@ -90,6 +94,10 @@ sap.ui.define([
                 this._oMovementDialog.destroy();
                 this._oMovementDialog = null;
             }
+            if (this._oMaterialHelpDialog) {
+                this._oMaterialHelpDialog.destroy();
+                this._oMaterialHelpDialog = null;
+            }
         },
 
         _initLocalModel() {
@@ -135,7 +143,9 @@ sap.ui.define([
                 const oMaterialInput = new Input({
                     width: "80%",
                     placeholder: "Ex.: MAT001",
-                    value: "{movement>/Codigom}"
+                    value: "{movement>/Codigom}",
+                    showValueHelp: true,
+                    valueHelpRequest: this.onMaterialValueHelpRequest.bind(this)
                 });
 
                 const oQuantityInput = new Input({
@@ -282,10 +292,53 @@ sap.ui.define([
                 }
             });
         },
+        onMaterialValueHelpRequest: function (oEvent) {
+            const oView = this.getView();
 
-        // ==============================================================
-        // NOVA LÓGICA DE EXPORTAÇÃO REFATORADA
-        // ==============================================================
+            if (!this._oMaterialHelpDialog) {
+                this._oMaterialHelpDialog = new SelectDialog({
+                    title: "Selecionar Material",
+                    noDataText: "Nenhum material encontrado",
+                    search: this.onMaterialHelpSearch.bind(this),
+                    confirm: this.onMaterialHelpConfirm.bind(this),
+                    items: {
+                        path: "/ZSTR_ESTOQUE_ODATASet", 
+                        template: new StandardListItem({
+                            title: "{Codigom}",
+                            description: "{Descricaocm}"
+                        })
+                    }
+                });
+                oView.addDependent(this._oMaterialHelpDialog);
+            }
+
+            this._oMaterialHelpDialog.open();
+        },
+
+        onMaterialHelpSearch: function (oEvent) {
+            const sValue = oEvent.getParameter("value");
+            let aFilters = [];
+
+            if (sValue) {
+                const oFilterCode = new Filter("Codigom", FilterOperator.Contains, sValue);
+                const oFilterDesc = new Filter("Descricaocm", FilterOperator.Contains, sValue);
+                aFilters = [new Filter({ filters: [oFilterCode, oFilterDesc], and: false })];
+            }
+
+            const oBinding = oEvent.getSource().getBinding("items");
+            oBinding.filter(aFilters);
+        },
+
+        onMaterialHelpConfirm: function (oEvent) {
+            const oSelectedItem = oEvent.getParameter("selectedItem");
+            
+            if (oSelectedItem) {
+                const sMaterialCode = oSelectedItem.getTitle();               
+                this._oMovementDialog.getModel("movement").setProperty("/Codigom", sMaterialCode);
+            }
+            oEvent.getSource().getBinding("items").filter([]);
+        },
+
         onGenerateReport() {
             const oView = this.getView();
             
@@ -343,9 +396,6 @@ sap.ui.define([
                 });
         },
 
-        // ==============================================================
-        // LÓGICAS DA TABELA PRINCIPAL DE ESTOQUE
-        // ==============================================================
         onItemPress: function(oEvent) {
             const oListItem = oEvent.getSource();
             

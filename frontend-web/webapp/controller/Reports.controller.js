@@ -100,19 +100,12 @@ sap.ui.define([
                 let sPedido = oViewModel.getProperty("/filterPedido");
                 const oDateFromPed = oViewModel.getProperty("/filterDateFromPed");
                 const oDateToPed = oViewModel.getProperty("/filterDateToPed");
-                
-                // ESPIÃO DE TELA: Mostra no console do navegador o que o Fiori leu
-                console.log("--- BUSCA DE PEDIDOS ---");
-                console.log("Pedido digitado:", sPedido);
-                console.log("Data Inicio:", oDateFromPed);
-                console.log("Data Fim:", oDateToPed);
 
                 if (oDateFromPed && oDateToPed && oDateFromPed > oDateToPed) {
                     MessageBox.warning("A data inicial não pode ser maior que a data final.");
                     return;
                 }
 
-                // CORREÇÃO: Adiciona zeros à esquerda para o SAP entender (ex: "24" vira "0024")
                 if (sPedido) {
                     sPedido = String(sPedido).padStart(4, "0");
                     aFilters.push(new Filter("Numeropedido", FilterOperator.EQ, sPedido));
@@ -129,8 +122,6 @@ sap.ui.define([
                     const dEndPed = new Date(oDateToPed); dEndPed.setHours(23, 59, 59, 999);
                     aFilters.push(new Filter("Datap", FilterOperator.LE, dEndPed));
                 }
-                
-                console.log("Filtros OData montados:", aFilters);
                 this.getView().byId("tblPedidos").getBinding("items").filter(aFilters);
             }
         },
@@ -154,7 +145,6 @@ sap.ui.define([
             } else {
                 let sPedido = oViewModel.getProperty("/filterPedido");
                 
-                // CORREÇÃO: Coloca os zeros à esquerda na exportação também
                 if (sPedido) {
                     sPedido = String(sPedido).padStart(4, "0");
                 }
@@ -163,10 +153,6 @@ sap.ui.define([
                 mExport.dateFrom = oViewModel.getProperty("/filterDateFromPed");
                 mExport.dateTo = oViewModel.getProperty("/filterDateToPed");
             }
-
-            // ESPIÃO DE EXPORTAÇÃO
-            console.log("--- DADOS ENVIADOS PARA O REPORT GENERATOR ---");
-            console.log(mExport);
 
             this.getView().setBusy(true);
 
@@ -182,7 +168,6 @@ sap.ui.define([
                 });
         },
 
-        // Lógicas de Pedido (Value Help)
         onValueHelpPedido: function () {
             const oView = this.getView();
             if (!this._pPedidoDialog) {
