@@ -51,7 +51,7 @@
 
                     <Table id="tblMateriasPrima" inset="false" items="{bomModel>/}">
                         <columns>
-                            <Column width="25%"><Text text="{i18n>codMP}" /></Column>
+                            <Column width="25%"><Text text="{i18n>colCodMP}" /></Column>
                             <Column width="50%"><Text text="{i18n>descricaoProd}" /></Column>
                             <Column hAlign="End" width="25%"><Text text="{i18n>quantidadeNec}" /></Column>
                         </columns>

@@ -65,7 +65,7 @@
                                 <Text text="{i18n>colDescPA}" />
                             </Column>
                             <Column width="12%">
-                                <Text text="{i18n>codMP}" />
+                                <Text text="{i18n>colCodMP}" />
                             </Column>
                             <Column width="22%">
                                 <Text text="{i18n>colDescMP}" />

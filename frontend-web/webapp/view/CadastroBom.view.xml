@@ -33,7 +33,7 @@
                     
                 <Button 
                     icon="sap-icon://search" 
-                    text="Buscar" 
+                    text="{i18n>btnBuscar}" 
                     type="Emphasized" 
                     press=".onBuscar"/>
 
