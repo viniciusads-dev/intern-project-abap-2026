@@ -139,11 +139,32 @@
         },
         {
           "name": "RouteUnidadeMedida",
-          "pattern": "unidademedida",
+          "pattern": "unidadeMedida",
           "target": [
             "TargetUnidadeMedida"
           ]
-        }
+        },
+        {
+          "name": "RouteCadastroMaterial",
+          "pattern": "cadastroMaterial",
+          "target": [
+            "TargetCadastroMaterial"
+          ]
+        },
+        {
+          "name": "RouteReports",
+          "pattern": "reports",
+          "target": [
+            "TargetReports"
+          ]
+        },
+        {
+        "name": "RoutePedidoDetail",
+        "pattern": "pedido/{pedidoId}",
+        "target": [
+            "TargetPedidoDetail"
+        ]
+    }
           
       ],
       "targets": {
@@ -174,8 +195,22 @@
         "TargetUnidadeMedida": {
           "id": "UnidadeMedida",
           "name": "UnidadeMedida"
-        }
-
+        },
+        "TargetCadastroMaterial": {
+          "id": "CadastroMaterial",
+          "name": "CadastroMaterial"
+        },
+        "TargetReports": {
+          "id": "Reports",
+          "name": "Reports"
+        },
+        "TargetPedidoDetail": {
+        "viewType": "XML",
+        "transition": "slide",
+        "clearControlAggregation": false,
+        "viewId": "PedidoDetail",
+        "viewName": "PedidoDetail"
+      }
       }
     },
     "rootView": {

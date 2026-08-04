@@ -1,0 +1,56 @@
+<mvc:View
+    controllerName="zpeweb.controller.CadastroMaterial"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m">
+
+    <Page 
+        id="pageCadastroMaterial" 
+        title="{i18n>materialManageTitle}" 
+        showNavButton="true" 
+        navButtonPress=".onNavBack">
+
+        <content>
+            <VBox class="sapUiMediumMargin">
+                
+                <Table 
+                    id="tabelaMateriais"
+                    items="{/ZTPE_MATERIALSet}" 
+                    alternateRowColors="true"
+                    fixedLayout="false"
+                    growing="true"
+                    growingThreshold="20">
+                    
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <Title text="{i18n>materialTableTitle}" level="H2" />
+                            <ToolbarSpacer />
+                            <Button text="{i18n>btnCreateNew}" type="Emphasized" icon="sap-icon://add" press=".onOpenDialog" />
+                        </OverflowToolbar>
+                    </headerToolbar>
+
+                    <columns>
+                        <Column><Text text="{i18n>colCode}" /></Column>
+                        <Column><Text text="{i18n>colDesc}" /></Column>
+                        <Column><Text text="{i18n>colUM}" /></Column>
+                        <Column><Text text="{i18n>colType}" /></Column>
+                    </columns>
+                    
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <ObjectIdentifier title="{Codigocm}" />
+                                <Text text="{Descricaocm}" />
+                                <Text text="{UnidadeMedidacm}" />
+                                <ObjectStatus 
+                                    text="{= ${Tipocm} === '1' ? ${i18n>typeRawMaterial} : (${Tipocm} === '2' ? ${i18n>typeFinishedProduct} : ${i18n>typePackaging}) }" 
+                                    state="{= ${Tipocm} === '1' ? 'Indication05' : (${Tipocm} === '2' ? 'Success' : 'Warning') }" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

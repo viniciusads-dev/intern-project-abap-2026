@@ -1,0 +1,148 @@
+<mvc:View
+    controllerName="zpeweb.controller.Reports"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form"
+    xmlns="sap.m">
+
+    <Page title="{i18n>reportPageTitle}" showNavButton="true" navButtonPress=".onNavBack">
+        <content>
+            <VBox class="sapUiMediumMargin">
+                
+                <!-- PAINEL DE FILTROS -->
+                <Panel headerText="{i18n>panelFilters}" expandable="true" expanded="true">
+                    <f:SimpleForm layout="ResponsiveGridLayout" labelSpanM="3" columnsM="2">
+                        <f:content>
+                            <!-- TIPO DE RELATÓRIO GERAL -->
+                            <Label text="{i18n>lblReportType}" />
+                            <Select id="slcReportType" selectedKey="{view>/reportType}" change=".onChangeReport">
+                                <core:Item key="MOV" text="{i18n>typeMov}" />
+                                <core:Item key="PED" text="{i18n>typePed}" />
+                            </Select>
+
+                            <!-- ========================================== -->
+                            <!-- FILTROS ESPECÍFICOS DE MOVIMENTAÇÃO        -->
+                            <!-- ========================================== -->
+                            <Label text="{i18n>lblMatCode}" visible="{= ${view>/reportType} === 'MOV' }" />
+                            <Input value="{view>/filterMaterial}" visible="{= ${view>/reportType} === 'MOV' }" placeholder="{i18n>phMatCode}" maxLength="18" submit=".onSearch"/>
+
+                            <!-- NOVO: Tipo de Movimentação -->
+                            <Label text="{i18n>lblMovType}" visible="{= ${view>/reportType} === 'MOV' }" />
+                            <Select selectedKey="{view>/filterMovType}" visible="{= ${view>/reportType} === 'MOV' }">
+                                <core:Item key="" text="{i18n>all}" />
+                                <core:Item key="E" text="E - Entrada" />
+                                <core:Item key="S" text="S - Saída" />
+                                <core:Item key="I" text="I - Inventário" />
+                            </Select>
+
+                            <!-- NOVO: Data Inicial e Final -->
+                            <Label text="{i18n>lblDateFrom}" visible="{= ${view>/reportType} === 'MOV' }" />
+                            <DatePicker 
+                                dateValue="{view>/filterDateFrom}" 
+                                displayFormat="dd/MM/yyyy" 
+                                visible="{= ${view>/reportType} === 'MOV' }" />
+
+                            <Label text="{i18n>lblDateTo}" visible="{= ${view>/reportType} === 'MOV' }" />
+                            <DatePicker 
+                                dateValue="{view>/filterDateTo}" 
+                                displayFormat="dd/MM/yyyy" 
+                                visible="{= ${view>/reportType} === 'MOV' }" />
+
+                            <!-- ========================================== -->
+                            <!-- FILTROS ESPECÍFICOS DE PEDIDOS             -->
+                            <!-- ========================================== -->
+                            <Label text="{i18n>lblPedNum}" visible="{= ${view>/reportType} === 'PED' }" />
+                            <Input 
+                                value="{view>/filterPedido}" 
+                                visible="{= ${view>/reportType} === 'PED' }" 
+                                placeholder="{i18n>phPedNum}" 
+                                maxLength="4" 
+                                showValueHelp="true"
+                                valueHelpRequest=".onValueHelpPedido"
+                                submit=".onSearch"/>
+
+                            <!-- NOVO: Data Inicial e Final para Pedidos -->
+                            <Label text="{i18n>lblDateFrom}" visible="{= ${view>/reportType} === 'PED' }" />
+                            <DatePicker 
+                                dateValue="{view>/filterDateFromPed}" 
+                                displayFormat="dd/MM/yyyy" 
+                                visible="{= ${view>/reportType} === 'PED' }" />
+
+                            <Label text="{i18n>lblDateTo}" visible="{= ${view>/reportType} === 'PED' }" />
+                            <DatePicker 
+                                dateValue="{view>/filterDateToPed}" 
+                                displayFormat="dd/MM/yyyy" 
+                                visible="{= ${view>/reportType} === 'PED' }" />
+                        </f:content>
+                    </f:SimpleForm>
+                    
+                    <OverflowToolbar>
+                        <ToolbarSpacer/>
+                        <Button text="{i18n>btnClearFilters}" press=".onClear" />
+                        
+                        <!-- NOVO: Botão de Exportação com Menu Dropdown -->
+                        <MenuButton text="Exportar">
+                            <menu>
+                                <Menu itemSelected=".onExport">
+                                    <MenuItem text="Exportar como PDF" key="PDF" icon="sap-icon://pdf-attachment" />
+                                    <MenuItem text="Exportar como CSV" key="CSV" icon="sap-icon://excel-attachment" />
+                                </Menu>
+                            </menu>
+                        </MenuButton>
+
+                        <Button text="{i18n>btnSearch}" type="Emphasized" press=".onSearch" icon="sap-icon://search"/>
+                    </OverflowToolbar>
+                </Panel>
+
+                <!-- TABELA 1: MOVIMENTAÇÕES DE ESTOQUE -->
+                <Table 
+                    id="tblMovimentos" 
+                    items="{/ZTPE_LOG_MOVSet}" 
+                    visible="{= ${view>/reportType} === 'MOV' }" 
+                    class="sapUiMediumMarginTop"
+                    noDataText="{i18n>noDataMov}">
+                    <columns>
+                        <Column><Text text="{i18n>colDate}" /></Column>
+                        <Column><Text text="{i18n>colMatCode}" /></Column>
+                        <Column><Text text="{i18n>colQty}" /></Column>
+                        <Column><Text text="{i18n>colType}" /></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="{ path: 'Datal', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd/MM/yyyy HH:mm:ss' } }" />
+                                <ObjectIdentifier title="{Codigom}" />
+                                <Text text="{Quantidadel}" />
+                                <ObjectStatus 
+                                    text="{= ${Tipol} === 'E' ? ${i18n>statusIn} : ${i18n>statusOut} }" 
+                                    state="{= ${Tipol} === 'E' ? 'Success' : 'Error' }" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+
+                <!-- TABELA 2: PEDIDOS DE COMPRAS -->
+                <Table 
+                    id="tblPedidos" 
+                    items="{/ZTPE_PED_CABSet}" 
+                    visible="{= ${view>/reportType} === 'PED' }" 
+                    class="sapUiMediumMarginTop"
+                    noDataText="{i18n>noDataPed}">
+                    <columns>
+                        <Column><Text text="{i18n>colPedNum}" /></Column>
+                        <Column><Text text="{i18n>colPedDate}" /></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem type="Navigation" press=".onPedidoPress">
+                            <cells>
+                                <ObjectIdentifier title="{Numeropedido}" />
+                                <Text text="{ path: 'Datap', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd/MM/yyyy' } }" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

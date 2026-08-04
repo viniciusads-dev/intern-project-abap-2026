@@ -7,13 +7,7 @@
         search=".onValueHelpSearch"
         liveChange=".onValueHelpSearch"
         confirm=".onValueHelpClose"
-        cancel=".onValueHelpClose"
-        items="{
-            path: '/ZshPeProdutoAcabadoSet',
-            parameters: {
-                operationMode: 'Client'
-            }
-        }">
+        cancel=".onValueHelpClose">
         <StandardListItem
             title="{Codigocm}"
             description="{Descricaocm}" />
