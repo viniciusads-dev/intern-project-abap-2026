@@ -17,7 +17,7 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "zpeweb/util/reportGenerator",
     "sap/ui/core/format/DateFormat",
-    "sap/ui/core/Fragment" // <-- Importado para podermos chamar o Modal XML
+    "sap/ui/core/Fragment"
 ], function (
     BaseController, 
     UIComponent, 
@@ -37,7 +37,7 @@ sap.ui.define([
     JSONModel, 
     ReportGenerator,
     DateFormat,
-    Fragment // <-- Argumento do Fragment
+    Fragment 
 ) {
     "use strict";
 
@@ -46,6 +46,34 @@ sap.ui.define([
         onInit() {
             this.getRouter().attachRouteMatched(this.onRouteMatched, this);
             this._initLocalModel();
+            const oViewModel = new JSONModel({
+                global: { totalIn: 0, totalOut: 0 }
+            });
+            this.getView().setModel(oViewModel, "view");
+
+            this.getOwnerComponent().getRouter().getRoute("RouteInventory").attachPatternMatched(this._loadGlobalMetrics, this);
+        },
+
+        _loadGlobalMetrics: function() {
+            const oModel = this.getOwnerComponent().getModel();
+            
+            oModel.read("/ZTPE_LOG_MOVSet", {
+                urlParameters: { "$top": "1000" },
+                success: (oData) => {
+                    const aLogs = oData.results || [];
+                    let totalIn = 0, totalOut = 0;
+
+                    aLogs.forEach(log => {
+                        const sType = log.Tipol;
+                        const nQty = parseFloat(log.Quantidadel) || 0;
+                        if (sType === "E") totalIn += nQty;
+                        if (sType === "S") totalOut += nQty;
+                    });
+                    const oViewModel = this.getView().getModel("view");
+                    oViewModel.setProperty("/global/totalIn", totalIn);
+                    oViewModel.setProperty("/global/totalOut", totalOut);
+                }
+            });
         },
 
         onRouteMatched(oEvent) {
@@ -95,10 +123,6 @@ sap.ui.define([
             this.getRouter().navTo("RouteCockpit");
         },
 
-        // ==============================================================
-        // MANTIDO: LÓGICA DO DIALOG DE MOVIMENTAÇÃO (FEITO EM JAVASCRIPT)
-        // Dica: No futuro, você pode transformar esse modal em XML também!
-        // ==============================================================
         onRegisterMovement() {
             if (!this._oMovementDialog) {
                 const oMovementModel = new JSONModel({
@@ -267,7 +291,7 @@ sap.ui.define([
             if (!this._pExportDialog) {
                 this._pExportDialog = Fragment.load({
                     id: oView.getId(),
-                    name: "zpeweb.view.fragments.ExportDialog", // Caminho do seu fragmento XML
+                    name: "zpeweb.view.fragments.ExportDialog", 
                     controller: this
                 }).then(function (oDialog) {
                     oView.addDependent(oDialog);
@@ -305,7 +329,6 @@ sap.ui.define([
             oDialog.close();
             this.getView().setBusy(true);
 
-            // Chama a função central do reportGenerator.js
             ReportGenerator.executeExport(this.getView().getModel(), mExport)
                 .then((sFormat) => {
                     MessageToast.show(`Relatório ${sFormat} gerado com sucesso!`);
@@ -322,25 +345,19 @@ sap.ui.define([
         // ==============================================================
         // LÓGICAS DA TABELA PRINCIPAL DE ESTOQUE
         // ==============================================================
-        onItemPress(oEvent) {
+        onItemPress: function(oEvent) {
             const oListItem = oEvent.getSource();
+            
             const oContext = oListItem.getBindingContext();
 
             if (oContext) {
                 const sMaterialCode = oContext.getProperty("Codigom");
-                const sDescription = oContext.getProperty("Descricaocm");
-                const sQuantity = oContext.getProperty("Quantidadem");
-                const sUnit = oContext.getProperty("UnidadeMedidacm");
-                const sType = this.formatMaterialType(oContext.getProperty("Tipocm"));
 
-                MessageBox.information(
-                    [
-                        `Material: ${sMaterialCode}`,
-                        `Descrição: ${sDescription}`,
-                        `Quantidade: ${sQuantity} ${sUnit}`,
-                        `Tipo: ${sType}`
-                    ].join("\n")
-                );
+                const oRouter = this.getOwnerComponent().getRouter();
+                
+                oRouter.navTo("RouteItemDetail", {
+                    materialCode: sMaterialCode
+                });
             }
         },
 
