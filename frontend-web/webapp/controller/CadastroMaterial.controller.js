@@ -1,14 +1,15 @@
 sap.ui.define([
+    "zpeweb/controller/BaseController",
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/routing/History",
     "sap/ui/model/json/JSONModel",
     "sap/m/MessageToast",
     "sap/m/MessageBox",
     "sap/ui/core/Fragment"
-], function (Controller, History, JSONModel, MessageToast, MessageBox, Fragment) {
+], function (BaseController, Controller, History, JSONModel, MessageToast, MessageBox, Fragment) {
     "use strict";
 
-    return Controller.extend("zpeweb.controller.CadastroMaterial", {
+    return BaseController.extend("zpeweb.controller.CadastroMaterial", {
 
         onInit: function () {
             const oMaterialModel = new JSONModel({
@@ -17,6 +18,7 @@ sap.ui.define([
                 Tipocm: "1" 
             });
             this.getView().setModel(oMaterialModel, "material");
+            this.applySavedTheme();
         },
 
         // Função utilitária para pegar os textos do i18n no JS

@@ -14,6 +14,7 @@ sap.ui.define([
             this.byId("panelResultado").setVisible(false);
             const oBomModel = new JSONModel([]);
             this.getView().setModel(oBomModel, "bomModel");
+            this.applySavedTheme();
         },
 
         async onBuscar() {

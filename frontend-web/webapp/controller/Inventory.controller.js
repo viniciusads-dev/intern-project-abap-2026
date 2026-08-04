@@ -74,6 +74,7 @@ sap.ui.define([
                     oViewModel.setProperty("/global/totalOut", totalOut);
                 }
             });
+            this.applySavedTheme();
         },
 
         onRouteMatched(oEvent) {

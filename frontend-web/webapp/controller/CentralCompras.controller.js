@@ -13,7 +13,7 @@ sap.ui.define([
         onInit() {
             const oComprasModel = new JSONModel([]);
             this.getView().setModel(oComprasModel, "comprasModel");
-
+            this.applySavedTheme();
             this.getRouter().getRoute("RouteCentralCompras").attachPatternMatched(this._onRouteMatched, this);
         },
 

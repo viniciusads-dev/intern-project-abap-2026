@@ -11,6 +11,14 @@
         showNavButton="true"
         navButtonPress=".onNavBack"
         enableScrolling="true">
+
+        <headerContent>
+            <Button 
+                icon="sap-icon://palette" 
+                type="Transparent"
+                tooltip="Alternar Tema Claro/Escuro" 
+                press=".onToggleTheme" />
+        </headerContent>
         
         <content>
             <Panel class="sapUiResponsiveMargin" width="auto" expandable="true" expanded="true" headerText="Visão Global de Movimentações (Últimos 1000 registros)">

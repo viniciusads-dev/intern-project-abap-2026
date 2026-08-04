@@ -12,6 +12,14 @@
         showNavButton="false" 
         enableScrolling="true"
         backgroundDesign="List">
+
+        <headerContent>
+            <Button 
+                icon="sap-icon://palette" 
+                type="Transparent"
+                tooltip="Alternar Tema Claro/Escuro" 
+                press=".onToggleTheme" />
+        </headerContent>
         
         <content>
             <HBox id="headerBox" class="sapUiMediumMargin" alignItems="Center">

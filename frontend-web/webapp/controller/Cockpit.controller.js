@@ -1,13 +1,15 @@
 sap.ui.define([
+    "zpeweb/controller/BaseController",
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/UIComponent",
     "sap/m/MessageBox"
-], (Controller, UIComponent, MessageBox) => {
+], (BaseController, Controller, UIComponent, MessageBox) => {
     "use strict";
 
-    return Controller.extend("zpeweb.controller.Cockpit", {
+    return BaseController.extend("zpeweb.controller.Cockpit", {
         onInit() {
             this.getRouter().attachRouteMatched(this.onRouteMatched, this);
+            this.applySavedTheme();
         },
 
         onRouteMatched() {
