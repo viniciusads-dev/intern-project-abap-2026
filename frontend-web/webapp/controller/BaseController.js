@@ -22,6 +22,23 @@ sap.ui.define([
             }
         },
 
+        onToggleTheme: function () {
+            const oCore = sap.ui.getCore();
+            const sCurrentTheme = oCore.getConfiguration().getTheme();
+            
+            const sNewTheme = sCurrentTheme.includes("dark") ? "sap_horizon" : "sap_horizon_dark";
+
+            oCore.getConfiguration().setTheme(sNewTheme);
+            localStorage.setItem("userTheme", sNewTheme);
+        },
+
+        applySavedTheme: function () {
+            const sSavedTheme = localStorage.getItem("userTheme");
+            if (sSavedTheme && sap.ui.getCore().getConfiguration().getTheme() !== sSavedTheme) {
+                sap.ui.getCore().getConfiguration().setTheme(sSavedTheme);
+            }
+        },
+
         onGlobalNavBack(oEvent) {
             const oContext = oEvent.getSource().getBindingContext("navModel");
             const sRoute = oContext.getProperty("route");

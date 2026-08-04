@@ -44,6 +44,7 @@ sap.ui.define([
         onInit() {
             this.getRouter().attachRouteMatched(this.onRouteMatched, this);
             this._initLocalModel();
+            this.applySavedTheme();
         },
 
         onRouteMatched(oEvent) {

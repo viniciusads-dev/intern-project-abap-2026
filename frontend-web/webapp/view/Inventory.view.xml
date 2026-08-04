@@ -10,6 +10,14 @@
         showNavButton="true"
         navButtonPress=".onNavBack"
         enableScrolling="true">
+
+        <headerContent>
+            <Button 
+                icon="sap-icon://palette" 
+                type="Transparent"
+                tooltip="Alternar Tema Claro/Escuro" 
+                press=".onToggleTheme" />
+        </headerContent>
         
         <content>
             <Table 

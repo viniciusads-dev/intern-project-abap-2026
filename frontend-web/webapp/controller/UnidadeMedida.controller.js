@@ -1,4 +1,5 @@
 sap.ui.define([
+    "zpeweb/controller/BaseController",
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
     "sap/ui/core/UIComponent",
@@ -9,15 +10,16 @@ sap.ui.define([
     "sap/m/Label",
     "sap/m/Input",
     "sap/ui/layout/form/SimpleForm"
-], (Controller, JSONModel, UIComponent, MessageToast, MessageBox, Dialog, Button, Label, Input, SimpleForm) => {
+], (BaseController, Controller, JSONModel, UIComponent, MessageToast, MessageBox, Dialog, Button, Label, Input, SimpleForm) => {
     "use strict";
 
-    return Controller.extend("zpeweb.controller.UnidadeMedida", {
+    return BaseController.extend("zpeweb.controller.UnidadeMedida", {
         onInit: function () {
             var oViewModel = new JSONModel({
                 modoEdicao: false
             });
             this.getView().setModel(oViewModel, "viewModel");
+            this.applySavedTheme();
         },
 
         onNavBack: function () {

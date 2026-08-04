@@ -12,6 +12,14 @@
         showNavButton="false" 
         enableScrolling="true"
         backgroundDesign="List">
+
+        <headerContent>
+            <Button 
+                icon="sap-icon://palette" 
+                type="Transparent"
+                tooltip="Alternar Tema Claro/Escuro" 
+                press=".onToggleTheme" />
+        </headerContent>
         
         <content>
             <HBox id="headerBox" class="sapUiMediumMargin" alignItems="Center">
@@ -25,6 +33,10 @@
                 <VBox id="welcomeBox" justifyContent="Center">
                     <Title id="welcomeText" text="{i18n>welcomeMessage}" level="H1" titleStyle="H4" />                
                     <Text id="descriptionText" text="{i18n>cockpitDescription}" class="sapUiThemeTextMuted" />
+                    <Button 
+                        icon="sap-icon://palette" 
+                        tooltip="Alternar Tema Claro/Escuro" 
+                        press=".onToggleTheme" />
                 </VBox>
             </HBox>
 
