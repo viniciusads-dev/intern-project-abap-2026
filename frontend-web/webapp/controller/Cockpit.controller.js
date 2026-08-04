@@ -1,18 +1,24 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/UIComponent",
-    "sap/m/MessageBox"
-], (Controller, UIComponent, MessageBox) => {
+    "sap/m/MessageBox",
+    "sap/ui/model/json/JSONModel"
+], (Controller, UIComponent, MessageBox, JSONModel) => {
     "use strict";
 
     return Controller.extend("zpeweb.controller.Cockpit", {
         onInit() {
+            const oViewModel = new JSONModel({
+                TotalEstoque: 0
+            });
+            this.getView().setModel(oViewModel, "viewModel");
             this.getRouter().attachRouteMatched(this.onRouteMatched, this);
         },
 
-        onRouteMatched() {
+        onRouteMatched(oEvent) {
             // Lógica executada quando a rota do cockpit é correspondida
             // Pode ser usada para buscar dados iniciais ou atualizar o estado
+            this._carregarTotalEstoque();
         },
 
         /**
@@ -46,6 +52,34 @@ sap.ui.define([
          */
         getRouter() {
             return UIComponent.getRouterFor(this);
+        },
+
+        _carregarTotalEstoque() {
+            const oOwnerComponent = this.getOwnerComponent();
+            const oModel = oOwnerComponent ? oOwnerComponent.getModel() : null;
+            const oViewModel = this.getView().getModel("viewModel");
+
+            if (!oModel || !oViewModel) {
+                console.warn("Modelo OData padrão não encontrado no Component.");
+                return;
+            }
+
+            oModel.metadataLoaded().then(() => {
+                oModel.read("/ZSTR_ESTOQUE_ODATASet", {
+                    success: (oData) => {
+                        if (oData && oData.results) {
+                            const iTotal = oData.results.length;
+                            oViewModel.setProperty("/TotalEstoque", iTotal);
+                        }
+                    },
+                    error: (oError) => {
+                        console.error("Erro ao carregar Estoque", oError);
+                        oViewModel.setProperty("/TotalEstoque", 0);
+                    }
+                });
+            }).catch((oError) => {
+                console.error("Erro ao carregar metadados do Estoque", oError);
+            })
         }
     });
 });

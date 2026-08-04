@@ -28,120 +28,124 @@
                 </VBox>
             </HBox>
 
+            
             <VBox id="functionsBox" class="sapUiMediumMarginBeginEnd">
                 <Title id="functionsLabel" text="{i18n>availableFunctions}" level="H2" titleStyle="H4" class="sapUiSmallMarginBottom"/>
-                
-                <grid:CSSGrid 
-                    id="dashboardGrid"
-                    gridTemplateColumns="repeat(auto-fit, 11rem)" 
-                    gridGap="1rem">
-                    
-                    <GenericTile 
-                        id="inventoryTile"
-                        header="Gestão de Estoque"
-                        subheader="Consulta e Movimentação"
-                        press=".onCardPress">
-                        <customData>
-                            <core:CustomData key="route" value="inventory"/>
-                        </customData>
-                        <TileContent id="inventoryContent">
-                            <NumericContent 
-                                id="inventoryNumeric"
-                                icon="sap-icon://product"
-                                value="{/TotalEstoque}" 
-                                valueColor="Good"
-                                withMargin="false"/>
-                        </TileContent>
-                    </GenericTile>
+                <Panel headerText="Operações" class="sapUiSmallMargin">
+                    <grid:CSSGrid 
+                        id="dashboardGrid"
+                        gridTemplateColumns="repeat(auto-fit, 11rem)" 
+                        gridGap="1rem">
 
-                    <GenericTile 
-                        id="reportsTile"
-                        header="Relatórios"
-                        subheader="Extrações e Histórico"
-                        press=".onCardPress">
-                        <customData>
-                            <core:CustomData key="route" value="reports"/>
-                        </customData>
-                        <TileContent id="reportsContent">
-                            <NumericContent 
-                                id="reportsNumeric"
-                                icon="sap-icon://bar-chart"
-                                value="{/TotalRelatorios}"
-                                valueColor="Neutral"
-                                withMargin="false"/>
-                        </TileContent>
-                    </GenericTile>
-                    
-                    <GenericTile 
-                        id="executarProducao"
-                        header="Executar Produção"
-                        subheader="Gerar Produto Acabado"
-                        frameType="OneByOne"
-                        press=".onCardPress">
-                        <customData>
-                            <core:CustomData key="route" value="executar"/>
-                        </customData>
-                        <TileContent id="executarContent">
-                            <ImageContent id="executarIcon" src="sap-icon://factory" />
-                        </TileContent>
-                    </GenericTile>
+                        <GenericTile 
+                            id="inventoryTile"
+                            header="Gestão de Estoque"
+                            subheader="Consulta e Movimentação"
+                            press=".onCardPress">
+                            <customData>
+                                <core:CustomData key="route" value="inventory"/>
+                            </customData>
+                            <TileContent id="inventoryContent">
+                                <NumericContent 
+                                    id="inventoryNumeric"
+                                    icon="sap-icon://product"
+                                    value="{viewModel>/TotalEstoque}" 
+                                    valueColor="Good"
+                                    withMargin="false"/>
+                            </TileContent>
+                        </GenericTile>
+                        
+                        <GenericTile 
+                            id="cadastrarBom"
+                            header="Estrutura de Produto (BOM)"
+                            subheader="Receita de produção"
+                            frameType="OneByOne"
+                            press=".onCardPress">
+                            <customData>
+                                <core:CustomData key="route" value="cadastrobom"/>
+                            </customData>
+                            <TileContent id="bomContent">
+                                <ImageContent id="bomIcon" src="sap-icon://course-book" />
+                            </TileContent>
+                        </GenericTile>
 
-                    <GenericTile 
-                        id="cadastrarBom"
-                        header="Estrutura de Produto (BOM)"
-                        subheader="Receita de produção"
-                        frameType="OneByOne"
-                        press=".onCardPress">
-                        <customData>
-                            <core:CustomData key="route" value="cadastrobom"/>
-                        </customData>
-                        <TileContent id="bomContent">
-                            <ImageContent id="bomIcon" src="sap-icon://course-book" />
-                        </TileContent>
-                    </GenericTile>
+                        <GenericTile 
+                            id="executarProducao"
+                            header="Executar Produção"
+                            subheader="Gerar Produto Acabado"
+                            frameType="OneByOne"
+                            press=".onCardPress">
+                            <customData>
+                                <core:CustomData key="route" value="executar"/>
+                            </customData>
+                            <TileContent id="executarContent">
+                                <ImageContent id="executarIcon" src="sap-icon://factory" />
+                            </TileContent>
+                        </GenericTile>
 
-                    <GenericTile 
-                        id="centralCompras"
-                        header="Central de compras"
-                        subheader="Controle de pedidos"
-                        frameType="OneByOne"
-                        press=".onCardPress">
-                        <customData>
-                            <core:CustomData key="route" value="centralcompras"/>
-                        </customData>
-                        <TileContent id="comprasContent">
-                            <ImageContent id="comprasIcon" src="sap-icon://credit-card" />
-                        </TileContent>
-                    </GenericTile>
+                        <GenericTile 
+                            id="centralCompras"
+                            header="Central de compras"
+                            subheader="Controle de pedidos"
+                            frameType="OneByOne"
+                            press=".onCardPress">
+                            <customData>
+                                <core:CustomData key="route" value="centralcompras"/>
+                            </customData>
+                            <TileContent id="comprasContent">
+                                <ImageContent id="comprasIcon" src="sap-icon://credit-card" />
+                            </TileContent>
+                        </GenericTile>
 
-                    <GenericTile 
-                        id="unidadeMedida"
-                        header="Unidades de Medida"
-                        subheader="Cadastrar nova unidade"
-                        frameType="OneByOne"
-                        press=".onCardPress">
-                        <customData>
-                            <core:CustomData key="route" value="unidademedida"/>
-                        </customData>
-                        <TileContent id="unidadeContent">
-                            <ImageContent id="unidadeIcon" src="sap-icon://sys-add" />
-                        </TileContent>
-                    </GenericTile>
+                        <GenericTile 
+                            id="reportsTile"
+                            header="Relatórios"
+                            subheader="Extrações e Histórico"
+                            press=".onCardPress">
+                            <customData>
+                                <core:CustomData key="route" value="reports"/>
+                            </customData>
+                            <TileContent id="reportsContent">
+                                <ImageContent id="reportsNumeric" src="sap-icon://bar-chart"/>
+                            </TileContent>
+                        </GenericTile>
 
-                    <GenericTile 
-                        id="cadastroMaterial"
-                        header="Cadastro de Material"
-                        subheader="Cadastrar novo material"
-                        frameType="OneByOne"
-                        press=".onCardPress">
-                        <customData>
-                            <core:CustomData key="route" value="cadastroMaterial"/>
-                        </customData>
-                        <TileContent id="cadastroMaterialContent">
-                            <ImageContent id="cadastroMaterialIcon" src="sap-icon://add-product" />
-                        </TileContent>
-                    </GenericTile>
-                </grid:CSSGrid>
+                    </grid:CSSGrid>
+                </Panel>
+                <Panel headerText="Manutenção" class="sapUiSmallMargin">
+                    <grid:CSSGrid 
+                        gridTemplateColumns="repeat(auto-fit, 11rem)" 
+                        gridGap="1rem">
+
+                        <GenericTile 
+                            id="cadastroMaterial"
+                            header="Cadastro de Material"
+                            subheader="Cadastrar novo material"
+                            frameType="OneByOne"
+                            press=".onCardPress">
+                            <customData>
+                                <core:CustomData key="route" value="cadastroMaterial"/>
+                            </customData>
+                            <TileContent id="cadastroMaterialContent">
+                                <ImageContent id="cadastroMaterialIcon" src="sap-icon://add-product" />
+                            </TileContent>
+                        </GenericTile>
+                        
+                        <GenericTile 
+                            id="unidadeMedida"
+                            header="Unidades de Medida"
+                            subheader="Cadastrar nova unidade"
+                            frameType="OneByOne"
+                            press=".onCardPress">
+                            <customData>
+                                <core:CustomData key="route" value="unidademedida"/>
+                            </customData>
+                            <TileContent id="unidadeContent">
+                                <ImageContent id="unidadeIcon" src="sap-icon://sys-add" />
+                            </TileContent>
+                        </GenericTile>
+                    </grid:CSSGrid>
+                </Panel>
             </VBox>
         </content>
 
