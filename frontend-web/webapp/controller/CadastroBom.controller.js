@@ -129,11 +129,9 @@ sap.ui.define([
                 return;
             }
 
-            this._filtrarPorPA(sCodigoPA);
-
-            // Tratando o código com zeros à esqueda
             sCodigoPA = this._padZero(sCodigoPA, 4);
-            
+
+            this._filtrarPorPA(sCodigoPA);
             this.getView().setBusy(true);
 
             oModel.read("/ZTPE_BOMSet", {
@@ -141,27 +139,44 @@ sap.ui.define([
                     new Filter("Codigopa", FilterOperator.EQ, sCodigoPA)
                 ],
                 success: function (oDataBOM) {
-                    this.getView().setBusy(false);
+                    var aItens = oDataBOM.results || [];
 
-                    if (!oDataBOM.results || oDataBOM.results.length === 0) {
-                        MessageToast.show("Nenhuma estrutura encontrada para o código informado")
-                        oViewModel.setProperty("/itensBOM", []);
-                        oViewModel.setProperty("/bMostrarCadastroBom", false);
+                    if (aItens.length > 0) {
+                        this.getView().setBusy(false);
+                        var sDescPA = aItens[0].Descricaopa || "";
+
+                        oViewModel.setProperty("/tituloProduto", sCodigoPA + (sDescPA ? " - " + sDescPA : ""));
+                        oViewModel.setProperty("/itensBOM", aItens);
+                        oViewModel.setProperty("/bMostrarCadastroBom", true);
                         return;
                     }
 
-                    oViewModel.setProperty("/itensBOM", oDataBOM.results);
-                    oViewModel.setProperty("/bMostrarCadastroBom", true);
+                    oModel.read("/ZshPeProdutoAcabadoSet", {
+                        filters: [
+                            new Filter("Codigocm", FilterOperator.EQ, sCodigoPA)
+                        ],
+                        success: function (oDataPA) {
+                            this.getView().setBusy(false);
 
-                    
-                    var oPrimeiroItem = oDataBOM.results[0];
-                    var sCodPA = this._padZero(oPrimeiroItem.Codigopa, 4);
-                    var sDescPA = oPrimeiroItem.Descricaopa || "";
+                            var sDescPA = "";
+                            if (oDataPA.results && oDataPA.results.length > 0) {
+                                sDescPA = oDataPA.results[0].Descricaocm || "";
+                            }
 
-                    oViewModel.setProperty("/tituloProduto", sCodPA + " - " + sDescPA);
+                            oViewModel.setProperty("/tituloProduto", sCodigoPA + (sDescPA ? " - " + sDescPA : ""));
+                            oViewModel.setProperty("/itensBOM", []);
+                            oViewModel.setProperty("/bMostrarCadastroBom", true);
 
+                            MessageToast.show("Nenhuma matéria-prima cadastrada para este PA")
+                        }.bind(this),
+                        error: function () {
+                            this.getView().setBusy(false);
+                            oViewModel.setProperty("/tituloProduto", sCodigoPA);
+                            oViewModel.setProperty("/itensBOM", []);
+                            oViewModel.setProperty("/bMostrarCadastroBom", true);
+                        }.bind(this)
+                    });
                 }.bind(this),
-
                 error: function (oError) {
                     this.getView().setBusy(false);
                     this._tratarErro(oError);
