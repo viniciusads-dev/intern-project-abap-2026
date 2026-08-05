@@ -17,9 +17,9 @@
             <Button 
                 id="btnNotifications"
                 icon="sap-icon://bell" 
-                type="{= ${viewModel>/criticalCount} > 0 ? 'Reject' : 'Transparent' }"
-                text="{= ${viewModel>/criticalCount} > 0 ? ${viewModel>/criticalCount} : '' }"
-                tooltip="Notificações de Estoque"
+                type="{= ${viewModel>/paCount} > 0 ? 'Reject' : 'Transparent' }"
+                text="{= ${viewModel>/paCount} > 0 ? ${viewModel>/paCount} : '' }"
+                tooltip="Produtos Acabados"
                 press=".onOpenNotifications" />
             <Button 
                 icon="sap-icon://palette" 
@@ -27,28 +27,24 @@
                 tooltip="{i18n>tooltipToggleTheme}"
                 press=".onToggleTheme" />
         </headerContent>
-
-        <!-- 2. A CAIXA FLUTUANTE DE NOTIFICAÇÕES (Oculta até o clique) -->
         <dependents>
             <Popover 
                 id="notificationsPopover" 
-                title="Alertas Críticos ({viewModel>/criticalCount})" 
+                title="{i18n>lowStockWarning} ({viewModel>/paCount})" 
                 placement="Bottom" 
                 contentWidth="320px"
                 class="sapUiContentPadding">
                 <content>
                     <List 
-                        id="listCriticalStock"
-                        noDataText="🎉 Tudo certo! Nenhum Produto Acabado zerado."
-                        items="{viewModel>/criticalItems}">
-                        <items>
-                            <NotificationListItem 
+                        id="listPA"
+                        noDataText="{i18n>noFinishedProducts}"
+                        items="{viewModel>/paItems}">
+                        <NotificationListItem 
                                 title="{viewModel>Codigom} - {viewModel>Descricaocm}" 
-                                description="Estoque esgotado. Verifique a necessidade de compra imediata."
-                                priority="High"
+                                description="{i18n>typeFinishedProducts}"
+                                priority="None"
                                 showCloseButton="false"
-                                press=".onCriticalItemPress" />
-                        </items>
+                                press=".onPAItemPress" />
                     </List>
                 </content>
             </Popover>

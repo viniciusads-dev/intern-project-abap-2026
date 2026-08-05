@@ -8,10 +8,11 @@ sap.ui.define([
     "use strict";
 
     return BaseController.extend("zpeweb.controller.Cockpit", {
-        onInit() {
+        onInit: function() {
             const oViewModel = new JSONModel({
                 TotalEstoque: 0,
-                criticalCount: 0 // NOVO: Controla a notificação
+                paCount: 0,
+                paItems: []
             });
             this.getView().setModel(oViewModel, "viewModel");
             
@@ -22,8 +23,40 @@ sap.ui.define([
             oEventBus.subscribe("Inventory", "StockChanged", this._onStockChangedEvent, this);
         },
 
-        onRouteMatched(oEvent) {
+        onRouteMatched: function(oEvent) {
             this._carregarTotalEstoque();
+            this._carregarProdutosAcabados();
+        },
+
+        _carregarProdutosAcabados: function() {
+            const oModel = this.getOwnerComponent().getModel();
+            const oViewModel = this.getView().getModel("viewModel");
+
+            if (!oModel) return;
+
+            oModel.refresh();
+
+            oModel.read("/ZSTR_ESTOQUE_ODATASet", {
+                filters: [
+                    new sap.ui.model.Filter("Tipocm", sap.ui.model.FilterOperator.EQ, "2")
+                ],
+                success: (oData) => {
+                    if (oData && oData.results) {
+                        
+                        const aZerados = oData.results.filter(item => {
+                            const sQtd = String(item.Quantidadem || "0").replace(",", ".");
+                            const nQtd = parseFloat(sQtd);
+                            return nQtd === 0;
+                        });
+
+                        oViewModel.setProperty("/paCount", aZerados.length);
+                        oViewModel.setProperty("/paItems", aZerados);
+                    }
+                },
+                error: (oError) => {
+                    console.error("Erro ao carregar Produtos Acabados", oError);
+                }
+            });
         },
 
        _carregarTotalEstoque() {
@@ -37,6 +70,7 @@ sap.ui.define([
             }
 
             oModel.metadataLoaded().then(() => {
+                // 1. Carrega o Total de Estoque
                 oModel.read("/ZSTR_ESTOQUE_ODATASet", {
                     success: (oData) => {
                         if (oData && oData.results) {
@@ -53,7 +87,7 @@ sap.ui.define([
                 oModel.read("/ZSTR_ESTOQUE_ODATASet", {
                     filters: [
                         new sap.ui.model.Filter("Quantidadem", sap.ui.model.FilterOperator.EQ, "0"),
-                        new sap.ui.model.Filter("Tipocm", sap.ui.model.FilterOperator.EQ, "2")
+                        new sap.ui.model.Filter("Tipocm", sap.ui.model.FilterOperator.EQ, "2") 
                     ],
                     success: (oData) => {
                         if (oData && oData.results) {
@@ -71,27 +105,8 @@ sap.ui.define([
         },
 
         _onStockChangedEvent: function (sChannel, sEvent, oData) {
-            const oModel = this.getOwnerComponent().getModel();
-            const oViewModel = this.getView().getModel("viewModel");
-
-            oModel.read("/ZSTR_ESTOQUE_ODATASet", {
-                    filters: [
-                        new sap.ui.model.Filter("Tipocm", sap.ui.model.FilterOperator.EQ, "2")
-                    ],
-                    success: (oData) => {
-                        if (oData && oData.results) {
-                            const aZerados = oData.results.filter(item => {
-                                const nQtd = parseFloat(item.Quantidadem) || 0;
-                                return nQtd === 0;
-                            });
-                            oViewModel.setProperty("/criticalCount", aZerados.length);
-                            oViewModel.setProperty("/criticalItems", aZerados); 
-                        }
-                    },
-                    error: (oError) => {
-                        console.error("Erro ao checar estoque crítico", oError);
-                    }
-                });
+            this._carregarTotalEstoque();
+            this._carregarProdutosAcabados();
         },
 
         onExit: function () {
@@ -114,9 +129,25 @@ sap.ui.define([
             }, 0);
         },
 
+        onPAItemPress: function (oEvent) {
+            const oListItem = oEvent.getSource();
+            const oContext = oListItem.getBindingContext("viewModel");
+
+            if (oContext) {
+                const sMaterialCode = oContext.getProperty("Codigom");
+                
+                this.byId("notificationsPopover").close();
+                
+                const oRouter = this.getOwnerComponent().getRouter();
+                oRouter.navTo("RouteCentralCompras", {
+                    materialPA: sMaterialCode
+                });
+            }
+        },
+
         onCriticalItemPress: function (oEvent) {
             const oListItem = oEvent.getSource();
-            const oContext = oListItem.getBindingContext();
+            const oContext = oListItem.getBindingContext("viewModel");
 
             if (oContext) {
                 const sMaterialCode = oContext.getProperty("Codigom");
