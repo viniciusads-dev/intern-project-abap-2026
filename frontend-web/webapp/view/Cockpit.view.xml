@@ -15,13 +15,47 @@
 
         <headerContent>
             <Button 
+                id="btnNotifications"
+                icon="sap-icon://bell" 
+                type="{= ${viewModel>/criticalCount} > 0 ? 'Reject' : 'Transparent' }"
+                text="{= ${viewModel>/criticalCount} > 0 ? ${viewModel>/criticalCount} : '' }"
+                tooltip="Notificações de Estoque"
+                press=".onOpenNotifications" />
+            <Button 
                 icon="sap-icon://palette" 
                 type="Transparent"
                 tooltip="{i18n>tooltipToggleTheme}"
                 press=".onToggleTheme" />
         </headerContent>
+
+        <!-- 2. A CAIXA FLUTUANTE DE NOTIFICAÇÕES (Oculta até o clique) -->
+        <dependents>
+            <Popover 
+                id="notificationsPopover" 
+                title="Alertas Críticos ({viewModel>/criticalCount})" 
+                placement="Bottom" 
+                contentWidth="320px"
+                class="sapUiContentPadding">
+                <content>
+                    <List 
+                        id="listCriticalStock"
+                        noDataText="🎉 Tudo certo! Nenhum Produto Acabado zerado."
+                        items="{viewModel>/criticalItems}">
+                        <items>
+                            <NotificationListItem 
+                                title="{viewModel>Codigom} - {viewModel>Descricaocm}" 
+                                description="Estoque esgotado. Verifique a necessidade de compra imediata."
+                                priority="High"
+                                showCloseButton="false"
+                                press=".onCriticalItemPress" />
+                        </items>
+                    </List>
+                </content>
+            </Popover>
+        </dependents>
         
         <content>
+            
             <HBox id="headerBox" class="sapUiMediumMargin" alignItems="Center">
                 <Avatar 
                     id="userAvatar"
