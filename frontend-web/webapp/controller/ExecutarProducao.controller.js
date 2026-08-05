@@ -44,7 +44,6 @@ sap.ui.define([
             oView.setBusy(true);
 
             try {
-                // busca componentes BOM, que agora trazem a decricao
                 const aBomRows = await this._readCollection("/ZTPE_BOMSet", [
                     new Filter("Codigopa", FilterOperator.EQ, sMaterial)
                 ]);
@@ -55,7 +54,6 @@ sap.ui.define([
                     return;
                 }
 
-                // descricao do PA
                 const sDescPA = aBomRows[0].Descricaopa || "";
                 this._sDescricaoPA = sDescPA;
 
@@ -67,7 +65,6 @@ sap.ui.define([
                     return isNaN(nParsed) ? 0 : nParsed;
                 };
 
-                // mapeia os materiais usando mp do gateway
                 const aItemsEnriched = aBomRows.map((oBomItem) => ({
                     Codigomp: oBomItem.Codigomp,
                     Descricaocm: oBomItem.Descricaomp || this._getText("cadastroNullDesc"),
@@ -115,6 +112,9 @@ sap.ui.define([
                             onClose: () => {
                                 this.byId("inputMaterial").setValue("");
                                 oPanelResultado.setVisible(false);
+                                
+                                const oEventBus = sap.ui.getCore().getEventBus();
+                                oEventBus.publish("Inventory", "StockChanged");
                             }
                         });
 

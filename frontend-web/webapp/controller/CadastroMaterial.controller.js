@@ -70,7 +70,6 @@ sap.ui.define([
             const oModel = this.getView().getModel("material");
             const oData = oModel.getData();
 
-            // Usa o texto traduzido para a validação
             if (!oData.Descricaocm || !oData.UnidadeMedidacm || !oData.Tipocm) {
                 MessageBox.error(this._getI18nText("msgFillRequired"));
                 return;
@@ -90,7 +89,7 @@ sap.ui.define([
                         sMessage = oErrorResponse.error.message.value;
                     } catch (e) {}
                     MessageBox.error(sMessage);
-                }.bind(this) // Importante amarrar o .bind(this) no erro também para acessar o _getI18nText
+                }.bind(this)
             });
         },
 
