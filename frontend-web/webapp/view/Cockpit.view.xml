@@ -39,7 +39,8 @@
             
             <VBox id="functionsBox" class="sapUiMediumMarginBeginEnd">
                 <Title id="functionsLabel" text="{i18n>availableFunctions}" level="H2" titleStyle="H4" class="sapUiSmallMarginBottom"/>
-                <Panel headerText="Operações" class="sapUiSmallMargin">
+
+                <Panel headerText="{i18n>panelOperacao}" class="sapUiSmallMargin">
                     <grid:CSSGrid 
                         id="dashboardGrid"
                         gridTemplateColumns="repeat(auto-fit, 11rem)" 
@@ -47,8 +48,8 @@
 
                         <GenericTile 
                             id="inventoryTile"
-                            header="Gestão de Estoque"
-                            subheader="Consulta e Movimentação"
+                            header="{i18n>cardEstoque}"
+                            subheader="{i18n>descEstoque}"
                             press=".onCardPress">
                             <customData>
                                 <core:CustomData key="route" value="inventory"/>
@@ -65,8 +66,8 @@
                         
                         <GenericTile 
                             id="cadastrarBom"
-                            header="Estrutura de Produto (BOM)"
-                            subheader="Receita de produção"
+                            header="{i18n>cardBOM}"
+                            subheader="{i18n>descBOM}"
                             frameType="OneByOne"
                             press=".onCardPress">
                             <customData>
@@ -79,8 +80,8 @@
 
                         <GenericTile 
                             id="executarProducao"
-                            header="Executar Produção"
-                            subheader="Gerar Produto Acabado"
+                            header="{i18n>cardExecutar}"
+                            subheader="{i18n>descExecutar}"
                             frameType="OneByOne"
                             press=".onCardPress">
                             <customData>
@@ -93,8 +94,8 @@
 
                         <GenericTile 
                             id="centralCompras"
-                            header="Central de compras"
-                            subheader="Controle de pedidos"
+                            header="{i18n>cardCompras}"
+                            subheader="{i18n>descCompras}"
                             frameType="OneByOne"
                             press=".onCardPress">
                             <customData>
@@ -107,8 +108,8 @@
 
                         <GenericTile 
                             id="reportsTile"
-                            header="Relatórios"
-                            subheader="Extrações e Histórico"
+                            header="{i18n>cardRelatorio}"
+                            subheader="{i18n>descRelatorio}"
                             press=".onCardPress">
                             <customData>
                                 <core:CustomData key="route" value="reports"/>
@@ -120,15 +121,15 @@
 
                     </grid:CSSGrid>
                 </Panel>
-                <Panel headerText="Manutenção" class="sapUiSmallMargin">
+                <Panel headerText="{i18n>panelManutencao}" class="sapUiSmallMargin">
                     <grid:CSSGrid 
                         gridTemplateColumns="repeat(auto-fit, 11rem)" 
                         gridGap="1rem">
 
                         <GenericTile 
                             id="cadastroMaterial"
-                            header="Cadastro de Material"
-                            subheader="Cadastrar novo material"
+                            header="{i18n>cardMaterial}"
+                            subheader="{i18n>descMaterial}"
                             frameType="OneByOne"
                             press=".onCardPress">
                             <customData>
@@ -141,8 +142,8 @@
                         
                         <GenericTile 
                             id="unidadeMedida"
-                            header="Unidades de Medida"
-                            subheader="Cadastrar nova unidade"
+                            header="{i18n>cardUnidade}"
+                            subheader="{i18n>descUnidade}"
                             frameType="OneByOne"
                             press=".onCardPress">
                             <customData>

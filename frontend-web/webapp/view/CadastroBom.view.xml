@@ -5,7 +5,7 @@
     xmlns="sap.m">
     
     <Page id="bomPage" 
-        title="Estrutura de Produto (BOM)" 
+        title="{i18n>cardBOM}" 
         showNavButton="true"
         navButtonPress=".onNavBack"
         enableScrolling="true"
@@ -22,9 +22,9 @@
         <content>
             <!-- Barra inicial de Buscar PA -->
             <OverflowToolbar class="sapUiSmallMarginBottom">
-                <Label text="Insira o código do Produto Acabado:" labelFor="iptCodigoPA"/>
+                <Label text="{i18n>lblCodPA}" labelFor="iptCodigoPA"/>
                 <Input id="iptCodigoPA" 
-                placeholder="0000" 
+                placeholder="{i18n>plcCodMat}" 
                 type="Number" 
                 liveChange=".onInputLiveChange" 
                 showValueHelp="true" 
@@ -41,12 +41,12 @@
             
             <!-- Container para o cadastro do BOM -->
             <VBox id="containerCadastroBom" visible="{viewModel>/bMostrarCadastroBom}">
-                <Title text="BOM do Produto: {viewModel>/tituloProduto} " 
+                <Title text="{i18n>titleBOM} {viewModel>/tituloProduto} " 
                     titleStyle="H3" 
                     class="sapUiSmallMarginBottom" />
 
                 <!-- Caixa de cadastro -->
-                <Panel headerText="Cadastro de Matérias-Primas que compõe o Produto Acabado" expandable="false" class="sapUiSmallMarginBottom">
+                <Panel headerText="{i18n>headerTxtBOM}" expandable="false" class="sapUiSmallMarginBottom">
                     <f:SimpleForm 
                         editable="true"
                         layout="ResponsiveGridLayout"
@@ -56,11 +56,19 @@
                         columnsXL="1" columnsL="1" columnsM="1">
                         <f:content>
                             
-                            <Label text="Código da matéria-prima:" labelFor="iptMateriaPrima"/>
-                            <Input id="iptMateriaPrima" placeholder="0000" type="Number" liveChange=".onInputLiveChange" maxLength="4" width="10rem" showValueHelp="true" valueHelpRequest=".onValueHelpMaterial" tooltip="Selecionar Matéria-Prima" app:entitySet="/ZshPeMateriaPrimaSet"/>
+                            <Label text="{i18n>lblCodMP}" labelFor="iptMateriaPrima"/>
+                            <Input id="iptMateriaPrima" 
+                                placeholder="{i18n>plcCodMat}" 
+                                type="Number" 
+                                liveChange=".onInputLiveChange" 
+                                width="10rem" 
+                                showValueHelp="true" 
+                                valueHelpRequest=".onValueHelpMaterial" 
+                                tooltip="{i18n>toolTipMP}" 
+                                app:entitySet="/ZshPeMateriaPrimaSet"/>
 
-                            <Label text="Quantidade do material:" labelFor="iptQuantidade"/>
-                            <Input id="iptQuantidade" type="Tel" maxLength="4" width="10rem"/>
+                            <Label text="{i18n>lblQtdMat}" labelFor="iptQuantidade"/>
+                            <Input id="iptQuantidade" type="Number" liveChange=".onInputLiveChange" width="10rem"/>
 
                         </f:content>
                     </f:SimpleForm>
@@ -68,7 +76,7 @@
                     <!-- Botões de ação -->
                     <HBox class="sapUiLargeMarginBegin sapUiSmallMarginTopBottom">
                         <Button 
-                            text="Cadastrar" 
+                            text="{i18n>btnCadastro}" 
                             icon="sap-icon://add" 
                             type="Emphasized"
                             press=".onAdicionarMp" 
@@ -83,24 +91,24 @@
 
                     <headerToolbar>
                         <OverflowToolbar>
-                            <Title text="Matérias-Primas do Produto" level="H4"/>
+                            <Title text="{i18n>tableBOM}" level="H4"/>
                             <ToolbarSpacer/>
                             <Button 
                                 icon="sap-icon://edit" 
-                                text="Editar" 
+                                text="{i18n>btnEdit}" 
                                 visible="{= !${viewModel>/modoEdicao}}"
                                 press=".onAlternarEdicao"/>
 
                             <Button 
                                 icon="sap-icon://edit"
-                                text="Salvar"
+                                text="{i18n>btnSave}"
                                 type="Accept"
                                 visible="{= ${viewModel>/modoEdicao} === true}"
                                 press=".onSalvarAlteracoes"/>
 
                             <Button
                                 icon="sap-icon://decline"
-                                text="Cancelar"
+                                text="{i18n>Cancel}"
                                 type="Reject"
                                 visible="{= ${viewModel>/modoEdicao} === true}"
                                 press=".onCancelarAlteracoes"/>
@@ -129,7 +137,7 @@
                                     icon="sap-icon://delete"
                                     type="Transparent"
                                     press="onDeletarItem"
-                                    tooltip="Excluir registro"/>
+                                    tooltip="{i18n>toolTipDelete}"/>
                             </cells>
                         </ColumnListItem>
                     </items>

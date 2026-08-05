@@ -21,12 +21,12 @@
         </headerContent>
         
         <content>
-            <Panel class="sapUiResponsiveMargin" width="auto" expandable="true" expanded="true" headerText="Visão Global de Movimentações (Últimos 1000 registros)">
+            <Panel class="sapUiResponsiveMargin" width="auto" expandable="true" expanded="true" headerText="{i18n>tituloGrafico}">
                 <HBox wrap="Wrap" justifyContent="SpaceAround" alignItems="Center">
                     
                     <VBox alignItems="Center" width="20rem" class="sapUiSmallMargin">
-                        <Title text="Entradas Totais" level="H4" class="sapUiTinyMarginBottom" />
-                        <Text text="Total In: {view>/global/totalIn} | Total Out: {view>/global/totalOut}" class="sapUiSmallMargin" />
+                        <Title text="{i18n>textoGrafico}" level="H4" class="sapUiTinyMarginBottom" />
+                        <Text text="{i18n>entradaGraf} {view>/global/totalIn} | {i18n>saidaGraf} {view>/global/totalOut}" class="sapUiSmallMargin" />
                         <microchart:InteractiveDonutChart displayedSegments="3" selectionEnabled="false">
                             <microchart:segments>
                                 <microchart:InteractiveDonutChartSegment label="Entradas (Qtd)" value="{path: 'view>/global/totalIn', type: 'sap.ui.model.type.Float'}" color="Good"/>

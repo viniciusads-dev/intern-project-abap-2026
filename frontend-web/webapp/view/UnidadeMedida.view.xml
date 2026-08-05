@@ -5,7 +5,7 @@
     displayBlock="true">
     <Page 
         id="unidadePage" 
-        title="Manutenção de Unidades de Medida"
+        title="{i18n>pageUM}"
         showNavButton="true"
         navButtonPress=".onNavBack"
         enableScrolling="true">
@@ -21,16 +21,16 @@
         <content>
             <VBox width="50%" class="sapUiSmallMargin">
                 <OverflowToolbar height="5rem" class="sapUiMediumMarginBottom">
-                    <Title text="Cadastro de Unidade de Medida"/>
+                    <Title text="{i18n>titleUM}"/>
                     <ToolbarSpacer/>
                     <Button 
                         icon="sap-icon://add" 
-                        text="Nova Unidade" 
+                        text="{i18n>btnNovaUM}" 
                         type="Emphasized" 
                         press=".onCriarUnidade" 
                         class="sapUiTinyMarginEnd"/>
                     <Button 
-                        text="Excluir" 
+                        text="{i18n>btnExcluir}" 
                         icon="sap-icon://delete" 
                         type="Reject" 
                         press="onDeletarUnidade" />
@@ -44,31 +44,31 @@
                 alternateRowColors="true">
                     <headerToolbar>
                         <OverflowToolbar>
-                            <Title text="Unidades Cadastradas"/>
+                            <Title text="{i18n>tableUM}"/>
                             <ToolbarSpacer />
                             <Button 
                                 icon="sap-icon://edit" 
-                                text="Editar" 
+                                text="{i18n>btnEdit}" 
                                 visible="{= !${viewModel>/modoEdicao}}"
                                 press=".onAlternarEdicao"/>
 
                             <Button 
                                 icon="sap-icon://edit"
-                                text="Salvar"
+                                text="{i18n>btnSave}"
                                 type="Accept"
                                 visible="{viewModel>/modoEdicao}"
                                 press=".onSalvarAlteracoes"/>
                             <Button
                                 icon="sap-icon://decline"
-                                text="Cancelar"
+                                text="{i18n>btnCancel}"
                                 type="Reject"
                                 visible="{viewModel>/modoEdicao}"
                                 press=".onCancelarAlteracoes"/>
                         </OverflowToolbar>
                     </headerToolbar>
                     <columns>
-                        <Column id="colSigla" width="100px" ><Text id="txtSigla" text="Sigla"/></Column>
-                        <Column id="colNomeTecnico"><Text id="txtNomeTecnico" text="Descrição" /></Column>
+                        <Column id="colSigla" width="100px" ><Text id="txtSigla" text="{i18n>colSigla}"/></Column>
+                        <Column id="colNomeTecnico"><Text id="txtNomeTecnico" text="{i18n>colDescUM}" /></Column>
                     </columns>
                     <items>
                         <ColumnListItem id="itemUnidade">
