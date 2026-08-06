@@ -217,6 +217,26 @@ sap.ui.define([
                 return;
             }
 
+            var mPendingChanges = oModel.getPendingChanges();
+            var bValido = true;
+
+            Object.keys(mPendingChanges).forEach(function (sEntityPath) {
+                var oChange = mPendingChanges[sEntityPath]
+
+                if (oChange.hasOwnProperty("Quantidademp")) {
+                    var iQtd = parseFloat(oChange.Quantidademp);
+
+                    if (isNaN(iQtd) || iQtd <= 0) {
+                        bValido = false;
+                    }
+                }
+            });
+
+            if (!bValido) {
+                MessageBox.error("A quantidade de Matéria-Prima deve ser um número maior que 0.");
+                return;
+            }
+
             oModel.submitChanges({
                 success: function (oData) {
                     MessageToast.show("Alterações salvas com sucesso.")
