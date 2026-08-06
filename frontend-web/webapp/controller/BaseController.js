@@ -10,7 +10,7 @@ sap.ui.define([
     "use strict";
 
     return Controller.extend("zpeweb.controller.BaseController", {
-        
+
         getRouter() {
             return UIComponent.getRouterFor(this);
         },
@@ -26,7 +26,7 @@ sap.ui.define([
         onToggleTheme: function () {
             const oCore = sap.ui.getCore();
             const sCurrentTheme = oCore.getConfiguration().getTheme();
-            
+
             const sNewTheme = sCurrentTheme.includes("dark") ? "sap_horizon" : "sap_horizon_dark";
 
             oCore.getConfiguration().setTheme(sNewTheme);
@@ -43,7 +43,7 @@ sap.ui.define([
         onGlobalNavBack(oEvent) {
             const oContext = oEvent.getSource().getBindingContext("navModel");
             const sRoute = oContext.getProperty("route");
-            
+
             this.getRouter().navTo(sRoute);
         },
 
@@ -67,11 +67,9 @@ sap.ui.define([
 
         async onValueHelpMaterial(oEvent, sEntitySet) {
             const oView = this.getView();
-            // Pega qual input disparou o evento
             const oInput = oEvent.getSource();
             this._oInputOrigem = oInput;
-
-            // Lê a propriedade CustomData definida no XML, se não tiver assume como PA
+            
             const sPath = oInput.data("entitySet") || "/ZshPeProdutoAcabadoSet";
 
             if (!this._pDialogMaterial) {
@@ -86,8 +84,18 @@ sap.ui.define([
             }
 
             const oDialog = await this._pDialogMaterial;
-            
-            //Faz o Binding dinâmico do SearchHelp de PA ou MP
+
+            const oI18nModel = oView.getModel("i18n") || this.getOwnerComponent().getModel("i18n");
+            const oResourceBundle = oI18nModel.getResourceBundle();
+
+            // valida se é mp
+            const sPathLower = sPath.toLowerCase();
+            const bIsMP = sPathLower.includes("materiaprima") || sPathLower.includes("mp");
+
+            // define titulo
+            const sTitleKey = bIsMP ? "inputMP" : "inputPA";
+            oDialog.setTitle(oResourceBundle.getText(sTitleKey));
+
             oDialog.bindAggregation("items", {
                 path: sPath,
                 parameters: { operationMode: "Client" },
@@ -132,16 +140,16 @@ sap.ui.define([
             const oSelectedItem = oEvent.getParameter("selectedItem");
             if (oSelectedItem) {
                 const sSelectedCode = oSelectedItem.getTitle();
-                
+
                 // Input que disparou o Search Help
                 let oInput = this._oInputOrigem;
 
                 // Falback de segurança
                 if (!oInput) {
                     oInput = this.byId("iptCodigoPA") ||
-                             this.byId("iptCodigoMP") ||
-                             this.byId("inputProdutoAcabado") ||
-                             this.byId("inputMaterial");
+                        this.byId("iptCodigoMP") ||
+                        this.byId("inputProdutoAcabado") ||
+                        this.byId("inputMaterial");
                 }
 
                 if (oInput) {
@@ -153,10 +161,10 @@ sap.ui.define([
 
                     // Identifica se a seleção veio de um campo de PA
                     const sInputId = oInput.getId();
-                    const bIsPA = sInputId.includes("CodigoPA") || 
-                                  sInputId.includes("ProdutoAcabado") || 
-                                  sInputId.includes("InputMaterial") || 
-                                  sInputId.includes("inputMaterial");
+                    const bIsPA = sInputId.includes("CodigoPA") ||
+                        sInputId.includes("ProdutoAcabado") ||
+                        sInputId.includes("InputMaterial") ||
+                        sInputId.includes("inputMaterial");
 
                     // Executa se a busca for PA e se o método for onBuscar
                     if (bIsPA && typeof this.onBuscar === "function") {
