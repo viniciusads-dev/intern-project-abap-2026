@@ -30,94 +30,6 @@ sap.ui.define([
             oRouter.navTo("RouteCockpit");
         },
 
-        _onRouteMatched: function () {
-            var oViewModel = this.getView().getModel("viewModel");
-            if (oViewModel) {
-                oViewModel.setProperty("/bMostrarCadastroBom", false);
-                oViewModel.setProperty("/tituloProduto", "");
-                oViewModel.setProperty("/itensBOM", []);
-                oViewModel.setProperty("/modoEdicao", false);
-            }
-
-            var oModel = this.getView().getModel();
-            if (oModel && oModel.hasPendingChanges()) {
-                oModel.resetChanges();
-            }
-
-            var oInputPA = this.byId("iptCodigoPA");
-            if (oInputPA) {
-                oInputPA.setValue("");
-            }
-
-            var oTable = this.byId("tableBomItems");
-            if (oTable) {
-                var oBinding = oTable.getBinding("items");
-                if (oBinding) {
-                    oBinding.filter([new Filter("Codigopa", FilterOperator.EQ, "___LIMPAR___")])
-                }
-            }
-        },
-        
-        // Tratador de erros do OData (Lê o Message do SEGW)
-        _tratarErro: function (oError) {
-            var sMensagem = "Erro ao solicitar serviço no servidor";
-
-            try {
-                var oResponseBody = JSON.parse(oError.responseText);
-                var aDetalhes = oResponseBody.error?.innererror?.errordetails;
-
-                if (aDetalhes && aDetalhes.length > 0) {
-                    var oDetail = aDetalhes.find(function (item) { 
-                        return item.message && item.message !== ""; 
-                    });
-
-                    if (oDetail) {
-                        sMensagem = oDetail.message;
-                    }
-                }
-
-                if (sMensagem === "Erro ao processar a solicitação no servidor." && 
-                  oResponseBody.erro?.message?.value) {
-                    sMensagem = oResponseBody.error.message.value;
-                }
-
-            } catch (e) {
-                if (oError.message) {
-                    sMensagem = oError.message;
-                }
-            }
-            MessageBox.error(sMensagem);
-        },
-
-        // Método para adicionar zeros à esquerda, ex: "0000"
-        _padZero: function (sValue, iCodlength) {
-            if (!sValue) {
-                return "";
-            }
-
-            var iCodLength = iCodlength || 4;
-            var sClean = String(sValue).trim();
-
-            while (sClean.length < iCodlength) {
-                sClean = "0" + sClean;
-            }
-            return sClean;
-        },
-
-        // Método para filtrar o PA digitado no início
-        _filtrarPorPA: function (sCodigoPA) {
-            var oTable = this.byId("tableBomItems");
-            var oBinding = oTable.getBinding("items");
-
-            if (oBinding && sCodigoPA) {
-                var oFiltro = new Filter(
-                    "Codigopa", FilterOperator.EQ, sCodigoPA
-                );
-            
-                oBinding.filter([oFiltro]);
-            }
-        },
-
         // Busca a lista BOM do PA digitado
         onBuscar: function () {
             var sCodigoPA = this.byId("iptCodigoPA").getValue();
@@ -314,9 +226,94 @@ sap.ui.define([
                     MessageBox.error("Erro ao conectar com o servidor.");
                 }
             })
+        },
+
+        _onRouteMatched: function () {
+            var oViewModel = this.getView().getModel("viewModel");
+            if (oViewModel) {
+                oViewModel.setProperty("/bMostrarCadastroBom", false);
+                oViewModel.setProperty("/tituloProduto", "");
+                oViewModel.setProperty("/itensBOM", []);
+                oViewModel.setProperty("/modoEdicao", false);
+            }
+
+            var oModel = this.getView().getModel();
+            if (oModel && oModel.hasPendingChanges()) {
+                oModel.resetChanges();
+            }
+
+            var oInputPA = this.byId("iptCodigoPA");
+            if (oInputPA) {
+                oInputPA.setValue("");
+            }
+
+            var oTable = this.byId("tableBomItems");
+            if (oTable) {
+                var oBinding = oTable.getBinding("items");
+                if (oBinding) {
+                    oBinding.filter([new Filter("Codigopa", FilterOperator.EQ, "___LIMPAR___")])
+                }
+            }
+        },
+        
+        // Tratador de erros do OData (Lê o Message do SEGW)
+        _tratarErro: function (oError) {
+            var sMensagem = "Erro ao solicitar serviço no servidor";
+
+            try {
+                var oResponseBody = JSON.parse(oError.responseText);
+                var aDetalhes = oResponseBody.error?.innererror?.errordetails;
+
+                if (aDetalhes && aDetalhes.length > 0) {
+                    var oDetail = aDetalhes.find(function (item) { 
+                        return item.message && item.message !== ""; 
+                    });
+
+                    if (oDetail) {
+                        sMensagem = oDetail.message;
+                    }
+                }
+
+                if (sMensagem === "Erro ao processar a solicitação no servidor." && 
+                  oResponseBody.erro?.message?.value) {
+                    sMensagem = oResponseBody.error.message.value;
+                }
+
+            } catch (e) {
+                if (oError.message) {
+                    sMensagem = oError.message;
+                }
+            }
+            MessageBox.error(sMensagem);
+        },
+
+        // Método para adicionar zeros à esquerda, ex: "0000"
+        _padZero: function (sValue, iCodlength) {
+            if (!sValue) {
+                return "";
+            }
+
+            var iCodLength = iCodlength || 4;
+            var sClean = String(sValue).trim();
+
+            while (sClean.length < iCodlength) {
+                sClean = "0" + sClean;
+            }
+            return sClean;
+        },
+
+        // Método para filtrar o PA digitado no início
+        _filtrarPorPA: function (sCodigoPA) {
+            var oTable = this.byId("tableBomItems");
+            var oBinding = oTable.getBinding("items");
+
+            if (oBinding && sCodigoPA) {
+                var oFiltro = new Filter(
+                    "Codigopa", FilterOperator.EQ, sCodigoPA
+                );
+            
+                oBinding.filter([oFiltro]);
+            }
         }
-
-
-
     });
 });

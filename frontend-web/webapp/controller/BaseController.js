@@ -58,7 +58,7 @@ sap.ui.define([
         onInputLiveChange(oEvent) {
             const oInput = oEvent.getSource();
             const sValue = oEvent.getParameter("value");
-            const sOnlyNumbers = sValue.replace(/\D/g, "");
+            const sOnlyNumbers = sValue.replace(/\D/g, "").slice(0, 4);
 
             if (sValue !== sOnlyNumbers) {
                 oInput.setValue(sOnlyNumbers);
