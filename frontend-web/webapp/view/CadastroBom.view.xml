@@ -24,24 +24,24 @@
             <OverflowToolbar class="sapUiSmallMarginBottom">
                 <Label text="{i18n>lblCodPA}" labelFor="iptCodigoPA"/>
                 <Input id="iptCodigoPA" 
-                placeholder="{i18n>plcCodMat}" 
-                type="Number" 
-                liveChange=".onInputLiveChange" 
-                showValueHelp="true" 
-                valueHelpRequest=".onValueHelpMaterial"  
-                width="8rem"/>
+                    placeholder="{i18n>plcCodMat}" 
+                    type="Number" 
+                    liveChange=".onInputLiveChange" 
+                    showValueHelp="true" 
+                    valueHelpRequest=".onValueHelpMaterial"  
+                    width="12rem"
+                    class="sapUiSmallMarginEnd"/>
                     
                 <Button 
                     icon="sap-icon://search" 
                     text="{i18n>btnBuscar}" 
                     type="Emphasized" 
                     press=".onBuscar"/>
-
             </OverflowToolbar>
             
             <!-- Container para o cadastro do BOM -->
-            <VBox id="containerCadastroBom" visible="{viewModel>/bMostrarCadastroBom}">
-                <Title text="{i18n>titleBOM} {viewModel>/tituloProduto} " 
+            <VBox id="containerCadastroBom" visible="{viewModel>/bMostrarCadastroBom}" width="100%">
+                <Title text="{i18n>titleBOM} {viewModel>/tituloProduto}" 
                     titleStyle="H3" 
                     class="sapUiSmallMarginBottom" />
 
@@ -52,42 +52,42 @@
                         layout="ResponsiveGridLayout"
                         labelSpanXL="3" labelSpanL="3" labelSpanM="4" labelSpanS="12"
                         adjustLabelSpan="false"
-                        emptySpanXL="4" emptySpanL="4" emptySpanM="0" emptySpanS="0"
+                        emptySpanXL="6" emptySpanL="6" emptySpanM="4" emptySpanS="0"
                         columnsXL="1" columnsL="1" columnsM="1">
                         <f:content>
-                            
                             <Label text="{i18n>lblCodMP}" labelFor="iptMateriaPrima"/>
                             <Input id="iptMateriaPrima" 
                                 placeholder="{i18n>plcCodMat}" 
                                 type="Number" 
                                 liveChange=".onInputLiveChange" 
-                                width="10rem" 
+                                width="100%" 
                                 showValueHelp="true" 
                                 valueHelpRequest=".onValueHelpMaterial" 
                                 tooltip="{i18n>toolTipMP}" 
                                 app:entitySet="/ZshPeMateriaPrimaSet"/>
 
                             <Label text="{i18n>lblQtdMat}" labelFor="iptQuantidade"/>
-                            <Input id="iptQuantidade" type="Number" liveChange=".onInputLiveChange" width="10rem"/>
-
+                            <Input id="iptQuantidade" type="Number" liveChange=".onInputLiveChange" width="100%"/>
                         </f:content>
                     </f:SimpleForm>
-
                     <!-- Botões de ação -->
-                    <HBox class="sapUiLargeMarginBegin sapUiSmallMarginTopBottom">
+                    <HBox class="sapUiSmallMarginTopBottom">
                         <Button 
                             text="{i18n>btnCadastro}" 
                             icon="sap-icon://add" 
                             type="Emphasized"
                             press=".onAdicionarMp" 
                             class="sapUiTinyMarginEnd" />
-                        
                     </HBox>
                 </Panel>
 
                 <!-- Tabela da Lista BOM -->
                 <Table 
-                    id="tableBomItems" items="{/ZTPE_BOMSet}" alternateRowColors="true">
+                    id="tableBomItems" 
+                    items="{/ZTPE_BOMSet}" 
+                    alternateRowColors="true"
+                    growing="true"
+                    growingThreshold="10">
 
                     <headerToolbar>
                         <OverflowToolbar>
@@ -100,7 +100,7 @@
                                 press=".onAlternarEdicao"/>
 
                             <Button 
-                                icon="sap-icon://edit"
+                                icon="sap-icon://save"
                                 text="{i18n>btnSave}"
                                 type="Accept"
                                 visible="{= ${viewModel>/modoEdicao} === true}"
@@ -108,7 +108,7 @@
 
                             <Button
                                 icon="sap-icon://decline"
-                                text="{i18n>Cancel}"
+                                text="{i18n>btnCancel}"
                                 type="Reject"
                                 visible="{= ${viewModel>/modoEdicao} === true}"
                                 press=".onCancelarAlteracoes"/>
@@ -116,12 +116,24 @@
                     </headerToolbar>
                     
                     <columns>
-                        <Column width="15%"><Text text="{i18n>colCodPA}" /></Column>
-                        <Column width="25%"><Text text="{i18n>colDescPA}" /></Column>
-                        <Column width="15%"><Text text="{i18n>colCodMP}" /></Column>
-                        <Column width="25%"><Text text="{i18n>colDescMP}" /></Column>
-                        <Column width="15%" hAlign="End"><Text text="{i18n>colQtdMP}" /></Column>
-                        <Column width="5%" hAlign="Center"><Text text=""/></Column>
+                        <Column width="6rem" minScreenWidth="Tablet" demandPopin="true">
+                            <Text text="{i18n>colCodPA}" />
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true">
+                            <Text text="{i18n>colDescPA}" />
+                        </Column>
+                        <Column width="6rem">
+                            <Text text="{i18n>colCodMP}" />
+                        </Column>
+                        <Column minScreenWidth="Desktop" demandPopin="true">
+                            <Text text="{i18n>colDescMP}" />
+                        </Column>
+                        <Column width="7rem" hAlign="End">
+                            <Text text="{i18n>colQtdMP}" />
+                        </Column>
+                        <Column width="3rem" hAlign="Center">
+                            <Text text=""/>
+                        </Column>
                     </columns>
 
                     <items>
@@ -131,7 +143,7 @@
                                 <Text text="{Descricaopa}" />
                                 <Text text="{Codigomp}" />
                                 <Text text="{Descricaomp}" />
-                                <Input value="{Quantidademp}" width="auto" maxLength="4" editable="{viewModel>/modoEdicao}" valueLiveUpdate="true"/>
+                                <Input value="{Quantidademp}" width="100%" maxLength="4" editable="{viewModel>/modoEdicao}" valueLiveUpdate="true"/>
 
                                 <Button 
                                     icon="sap-icon://delete"

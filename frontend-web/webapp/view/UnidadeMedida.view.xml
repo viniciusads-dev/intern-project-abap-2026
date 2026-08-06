@@ -8,7 +8,8 @@
         title="{i18n>pageUM}"
         showNavButton="true"
         navButtonPress=".onNavBack"
-        enableScrolling="true">
+        enableScrolling="true"
+        class="sapUiContentPadding">
 
         <headerContent>
             <Button 
@@ -19,8 +20,8 @@
         </headerContent>
 
         <content>
-            <VBox width="50%" class="sapUiSmallMargin">
-                <OverflowToolbar height="5rem" class="sapUiMediumMarginBottom">
+            <VBox width="100%">
+                <OverflowToolbar class="sapUiSmallMarginBottom">
                     <Title text="{i18n>titleUM}"/>
                     <ToolbarSpacer/>
                     <Button 
@@ -37,11 +38,13 @@
                 </OverflowToolbar>
 
                 <Table 
-                id="tableUnidades" 
-                items="{/ZTPE_UNMEDIDASet}" 
-                mode="MultiSelect" 
-                width="100%"
-                alternateRowColors="true">
+                    id="tableUnidades" 
+                    items="{/ZTPE_UNMEDIDASet}" 
+                    mode="MultiSelect" 
+                    width="100%"
+                    alternateRowColors="true"
+                    growing="true"
+                    growingThreshold="20">
                     <headerToolbar>
                         <OverflowToolbar>
                             <Title text="{i18n>tableUM}"/>
@@ -53,7 +56,7 @@
                                 press=".onAlternarEdicao"/>
 
                             <Button 
-                                icon="sap-icon://edit"
+                                icon="sap-icon://save"
                                 text="{i18n>btnSave}"
                                 type="Accept"
                                 visible="{viewModel>/modoEdicao}"
@@ -67,8 +70,12 @@
                         </OverflowToolbar>
                     </headerToolbar>
                     <columns>
-                        <Column id="colSigla" width="100px" ><Text id="txtSigla" text="{i18n>colSigla}"/></Column>
-                        <Column id="colNomeTecnico"><Text id="txtNomeTecnico" text="{i18n>colDescUM}" /></Column>
+                        <Column id="colSigla" width="8rem">
+                            <Text id="txtSigla" text="{i18n>colSigla}"/>
+                        </Column>
+                        <Column id="colNomeTecnico">
+                            <Text id="txtNomeTecnico" text="{i18n>colDescUM}" />
+                        </Column>
                     </columns>
                     <items>
                         <ColumnListItem id="itemUnidade">
