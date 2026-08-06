@@ -42,6 +42,8 @@
                         <Column><Text text="{i18n>colDesc}" /></Column>
                         <Column><Text text="{i18n>colUM}" /></Column>
                         <Column><Text text="{i18n>colType}" /></Column>
+                        <!-- Nova coluna de ações -->
+                        <Column width="110px" hAlign="End"><Text text="{i18n>colActions}" /></Column>
                     </columns>
                     
                     <items>
@@ -53,6 +55,20 @@
                                 <ObjectStatus 
                                     text="{= ${Tipocm} === '1' ? ${i18n>typeRawMaterial} : (${Tipocm} === '2' ? ${i18n>typeFinishedProduct} : ${i18n>typePackaging}) }" 
                                     state="{= ${Tipocm} === '1' ? 'Indication05' : (${Tipocm} === '2' ? 'Success' : 'Warning') }" />
+                                
+                                <!-- Botões de Ação -->
+                                <HBox justifyContent="End">
+                                    <Button 
+                                        icon="sap-icon://edit" 
+                                        type="Transparent" 
+                                        press=".onEdit" 
+                                        tooltip="{i18n>btnEdit}" />
+                                    <Button 
+                                        icon="sap-icon://delete" 
+                                        type="Transparent" 
+                                        press=".onDelete" 
+                                        tooltip="{i18n>btnDelete}" />
+                                </HBox>
                             </cells>
                         </ColumnListItem>
                     </items>

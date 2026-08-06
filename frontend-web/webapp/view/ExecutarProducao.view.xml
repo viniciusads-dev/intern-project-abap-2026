@@ -8,48 +8,42 @@
         title="{i18n>executarPageTitle}"
         showNavButton="true"
         navButtonPress=".onNavBack"
-        enableScrolling="true">
+        enableScrolling="true"
+        busy="{viewModel>/isBusy}">
         
         <headerContent>
-            <Button 
-                icon="sap-icon://palette" 
-                type="Transparent"
-                tooltip="{i18n>tooltipToggleTheme}"
-                press=".onToggleTheme" />
+            <Button icon="sap-icon://palette" type="Transparent" tooltip="{i18n>tooltipToggleTheme}" press=".onToggleTheme" />
         </headerContent>
 
         <content>
-            <VBox class="sapUiSmallMargin">
-                
-                <HBox alignItems="Center" class="sapUiSmallMarginBottom">
-                    <Label text="{i18n>inputPA}" labelFor="inputMaterial" class="sapUiTinyMarginEnd" />
-                    <Input id="inputMaterial"
-                        type="Number"
-                        liveChange=".onInputLiveChange"
-                        width="200px"
-                        placeholder="{i18n>inputPAplaceholder}"
-                        showValueHelp="true"
-                        valueHelpRequest=".onValueHelpMaterial"
-                        class="sapUiTinyMarginEnd" />
-                    <Button id="btnBuscar"
-                        text="{i18n>btnBuscar}"
-                        type="Emphasized"
-                        icon="sap-icon://search"
-                        press=".onBuscar" />
-                </HBox>
+            <Panel headerText="{i18n>panelSelecaoMaterial}" class="sapUiResponsiveMargin" width="auto">
+                <content>
+                    <HBox alignItems="Center">
+                        <Label text="{i18n>inputPA}" labelFor="inputMaterial" class="sapUiTinyMarginEnd" />
+                        <Input id="inputMaterial"
+                            type="Number"
+                            liveChange=".onInputLiveChange"
+                            width="200px"
+                            placeholder="{i18n>inputPAplaceholder}"
+                            showValueHelp="true"
+                            valueHelpRequest=".onValueHelpMaterial"
+                            class="sapUiTinyMarginEnd" />
+                        <Button id="btnBuscar" text="{i18n>btnBuscar}" type="Emphasized" icon="sap-icon://search" press=".onBuscar" />
+                    </HBox>
+                </content>
+            </Panel>
 
-                <VBox id="panelResultado" class="sapUiSmallMarginTop" visible="true">
-                    
+            <Panel id="panelResultado" headerText="{i18n>panelEstruturaBOM}" class="sapUiResponsiveMargin" width="auto" visible="{viewModel>/hasResults}">
+                <content>
                     <FlexBox alignItems="Center" justifyContent="SpaceBetween" class="sapUiSmallMarginBottom">
-                        <Title id="txtNomeProduto" text="" level="H2" />
-                        <Button id="btnProcessar"
-                            text="{i18n>btnProcessar}"
-                            type="Emphasized"
-                            icon="sap-icon://process"
-                            press=".onProcessar" />
+                        <Title id="txtNomeProduto" text="{viewModel>/headerTitle}" level="H3" />
+                        <Button id="btnProcessar" text="{i18n>btnProcessar}" type="Emphasized" icon="sap-icon://process" press=".onProcessar" />
                     </FlexBox>
 
-                    <Table id="tblMateriasPrima" inset="false" items="{bomModel>/}">
+                    <Table id="tblMateriasPrima" 
+                        alternateRowColors="true"
+                        inset="false" 
+                        items="{bomModel>/}">
                         <columns>
                             <Column width="25%"><Text text="{i18n>colCodMP}" /></Column>
                             <Column width="50%"><Text text="{i18n>descricaoProd}" /></Column>
@@ -64,19 +58,15 @@
                                         number="{
                                             path: 'bomModel>Quantidademp',
                                             type: 'sap.ui.model.type.Float',
-                                            formatOptions: {
-                                                minFractionDigits: 0,
-                                                maxFractionDigits: 3
-                                            }
+                                            formatOptions: { minFractionDigits: 0, maxFractionDigits: 3 }
                                         }" 
                                         unit="{bomModel>UnidadeMedidacm}"/>
                                 </cells>
                             </ColumnListItem>
                         </items>
                     </Table>
-
-                </VBox>
-            </VBox>
+                </content>
+            </Panel>
         </content>
     </Page>
 </mvc:View>

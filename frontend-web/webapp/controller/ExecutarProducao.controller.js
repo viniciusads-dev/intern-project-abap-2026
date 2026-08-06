@@ -5,23 +5,27 @@ sap.ui.define([
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/ui/model/json/JSONModel"
-], (BaseController, MessageToast, MessageBox, Filter, FilterOperator, JSONModel) => {
+], function (BaseController, MessageToast, MessageBox, Filter, FilterOperator, JSONModel) {
     "use strict";
 
     return BaseController.extend("zpeweb.controller.ExecutarProducao", {
 
-        onInit() {
-            this.byId("panelResultado").setVisible(false);
-            const oBomModel = new JSONModel([]);
-            this.getView().setModel(oBomModel, "bomModel");
+        onInit: function () {
+            this.getView().setModel(new JSONModel([]), "bomModel");
+            
+            this.getView().setModel(new JSONModel({
+                hasResults: false,
+                isBusy: false,
+                descricaoPA: "",
+                headerTitle: ""
+            }), "viewModel");
+
             this.applySavedTheme();
             this.getRouter().getRoute("RouteExecutarProducao").attachPatternMatched(this._onRouteMatched, this);
         },
 
-        _onRouteMatched(oEvent) {
-            const oArgs = oEvent.getParameter("arguments");
-            const sMaterialPA = oArgs?.materialPA;
-
+        _onRouteMatched: function (oEvent) {
+            const sMaterialPA = oEvent.getParameter("arguments")?.materialPA;
             if (sMaterialPA) {
                 const oInput = this.byId("inputMaterial");
                 if (oInput) {
@@ -31,76 +35,96 @@ sap.ui.define([
             }
         },
 
-        async onBuscar() {
+        // --- Helpers Locais de OData (Sem alterar o BaseController) ---
+        _readCollection: function (sPath, aFilters = []) {
+            return new Promise((resolve, reject) => {
+                const oModel = this.getView().getModel();
+                if (!oModel) return reject(new Error("Modelo OData não encontrado"));
+                oModel.read(sPath, {
+                    filters: aFilters,
+                    success: (oData) => resolve(oData.results || []),
+                    error: (oError) => reject(oError)
+                });
+            });
+        },
+
+        _callFunction: function (sFunctionName, mParameters = {}, sMethod = "POST") {
+            return new Promise((resolve, reject) => {
+                const oModel = this.getView().getModel();
+                if (!oModel) return reject(new Error("Modelo OData não encontrado"));
+                oModel.callFunction(sFunctionName, {
+                    method: sMethod,
+                    urlParameters: mParameters,
+                    success: (oData) => resolve(oData),
+                    error: (oError) => reject(oError)
+                });
+            });
+        },
+
+        // --- Ações ---
+        onBuscar: async function () {
             const sMaterial = this.byId("inputMaterial").getValue().trim();
             if (!sMaterial) {
                 MessageToast.show(this._getText("reportInputPA"));
                 return;
             }
 
-            const oView = this.getView();
-            const oPanelResultado = this.byId("panelResultado");
-            const oTxtNomeProduto = this.byId("txtNomeProduto");
-            oView.setBusy(true);
+            const oViewModel = this.getView().getModel("viewModel");
+            oViewModel.setProperty("/isBusy", true);
 
             try {
                 const aBomRows = await this._readCollection("/ZTPE_BOMSet", [
                     new Filter("Codigopa", FilterOperator.EQ, sMaterial)
                 ]);
 
-                if (!aBomRows || aBomRows.length === 0) {
+                if (!aBomRows?.length) {
                     MessageToast.show(this._getText("reportBOMnull"));
-                    oPanelResultado.setVisible(false);
+                    oViewModel.setProperty("/hasResults", false);
                     return;
                 }
 
                 const sDescPA = aBomRows[0].Descricaopa || "";
-                this._sDescricaoPA = sDescPA;
-
                 const sTextoHeader = sDescPA ? `${sMaterial} - ${sDescPA}` : this._getText("cadastroNull", [sMaterial]);
 
-                const fnParseNumber = (vVal) => {
-                    if (vVal === null || vVal === undefined || vVal === "") return 0;
-                    const nParsed = parseFloat(String(vVal).replace(",", "."));
-                    return isNaN(nParsed) ? 0 : nParsed;
-                };
+                const parseNum = (v) => parseFloat(String(v || "").replace(",", ".")) || 0;
 
                 const aItemsEnriched = aBomRows.map((oBomItem) => ({
                     Codigomp: oBomItem.Codigomp,
                     Descricaocm: oBomItem.Descricaomp || this._getText("cadastroNullDesc"),
-                    Quantidademp: fnParseNumber(oBomItem.Quantidademp),
+                    Quantidademp: parseNum(oBomItem.Quantidademp),
                     UnidadeMedidacm: oBomItem.UnidadeMedidacm || "UN"
                 }));
 
-                oView.getModel("bomModel").setData(aItemsEnriched);
-                oTxtNomeProduto.setText(this._getText("titleProdutoAcabado", [sTextoHeader]));
-                oPanelResultado.setVisible(true);
+                this.getView().getModel("bomModel").setData(aItemsEnriched);
+                
+                oViewModel.setProperty("/descricaoPA", sDescPA);
+                oViewModel.setProperty("/headerTitle", this._getText("titleProdutoAcabado", [sTextoHeader]));
+                oViewModel.setProperty("/hasResults", true);
 
             } catch (oError) {
-                oPanelResultado.setVisible(false);
+                oViewModel.setProperty("/hasResults", false);
                 this._tratarErro(oError, this._getText("errorFetchComponentsGateway"));
             } finally {
-                oView.setBusy(false);
+                oViewModel.setProperty("/isBusy", false);
             }
         },
 
-        async onProcessar() {
+        onProcessar: function () {
             const sMaterial = this.byId("inputMaterial").getValue().trim();
             if (!sMaterial) {
                 MessageToast.show(this._getText("msgMaterialNulo"));
                 return;
             }
 
-            const sNomeProduto = this._sDescricaoPA || "NULL";
+            const oViewModel = this.getView().getModel("viewModel");
+            const sNomeProduto = oViewModel.getProperty("/descricaoPA") || "NULL";
 
             MessageBox.confirm(this._getText("msgConfirmExecution", [sNomeProduto]), {
                 title: this._getText("titleConfirmExecution"),
                 onClose: async (sAction) => {
                     if (sAction !== MessageBox.Action.OK) return;
 
-                    const oView = this.getView();
-                    const oPanelResultado = this.byId("panelResultado");
-                    oView.setBusy(true);
+                    oViewModel.setProperty("/isBusy", true);
 
                     try {
                         await this._callFunction("/ExecuteProductionProcess", {
@@ -111,19 +135,17 @@ sap.ui.define([
                         MessageBox.success(this._getText("msgSuccessExecution", [sMaterial]), {
                             onClose: () => {
                                 this.byId("inputMaterial").setValue("");
-                                oPanelResultado.setVisible(false);
+                                oViewModel.setProperty("/hasResults", false);
                                 
-                                const oEventBus = sap.ui.getCore().getEventBus();
-                                oEventBus.publish("Inventory", "StockChanged");
+                                this.getOwnerComponent().getEventBus().publish("Inventory", "StockChanged");
                             }
                         });
 
                     } catch (oError) {
-                        const oErroInfo = this._extrairDetalhesErro(oError);
-                        const bErroEstoqueBOM = oErroInfo.aDetails.some(d => d.code === "ZPE_MSG/007") ||
-                            oErroInfo.sMensagem.toLowerCase().includes("bom") ||
-                            oErroInfo.sMensagem.toLowerCase().includes("estoque") ||
-                            oErroInfo.sMensagem.toLowerCase().includes("insuficiente");
+                        const oErroInfo = this._extrairDetalhesErro ? this._extrairDetalhesErro(oError) : {};
+                        const bErroEstoqueBOM = oErroInfo.aDetails?.some(d => d.code === "ZPE_MSG/007") ||
+                            String(oErroInfo.sMensagem).toLowerCase().includes("bom") ||
+                            String(oErroInfo.sMensagem).toLowerCase().includes("estoque");
 
                         if (bErroEstoqueBOM) {
                             MessageBox.warning(this._getText("msgWarningInsufficientInsumos"), {
@@ -131,9 +153,7 @@ sap.ui.define([
                                 actions: [MessageBox.Action.YES, MessageBox.Action.NO],
                                 onClose: (sDialogAction) => {
                                     if (sDialogAction === MessageBox.Action.YES) {
-                                        this.getRouter().navTo("RouteCentralCompras", {
-                                            materialPA: sMaterial
-                                        });
+                                        this.getRouter().navTo("RouteCentralCompras", { materialPA: sMaterial });
                                     }
                                 }
                             });
@@ -141,25 +161,9 @@ sap.ui.define([
                             this._tratarErro(oError, this._getText("errorExecuteProductionProcess"));
                         }
                     } finally {
-                        oView.setBusy(false);
+                        oViewModel.setProperty("/isBusy", false);
                     }
                 }
-            });
-        },
-
-        _callFunction(sFunctionName, mParameters, sMethod = "GET") {
-            return new Promise((resolve, reject) => {
-                const oModel = this.getView().getModel();
-                if (!oModel) {
-                    reject(new Error(this._getText("errorODataModelNotFound")));
-                    return;
-                }
-                oModel.callFunction(sFunctionName, {
-                    method: sMethod,
-                    urlParameters: mParameters || {},
-                    success: (oData) => resolve(oData),
-                    error: (oError) => reject(oError)
-                });
             });
         }
     });

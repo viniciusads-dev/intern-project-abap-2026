@@ -5,21 +5,25 @@ sap.ui.define([
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/ui/model/json/JSONModel"
-], (BaseController, MessageToast, MessageBox, Filter, FilterOperator, JSONModel) => {
+], function (BaseController, MessageToast, MessageBox, Filter, FilterOperator, JSONModel) {
     "use strict";
 
     return BaseController.extend("zpeweb.controller.CentralCompras", {
 
-        onInit() {
-            const oComprasModel = new JSONModel([]);
-            this.getView().setModel(oComprasModel, "comprasModel");
+        onInit: function () {
+            this.getView().setModel(new JSONModel([]), "comprasModel");
+            
+            this.getView().setModel(new JSONModel({
+                hasResults: false,
+                isBusy: false
+            }), "viewModel");
+
             this.applySavedTheme();
             this.getRouter().getRoute("RouteCentralCompras").attachPatternMatched(this._onRouteMatched, this);
         },
 
-        _onRouteMatched(oEvent) {
-            const oArgs = oEvent.getParameter("arguments");
-            const sMaterialPA = oArgs.materialPA;
+        _onRouteMatched: function (oEvent) {
+            const sMaterialPA = oEvent.getParameter("arguments")?.materialPA;
             const oInput = this.byId("inputProdutoAcabado");
 
             if (sMaterialPA) {
@@ -28,72 +32,84 @@ sap.ui.define([
             } else {
                 oInput.setValue("");
                 this.getView().getModel("comprasModel").setData([]);
-                this.byId("panelResultadoCompras").setVisible(false);
+                this.getView().getModel("viewModel").setProperty("/hasResults", false);
             }
         },
 
-        async onBuscar() {
+        _readCollection: function (sPath, aFilters = []) {
+            return new Promise((resolve, reject) => {
+                const oModel = this.getView().getModel();
+                if (!oModel) return reject(new Error("Modelo OData não encontrado"));
+                oModel.read(sPath, {
+                    filters: aFilters,
+                    success: (oData) => resolve(oData.results || []),
+                    error: (oError) => reject(oError)
+                });
+            });
+        },
+
+        _createEntity: function (sPath, oPayload) {
+            return new Promise((resolve, reject) => {
+                const oModel = this.getView().getModel();
+                if (!oModel) return reject(new Error("Modelo OData não encontrado"));
+                oModel.create(sPath, oPayload, {
+                    success: (oData) => resolve(oData),
+                    error: (oError) => reject(oError)
+                });
+            });
+        },
+
+        onBuscar: async function () {
             const sMaterialPA = this.byId("inputProdutoAcabado").getValue().trim();
             if (!sMaterialPA) {
                 MessageToast.show(this._getText("reportInputPA"));
                 return;
             }
 
-            const oView = this.getView();
-            const oPanelResultado = this.byId("panelResultadoCompras");
-            oView.setBusy(true);
+            const oViewModel = this.getView().getModel("viewModel");
+            oViewModel.setProperty("/isBusy", true);
 
             try {
                 const aBomRows = await this._readCollection("/ZTPE_BOMSet", [
                     new Filter("Codigopa", FilterOperator.EQ, sMaterialPA)
                 ]);
 
-                if (!aBomRows || aBomRows.length === 0) {
+                if (!aBomRows?.length) {
                     MessageToast.show(this._getText("reportBOMnull"));
-                    oPanelResultado.setVisible(false);
+                    oViewModel.setProperty("/hasResults", false);
                     return;
                 }
                 await this._processarEExibirBOMs(aBomRows);
             } catch (oError) {
-                oPanelResultado.setVisible(false);
+                oViewModel.setProperty("/hasResults", false);
                 this._tratarErro(oError, this._getText("errorFetchComprasData"));
             } finally {
-                oView.setBusy(false);
+                oViewModel.setProperty("/isBusy", false);
             }
         },
 
-        async onBuscarTodos() {
-            const oView = this.getView();
-            const oPanelResultado = this.byId("panelResultadoCompras");
+        onBuscarTodos: async function () {
+            const oViewModel = this.getView().getModel("viewModel");
             this.byId("inputProdutoAcabado").setValue("");
-            oView.setBusy(true);
+            oViewModel.setProperty("/isBusy", true);
 
             try {
                 const aBomRows = await this._readCollection("/ZTPE_BOMSet");
-                if (!aBomRows || aBomRows.length === 0) {
+                if (!aBomRows?.length) {
                     MessageToast.show(this._getText("reportNoBOMsInSystem"));
-                    oPanelResultado.setVisible(false);
+                    oViewModel.setProperty("/hasResults", false);
                     return;
                 }
                 await this._processarEExibirBOMs(aBomRows);
             } catch (oError) {
-                oPanelResultado.setVisible(false);
+                oViewModel.setProperty("/hasResults", false);
                 this._tratarErro(oError, this._getText("errorFetchAllBOMs"));
             } finally {
-                oView.setBusy(false);
+                oViewModel.setProperty("/isBusy", false);
             }
         },
 
-        async _processarEExibirBOMs(aBomRows) {
-            const oPanelResultado = this.byId("panelResultadoCompras");
-            const fnNormalizeKey = (sVal) => String(sVal || "").trim().replace(/^0+/, "");
-            const fnParseNumber = (vVal) => {
-                if (vVal === null || vVal === undefined || vVal === "") return 0;
-                const nParsed = parseFloat(String(vVal).replace(",", "."));
-                return isNaN(nParsed) ? 0 : nParsed;
-            };
-
-            // busca estoque
+        _processarEExibirBOMs: async function (aBomRows) {
             let aEstoqueRows = [];
             try {
                 aEstoqueRows = await this._readCollection("/ZSTR_ESTOQUE_ODATASet");
@@ -101,16 +117,18 @@ sap.ui.define([
                 console.warn(this._getText("warnFetchEstoque"), oErrEst);
             }
 
+            const normalizeKey = (v) => String(v || "").trim().replace(/^0+/, "");
+            const parseNum = (v) => parseFloat(String(v || "").replace(",", ".")) || 0;
+
             const mMapEstoque = aEstoqueRows.reduce((mAcc, oEst) => {
-                mAcc[fnNormalizeKey(oEst.Codigom)] = fnParseNumber(oEst.Quantidadem);
+                mAcc[normalizeKey(oEst.Codigom)] = parseNum(oEst.Quantidadem);
                 return mAcc;
             }, {});
 
             const aItemsCalculados = aBomRows.map((oBomItem) => {
-                const sKeyMP = fnNormalizeKey(oBomItem.Codigomp);
-                const nQtdNecessaria = fnParseNumber(oBomItem.Quantidademp);
+                const sKeyMP = normalizeKey(oBomItem.Codigomp);
+                const nQtdNecessaria = parseNum(oBomItem.Quantidademp);
                 const nQtdEstoque = mMapEstoque[sKeyMP] ?? 0;
-                const nQtdComprar = Math.max(0, nQtdNecessaria - nQtdEstoque);
 
                 return {
                     Codigopa: oBomItem.Codigopa,
@@ -120,32 +138,33 @@ sap.ui.define([
                     UnidadeMedida: oBomItem.UnidadeMedidacm || "UN",
                     QtdNecessaria: nQtdNecessaria,
                     QtdEstoque: nQtdEstoque,
-                    QtdComprar: nQtdComprar
+                    QtdComprar: Math.max(0, nQtdNecessaria - nQtdEstoque)
                 };
             });
 
             this.getView().getModel("comprasModel").setData(aItemsCalculados);
-            oPanelResultado.setVisible(true);
+            this.getView().getModel("viewModel").setProperty("/hasResults", true);
         },
 
-        async onGerarPedido() {
+        onGerarPedido: function () {
             const oTable = this.byId("tblPedidoCompra");
             const aSelectedContexts = oTable.getSelectedContexts();
 
-            if (aSelectedContexts.length === 0) {
+            if (!aSelectedContexts.length) {
                 MessageToast.show(this._getText("msgSelectAtLeastOneMP"));
                 return;
             }
 
-            const aSelectedItems = aSelectedContexts.map(oCtx => oCtx.getObject());
-            const aItensComprar = aSelectedItems.filter(item => item.QtdComprar > 0);
+            const aItensComprar = aSelectedContexts
+                .map(oCtx => oCtx.getObject())
+                .filter(item => item.QtdComprar > 0);
 
-            if (aItensComprar.length === 0) {
+            if (!aItensComprar.length) {
                 MessageBox.information(this._getText("msgSufficientStockNoPurchase"));
                 return;
             }
 
-            let sResumo = aItensComprar.map(i =>
+            const sResumo = aItensComprar.map(i =>
                 this._getText("msgPOItemLine", [i.Codigomp, i.Descricaomp, i.QtdComprar, i.UnidadeMedida])
             ).join("\n");
 
@@ -154,86 +173,65 @@ sap.ui.define([
                 onClose: async (sAction) => {
                     if (sAction !== MessageBox.Action.OK) return;
 
-                    const oView = this.getView();
-                    oView.setBusy(true);
+                    const oViewModel = this.getView().getModel("viewModel");
+                    oViewModel.setProperty("/isBusy", true);
 
-                    const aItensPayload = aItensComprar.map(item => ({
-                        Numeropedido: "0000",
-                        Codigomp: item.Codigomp,
-                        Quantidademp: String(item.QtdComprar)
-                    }));
+                    const dNow = new Date();
+                    const sFechaFormatted = dNow.toISOString().split(".")[0];
 
                     const oPayload = {
                         Numeropedido: "0000",
-                        Datap: "2026-06-23T00:00:00",
-                        ZTPE_PED_ITEMSet: aItensPayload
+                        Datap: sFechaFormatted,
+                        ZTPE_PED_ITEMSet: aItensComprar.map(item => ({
+                            Numeropedido: "0000",
+                            Codigomp: item.Codigomp,
+                            Quantidademp: String(item.QtdComprar)
+                        }))
                     };
 
                     try {
                         const oResult = await this._createEntity("/ZTPE_PED_CABSet", oPayload);
-                        const sNumPedido = oResult?.Numeropedido ? oResult.Numeropedido : "";
-                        const sMsgSucesso = (sNumPedido && sNumPedido !== "0000")
+                        const sNumPedido = oResult?.Numeropedido && oResult.Numeropedido !== "0000" ? oResult.Numeropedido : "";
+                        const sMsgSucesso = sNumPedido
                             ? this._getText("msgPOSuccessWithNum", [sNumPedido])
                             : this._getText("msgPOSuccess");
 
-                        // identifica PAs unicos selecionados
                         const aPAsUnicos = [...new Set(aItensComprar.map(item => item.Codigopa))];
-                        const bApenasUmPA = aPAsUnicos.length === 1;
-                        const sCodigoPA = bApenasUmPA ? aPAsUnicos[0] : null;
+                        const sCodigoPA = aPAsUnicos.length === 1 ? aPAsUnicos[0] : null;
 
-                        // se houver apenas 1 PA, combina mensagem de sucesso + pergunta de navegacao
-                        if (bApenasUmPA) {
+                        if (sCodigoPA) {
                             MessageBox.success(
                                 this._getText("msgConfirmGoToProduction", [sMsgSucesso, sCodigoPA]),
                                 {
                                     title: this._getText("msgPOSuccess"),
                                     actions: [MessageBox.Action.YES, MessageBox.Action.NO],
                                     emphasizedAction: MessageBox.Action.YES,
-                                    onClose: (sAction) => {
-                                        oTable.removeSelections(true);
-                                        const sInputVal = this.byId("inputProdutoAcabado").getValue().trim();
-                                        sInputVal ? this.onBuscar() : this.onBuscarTodos();
-
-                                        if (sAction === MessageBox.Action.YES) {
-                                            this.getRouter().navTo("RouteExecutarProducao", {
-                                                materialPA: sCodigoPA
-                                            });
+                                    onClose: (sDlgAction) => {
+                                        this._finalizarPedido(oTable);
+                                        if (sDlgAction === MessageBox.Action.YES) {
+                                            this.getRouter().navTo("RouteExecutarProducao", { materialPA: sCodigoPA });
                                         }
                                     }
                                 }
                             );
                         } else {
-                            // se houver multiplos PAs, exibe apenas a confirmação de sucesso padrão
                             MessageBox.success(sMsgSucesso, {
-                                onClose: () => {
-                                    oTable.removeSelections(true);
-                                    const sInputVal = this.byId("inputProdutoAcabado").getValue().trim();
-                                    sInputVal ? this.onBuscar() : this.onBuscarTodos();
-                                }
+                                onClose: () => this._finalizarPedido(oTable)
                             });
                         }
-
                     } catch (oError) {
                         this._tratarErro(oError, this._getText("errorCreatePO"));
                     } finally {
-                        oView.setBusy(false);
+                        oViewModel.setProperty("/isBusy", false);
                     }
                 }
             });
         },
 
-        _createEntity(sPath, oPayload) {
-            return new Promise((resolve, reject) => {
-                const oModel = this.getView().getModel();
-                if (!oModel) {
-                    reject(new Error(this._getText("errorODataModelNotFound")));
-                    return;
-                }
-                oModel.create(sPath, oPayload, {
-                    success: (oData) => resolve(oData),
-                    error: (oError) => reject(oError)
-                });
-            });
+        _finalizarPedido: function (oTable) {
+            oTable.removeSelections(true);
+            const sInputVal = this.byId("inputProdutoAcabado").getValue().trim();
+            sInputVal ? this.onBuscar() : this.onBuscarTodos();
         }
     });
 });

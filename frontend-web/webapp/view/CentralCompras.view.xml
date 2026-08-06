@@ -7,112 +7,73 @@
         title="{i18n>comprasPageTitle}"
         showNavButton="true"
         navButtonPress=".onNavBack"
-        enableScrolling="true">
+        enableScrolling="true"
+        busy="{viewModel>/isBusy}">
 
         <headerContent>
-            <Button 
-                icon="sap-icon://palette" 
-                type="Transparent"
-                tooltip="{i18n>tooltipToggleTheme}"
-                press=".onToggleTheme" />
+            <Button icon="sap-icon://palette" type="Transparent" tooltip="{i18n>tooltipToggleTheme}" press=".onToggleTheme" />
         </headerContent>
 
         <content>
-            <VBox class="sapUiSmallMargin">
-                
-                <!-- Barra superior: busca e buscar todos -->
-                <FlexBox alignItems="Center" justifyContent="SpaceBetween" class="sapUiSmallMarginBottom">
-                    
-                    <!-- Buscar PA -->
-                    <HBox alignItems="Center">
-                        <Label text="{i18n>inputPA}" labelFor="inputProdutoAcabado" class="sapUiTinyMarginEnd" />
-                        <Input id="inputProdutoAcabado"
-                            width="200px"
-                            type="Number"
-                            placeholder="{i18n>inputPAplaceholder}"
-                            showValueHelp="true"
-                            valueHelpRequest=".onValueHelpMaterial"
-                            liveChange=".onInputLiveChange"
-                            class="sapUiTinyMarginEnd" />
-                        <Button
-                            text="{i18n>btnBuscar}"
-                            type="Emphasized"
-                            icon="sap-icon://search"
-                            press=".onBuscar" />
-                    </HBox>
+            <Panel headerText="{i18n>panelFiltrosBusca}" class="sapUiResponsiveMargin" width="auto" accessibleRole="Region">
+                <content>
+                    <FlexBox alignItems="Center" justifyContent="SpaceBetween">
+                        <HBox alignItems="Center">
+                            <Label text="{i18n>inputPA}" labelFor="inputProdutoAcabado" class="sapUiTinyMarginEnd" />
+                            <Input id="inputProdutoAcabado"
+                                width="200px"
+                                type="Number"
+                                placeholder="{i18n>inputPAplaceholder}"
+                                showValueHelp="true"
+                                valueHelpRequest=".onValueHelpMaterial"
+                                liveChange=".onInputLiveChange"
+                                class="sapUiTinyMarginEnd" />
+                            <Button text="{i18n>btnBuscar}" type="Emphasized" icon="sap-icon://search" press=".onBuscar" />
+                        </HBox>
 
-                    <!-- Botao Select All -->
-                    <Button id="btnBuscarTodos"
-                        text="{i18n>btnBuscarTodos}"
-                        icon="sap-icon://multi-select"
-                        press=".onBuscarTodos" />
+                        <Button id="btnBuscarTodos" text="{i18n>btnBuscarTodos}" icon="sap-icon://multi-select" press=".onBuscarTodos" />
+                    </FlexBox>
+                </content>
+            </Panel>
 
-                </FlexBox>
-
-                <VBox id="panelResultadoCompras" class="sapUiSmallMarginTop" visible="false">
-                    
-                    <!-- tabela necessidade compra -->
+            <Panel id="panelResultadoCompras" headerText="{i18n>panelNecessidadeCompra}" class="sapUiResponsiveMargin" width="auto" visible="{viewModel>/hasResults}">
+                <content>
                     <Table id="tblPedidoCompra" 
+                        alternateRowColors="true"
                         mode="MultiSelect"
                         inset="false" 
                         class="sapUiSmallMarginBottom"
                         items="{comprasModel>/}">
                         <columns>
-                            <Column width="12%">
-                                <Text text="{i18n>colCodPA}" />
-                            </Column>
-                            <Column width="22%">
-                                <Text text="{i18n>colDescPA}" />
-                            </Column>
-                            <Column width="12%">
-                                <Text text="{i18n>colCodMP}" />
-                            </Column>
-                            <Column width="22%">
-                                <Text text="{i18n>colDescMP}" />
-                            </Column>
-                            <Column hAlign="End" width="11%">
-                                <Text text="{i18n>quantidadeNec}" />
-                            </Column>
-                            <Column hAlign="End" width="11%">
-                                <Text text="{i18n>colQtdEstoque}" />
-                            </Column>
-                            <Column hAlign="End" width="10%">
-                                <Text text="{i18n>colQtdComprar}" />
-                            </Column>
+                            <Column width="12%"><Text text="{i18n>colCodPA}" /></Column>
+                            <Column width="22%"><Text text="{i18n>colDescPA}" /></Column>
+                            <Column width="12%"><Text text="{i18n>colCodMP}" /></Column>
+                            <Column width="22%"><Text text="{i18n>colDescMP}" /></Column>
+                            <Column hAlign="End" width="11%"><Text text="{i18n>quantidadeNec}" /></Column>
+                            <Column hAlign="End" width="11%"><Text text="{i18n>colQtdEstoque}" /></Column>
+                            <Column hAlign="End" width="10%"><Text text="{i18n>colQtdComprar}" /></Column>
                         </columns>
                         <items>
+                            <!-- ... (O miolo da tabela continua exatamente igual) ... -->
                             <ColumnListItem>
                                 <cells>
                                     <Text text="{comprasModel>Codigopa}" />
                                     <Text text="{comprasModel>Descricaopa}" />
                                     <Text text="{comprasModel>Codigomp}" />
                                     <Text text="{comprasModel>Descricaomp}" />
-                                    <ObjectNumber 
-                                        number="{comprasModel>QtdNecessaria}" 
-                                        unit="{comprasModel>UnidadeMedida}" />
-                                    <ObjectNumber 
-                                        number="{comprasModel>QtdEstoque}" 
-                                        unit="{comprasModel>UnidadeMedida}" 
-                                        state="{= ${comprasModel>QtdEstoque} &lt; ${comprasModel>QtdNecessaria} ? 'Error' : 'Success' }" />
-                                    <ObjectNumber 
-                                        number="{comprasModel>QtdComprar}" 
-                                        unit="{comprasModel>UnidadeMedida}" 
-                                        state="{= ${comprasModel>QtdComprar} &gt; 0 ? 'Warning' : 'None' }" />
+                                    <ObjectNumber number="{comprasModel>QtdNecessaria}" unit="{comprasModel>UnidadeMedida}" />
+                                    <ObjectNumber number="{comprasModel>QtdEstoque}" unit="{comprasModel>UnidadeMedida}" state="{= ${comprasModel>QtdEstoque} &lt; ${comprasModel>QtdNecessaria} ? 'Error' : 'Success' }" />
+                                    <ObjectNumber number="{comprasModel>QtdComprar}" unit="{comprasModel>UnidadeMedida}" state="{= ${comprasModel>QtdComprar} &gt; 0 ? 'Warning' : 'None' }" />
                                 </cells>
                             </ColumnListItem>
                         </items>
                     </Table>
     
-                    <!-- botao rodapé a direita -->
-                    <HBox justifyContent="End" class="sapUiMediumMarginTop">
-                        <Button id="btnGerarPedido"
-                            text="{i18n>btnGerarPedido}"
-                            type="Emphasized"
-                            icon="sap-icon://add"
-                            press=".onGerarPedido" />
+                    <HBox justifyContent="End" class="sapUiTinyMarginTop">
+                        <Button id="btnGerarPedido" text="{i18n>btnGerarPedido}" type="Emphasized" icon="sap-icon://add" press=".onGerarPedido" />
                     </HBox>
-                </VBox>
-            </VBox>
+                </content>
+            </Panel>
         </content>
     </Page>
 </mvc:View>
